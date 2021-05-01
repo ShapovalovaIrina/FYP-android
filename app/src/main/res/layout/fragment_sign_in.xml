@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".SignInFragment"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/sign_in_fragment_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_vector_3"
+        android:layout_marginBottom="70dp"
+        android:scaleType="fitXY"/>
+
+    <TextView
+        android:id="@+id/sign_in_fragment_find_your_pet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Найди своего питомца"
+        android:textSize="30sp"
+        android:textColor="#FFFFFF"
+        android:layout_alignTop="@id/sign_in_fragment_background"
+        android:layout_marginTop="180dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Помогаем людям и питомцам находить друг друга"
+        android:textSize="14sp"
+        android:textColor="#FFFFFF"
+        android:layout_below="@id/sign_in_fragment_find_your_pet"
+        android:layout_marginTop="10dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/sing_in_button"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Вход"
+        android:textColor="#000000"
+        android:backgroundTint="#FFFFFF"
+        app:cornerRadius="5dp"
+        android:layout_alignBottom="@id/sign_in_fragment_background"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp" />
+
+</RelativeLayout>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">FYP</string>
+
+    <string name="favourite_nav">Favourite</string>
+    <string name="search_nav">Search</string>
+    <string name="profile_nav">Profile</string>
+</resources>
