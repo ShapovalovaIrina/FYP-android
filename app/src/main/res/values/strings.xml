@@ -6,4 +6,5 @@
     <string name="profile_nav">Профиль</string>
 
     <string name="profile_fragment_feedback">Вы также можете отправить нам обратную связь, где можете рассказать о ваших впечатлениях о приложении, предложениях по улучшению или дефектах.</string>
+    <string name="search_fragment_start_search">Чтобы начать поиск, выберите любой из вариантов. Можно выбрать несколько.</string>
 </resources>

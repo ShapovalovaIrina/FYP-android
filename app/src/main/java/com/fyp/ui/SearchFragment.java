@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fyp.R;
@@ -27,6 +28,7 @@ public class SearchFragment extends Fragment {
     private DiscreteScrollView cardPetRecycleView;
     private CardPetAdapter cardPetAdapter;
     private PetViewModel petModel;
+    private TextView startSearch;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,6 +37,7 @@ public class SearchFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_search, container, false);
 
         cardPetRecycleView = view.findViewById(R.id.search_fragment_recycle_view);
+        cardPetRecycleView.setVisibility(View.GONE);
         cardPetRecycleView.addItemDecoration(new LinearHorizontalSpacingDecoration(32));
         cardPetRecycleView.setItemTransformer(new ScaleTransformer.Builder()
                 .setMaxScale(1.2f)
@@ -52,12 +55,15 @@ public class SearchFragment extends Fragment {
             public void onChanged(List<Pet> pets) {
                 cardPetAdapter.clearItems();
                 cardPetAdapter.setItems(pets);
+                cardPetRecycleView.scrollToPosition(0);
             }
         });
 
         // handle buttons checks
         MaterialButtonToggleGroup buttonToggleGroup = view.findViewById(R.id.search_fragment_button_group);
         buttonToggleGroup.addOnButtonCheckedListener(petTypeButtonToggleGroupListener());
+
+        startSearch = view.findViewById(R.id.search_fragment_start_search);
         return view;
     }
 
@@ -71,6 +77,8 @@ public class SearchFragment extends Fragment {
                         petModel.loadAllPets();
                         break;
                     case 1:
+                        startSearch.setVisibility(View.GONE);
+                        cardPetRecycleView.setVisibility(View.VISIBLE);
                         if (checkedIds.get(0) == R.id.search_fragment_cat_button) {
                             petModel.loadCats();
                         } else if (checkedIds.get(0) == R.id.search_fragment_dog_button) {
@@ -78,6 +86,8 @@ public class SearchFragment extends Fragment {
                         }
                         break;
                     case 0:
+                        startSearch.setVisibility(View.VISIBLE);
+                        cardPetRecycleView.setVisibility(View.GONE);
                         petModel.clearPets();
                         break;
                 }
