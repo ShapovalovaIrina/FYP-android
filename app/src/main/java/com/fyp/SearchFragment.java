@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -20,6 +22,7 @@ import android.view.ViewGroup;
 
 import com.fyp.adapter.CardPetAdapter;
 import com.fyp.pojo.Pet;
+import com.fyp.viewmodel.PetViewModel;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.Pivot;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
@@ -34,6 +37,7 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        System.out.println("Search fragment is recreated");
         View view =  inflater.inflate(R.layout.fragment_search, container, false);
 
         cardPetRecycleView = view.findViewById(R.id.search_fragment_recycle_view);
@@ -44,21 +48,27 @@ public class SearchFragment extends Fragment {
                 .setPivotX(Pivot.X.CENTER) // CENTER is a default one
                 .setPivotY(Pivot.Y.CENTER) // CENTER is a default one
                 .build());
-
-        cardPetAdapter = new CardPetAdapter(createPets());
-
+        cardPetAdapter = new CardPetAdapter();
         cardPetRecycleView.setAdapter(cardPetAdapter);
+
+        PetViewModel petModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
+        petModel.getPets().observe(getViewLifecycleOwner(), new Observer<List<Pet>>() {
+            @Override
+            public void onChanged(List<Pet> pets) {
+                cardPetAdapter.setItems(pets);
+            }
+        });
 
         return view;
     }
 
-    private List<Pet> createPets() {
-        List<Pet> pets = new ArrayList<>();
-        pets.add(new Pet("First pet", R.drawable.pet_mock_image));
-        pets.add(new Pet("Second pet", R.drawable.pet_mock_image));
-        pets.add(new Pet("Third pet", R.drawable.pet_mock_image));
-        return pets;
-    }
+//    private List<Pet> createPets() {
+//        List<Pet> pets = new ArrayList<>();
+//        pets.add(new Pet("First pet", R.drawable.pet_mock_image));
+//        pets.add(new Pet("Second pet", R.drawable.pet_mock_image));
+//        pets.add(new Pet("Third pet", R.drawable.pet_mock_image));
+//        return pets;
+//    }
 }
 
 class LinearHorizontalSpacingDecoration extends RecyclerView.ItemDecoration {
