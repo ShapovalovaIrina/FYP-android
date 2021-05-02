@@ -53,6 +53,7 @@ public class CardPetAdapter extends RecyclerView.Adapter<CardPetAdapter.ViewHold
 
     public CardPetAdapter(List<Pet> petsList) {
         this.petsList = petsList;
+        this.setStateRestorationPolicy(StateRestorationPolicy.PREVENT_WHEN_EMPTY);
     }
 
     @Override
