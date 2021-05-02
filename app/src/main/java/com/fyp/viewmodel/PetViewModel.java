@@ -18,7 +18,6 @@ public class PetViewModel extends ViewModel {
         System.out.println("View model get pets");
         if (pets == null) {
             pets = new MutableLiveData<List<Pet>>();
-            loadPets();
         }
         return pets;
     }
@@ -32,13 +31,45 @@ public class PetViewModel extends ViewModel {
         return favouritePets;
     }
 
-    private void loadPets() {
+    public void loadAllPets() {
         // TODO an asynchronous operation to fetch pets.
         System.out.println("Create new list with pets");
         List<Pet> petsList = new ArrayList<>();
-        petsList.add(new Pet("First pet", R.drawable.pet_mock_image));
-        petsList.add(new Pet("Second pet", R.drawable.pet_mock_image));
-        petsList.add(new Pet("Third pet", R.drawable.pet_mock_image));
+        petsList.add(new Pet("First cat", R.drawable.pet_mock_image));
+        petsList.add(new Pet("Second cat", R.drawable.pet_mock_image));
+        petsList.add(new Pet("Third cat", R.drawable.pet_mock_image));
+        petsList.add(new Pet("First dog", R.drawable.pet_mock_image));
+        petsList.add(new Pet("Second dog", R.drawable.pet_mock_image));
+        petsList.add(new Pet("Third dog", R.drawable.pet_mock_image));
+
+        pets.setValue(petsList);
+    }
+
+    public void loadCats() {
+        // TODO an asynchronous operation to fetch pets.
+        System.out.println("Create new list with cats");
+        List<Pet> petsList = new ArrayList<>();
+        petsList.add(new Pet("First cat", R.drawable.pet_mock_image));
+        petsList.add(new Pet("Second cat", R.drawable.pet_mock_image));
+        petsList.add(new Pet("Third cat", R.drawable.pet_mock_image));
+
+        pets.setValue(petsList);
+    }
+
+    public void loadDogs() {
+        // TODO an asynchronous operation to fetch pets.
+        System.out.println("Create new list with dogs");
+        List<Pet> petsList = new ArrayList<>();
+        petsList.add(new Pet("First dog", R.drawable.pet_mock_image));
+        petsList.add(new Pet("Second dog", R.drawable.pet_mock_image));
+        petsList.add(new Pet("Third dog", R.drawable.pet_mock_image));
+        pets.setValue(petsList);
+    }
+
+    public void clearPets() {
+        // TODO an asynchronous operation to fetch pets.
+        System.out.println("Clear pet list");
+        List<Pet> petsList = new ArrayList<>();
         pets.setValue(petsList);
     }
 

@@ -20,36 +20,72 @@
         android:textColor="#000000"
         android:text="Кого ищем?" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/search_fragment_button_group"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
+        android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:orientation="horizontal" >
+        app:singleSelection="false">
 
         <com.google.android.material.button.MaterialButton
-            android:layout_width="100dp"
+            android:id="@+id/search_fragment_dog_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="Собаки"
-            android:backgroundTint="@color/colorWhite"
-            android:textColor="@color/colorBlack" />
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textAppearance="@style/CustomButtonTextAppearance"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:backgroundTint="#FFFFFF" />
 
         <com.google.android.material.button.MaterialButton
-            android:layout_width="100dp"
+            android:id="@+id/search_fragment_cat_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="Котики"
-            android:backgroundTint="@color/colorWhite"
-            android:textColor="@color/colorBlack"/>
-    </RelativeLayout>
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textAppearance="@style/CustomButtonTextAppearance"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:backgroundTint="#FFFFFF" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="50dp"-->
+<!--        android:layout_marginRight="50dp"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:orientation="horizontal" >-->
+
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:layout_width="100dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentLeft="true"-->
+<!--            android:text="Собаки"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:backgroundTint="@color/colorWhite"-->
+<!--            android:textColor="@color/colorBlack" />-->
+
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:layout_width="100dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:text="Котики"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:backgroundTint="@color/colorWhite"-->
+<!--            android:textColor="@color/colorBlack"/>-->
+<!--    </RelativeLayout>-->
 
     <com.yarolegovich.discretescrollview.DiscreteScrollView
         android:id="@+id/search_fragment_recycle_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
         app:dsv_orientation="horizontal"
         tools:listitem="@layout/card_pet" />
 </LinearLayout>
