@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:overScrollMode="never"
-    tools:context=".SignInFragment">
+    tools:context=".ui.SignInFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -81,6 +81,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:text="Войти"
+            android:textAppearance="@style/CustomButtonTextAppearance"
             android:textColor="#B3000000" />
     </LinearLayout>
 </ScrollView>

@@ -4,60 +4,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".SearchFragment"
+    tools:context=".ui.SearchFragment"
     android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="50dp"
-        android:layout_marginTop="50dp"
-        android:orientation="horizontal" >
+        android:paddingTop="50dp"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:fontFamily="sans-serif-light"
+        android:includeFontPadding="false"
+        android:shadowColor="#0E0E0E"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:text="Кого ищем?" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:layout_height="70dp"
-            android:layout_width="70dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/pet_mock_image"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingLeft="20dp"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:text="Привет! Кого ищем?" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/search_fragment_button_group"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="50dp"
+        android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:orientation="horizontal" >
+        app:singleSelection="false">
 
         <com.google.android.material.button.MaterialButton
-            android:layout_width="130dp"
+            android:id="@+id/search_fragment_dog_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="Собаки"
-            android:backgroundTint="@color/colorWhite"
-            android:textColor="@color/colorBlack" />
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textAppearance="@style/CustomButtonTextAppearance"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:backgroundTint="#FFFFFF" />
 
         <com.google.android.material.button.MaterialButton
-            android:layout_width="130dp"
+            android:id="@+id/search_fragment_cat_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:text="Котики"
-            android:backgroundTint="@color/colorWhite"
-            android:textColor="@color/colorBlack"/>
-    </LinearLayout>
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textAppearance="@style/CustomButtonTextAppearance"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:backgroundTint="#FFFFFF" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <TextView
+        android:id="@+id/search_fragment_start_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:fontFamily="sans-serif-thin"
+        android:includeFontPadding="false"
+        android:paddingTop="20sp"
+        android:shadowColor="#0E0E0E"
+        android:gravity="center"
+        android:text="@string/search_fragment_start_search"
+        android:textColor="#000000"
+        android:textSize="15sp" />
 
     <com.yarolegovich.discretescrollview.DiscreteScrollView
         android:id="@+id/search_fragment_recycle_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
         app:dsv_orientation="horizontal"
         tools:listitem="@layout/card_pet" />
 </LinearLayout>

@@ -1,14 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.ProfileFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Profile fragment" />
+        android:orientation="vertical" >
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:includeFontPadding="false"
+            android:paddingLeft="30sp"
+            android:paddingTop="40sp"
+            android:paddingRight="30sp"
+            android:shadowColor="#0E0E0E"
+            android:text="Профиль"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="20sp"
+            android:fontFamily="sans-serif-light"
+            android:includeFontPadding="false"
+            android:paddingTop="40sp"
+            android:shadowColor="#0E0E0E"
+            android:text="Ваше имя"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/profile_fragment_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="sans-serif-thin"
+                android:text="Ирина"
+                android:gravity="center_vertical"/>
+
+            <Button
+                android:id="@+id/profile_fragment_edit_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Изменить"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif-thin"
+                app:icon="@drawable/ic_baseline_edit_24"
+                app:iconTint="#000000"
+                android:textAppearance="@style/CustomButtonTextAppearance"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/profile_fragment_new_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="Новое имя"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/profile_fragment_save_changes"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Сохранить изменения"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            android:textAppearance="@style/CustomButtonTextAppearance"
+            style="?attr/materialButtonOutlinedStyle" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="20sp"
+            android:fontFamily="sans-serif-light"
+            android:includeFontPadding="false"
+            android:paddingTop="50sp"
+            android:shadowColor="#0E0E0E"
+            android:text="@string/profile_fragment_feedback"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/profile_fragment_send_feedback"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Обратная связь"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            android:textAppearance="@style/CustomButtonTextAppearance"
+            app:icon="@drawable/ic_baseline_send_24"
+            app:iconTint="#000000"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon" />
+    </LinearLayout>
+</ScrollView>

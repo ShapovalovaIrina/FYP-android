@@ -1,4 +1,4 @@
-package com.fyp;
+package com.fyp.ui;
 
 import android.os.Bundle;
 
@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.fyp.R;
 
 public class SignInFragment extends Fragment {
     private NavController navController;
