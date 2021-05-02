@@ -1,51 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".SignInFragment"
-    android:orientation="vertical">
+    android:overScrollMode="never"
+    tools:context=".SignInFragment">
 
-    <ImageView
-        android:id="@+id/sign_in_fragment_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/ic_vector_3"
-        android:layout_marginBottom="70dp"
-        android:scaleType="fitXY"/>
-
-    <TextView
-        android:id="@+id/sign_in_fragment_find_your_pet"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Найди своего питомца"
-        android:textSize="30sp"
-        android:textColor="#FFFFFF"
-        android:layout_alignTop="@id/sign_in_fragment_background"
-        android:layout_marginTop="180dp"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Помогаем людям и питомцам находить друг друга"
-        android:textSize="14sp"
-        android:textColor="#FFFFFF"
-        android:layout_below="@id/sign_in_fragment_find_your_pet"
-        android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:paddingTop="40sp"
+            android:paddingLeft="30sp"
+            android:paddingRight="30sp"
+            android:shadowColor="#0E0E0E"
+            android:fontFamily="sans-serif-light"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:text="Вход в аккаунт" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/sing_in_button"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="Вход"
-        android:textColor="#000000"
-        android:backgroundTint="#FFFFFF"
-        app:cornerRadius="5dp"
-        android:layout_alignBottom="@id/sign_in_fragment_background"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:paddingTop="40sp"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="20sp"
+            android:shadowColor="#0E0E0E"
+            android:fontFamily="sans-serif-light"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:text="Почта"/>
 
-</RelativeLayout>
+        <EditText
+            android:id="@+id/login_fragment_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:ems="10"
+            android:hint="example@yandex.ru"
+            android:inputType="textEmailAddress" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:paddingTop="40sp"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="20sp"
+            android:shadowColor="#0E0E0E"
+            android:fontFamily="sans-serif-light"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:text="Пароль"/>
+
+        <EditText
+            android:id="@+id/login_fragment_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:ems="10"
+            android:hint="Пароль"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/login_fragment_button"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Войти"
+            android:textColor="#B3000000" />
+    </LinearLayout>
+</ScrollView>
