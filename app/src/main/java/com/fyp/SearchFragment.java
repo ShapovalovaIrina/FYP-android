@@ -27,7 +27,6 @@ import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.Pivot;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchFragment extends Fragment {
@@ -61,14 +60,6 @@ public class SearchFragment extends Fragment {
 
         return view;
     }
-
-//    private List<Pet> createPets() {
-//        List<Pet> pets = new ArrayList<>();
-//        pets.add(new Pet("First pet", R.drawable.pet_mock_image));
-//        pets.add(new Pet("Second pet", R.drawable.pet_mock_image));
-//        pets.add(new Pet("Third pet", R.drawable.pet_mock_image));
-//        return pets;
-//    }
 }
 
 class LinearHorizontalSpacingDecoration extends RecyclerView.ItemDecoration {
