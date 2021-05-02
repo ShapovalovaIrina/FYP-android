@@ -26,14 +26,34 @@ public class SignInFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
 
-        view.findViewById(R.id.sing_in_button).setOnClickListener(signInClickListener());
+        view.findViewById(R.id.google_sing_in_button).setOnClickListener(googleSignInOnClickListener());
+        view.findViewById(R.id.email_sing_in_button).setOnClickListener(emailSignInOnClickListener());
+        view.findViewById(R.id.no_account_button).setOnClickListener(noAccountOnClickListener());
     }
 
-    View.OnClickListener signInClickListener() {
+    View.OnClickListener googleSignInOnClickListener() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 navController.navigate(R.id.action_signInFragment_to_bottomNavFragment);
+            }
+        };
+    }
+
+    View.OnClickListener emailSignInOnClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.action_signInFragment_to_loginFragment);
+            }
+        };
+    }
+
+    View.OnClickListener noAccountOnClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.action_signInFragment_to_singUpFragment);
             }
         };
     }

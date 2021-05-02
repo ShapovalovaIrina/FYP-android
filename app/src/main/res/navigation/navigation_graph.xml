@@ -14,10 +14,34 @@
         <action
             android:id="@+id/action_signInFragment_to_bottomNavFragment"
             app:destination="@id/bottomNavFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_singUpFragment"
+            app:destination="@id/signUpFragment" />
     </fragment>
     <fragment
         android:id="@+id/bottomNavFragment"
         android:name="com.fyp.BottomNavFragment"
         android:label="fragment_bottom_nav"
         tools:layout="@layout/fragment_bottom_nav" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.fyp.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_bottomNavFragment"
+            app:destination="@id/bottomNavFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.fyp.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/action_singUpFragment_to_bottomNavFragment"
+            app:destination="@id/bottomNavFragment" />
+    </fragment>
 </navigation>
