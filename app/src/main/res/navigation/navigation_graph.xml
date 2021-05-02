@@ -4,19 +4,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/signInFragment">
+    app:startDestination="@id/mainFragment">
 
     <fragment
-        android:id="@+id/signInFragment"
-        android:name="com.fyp.SignInFragment"
-        android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" >
+        android:id="@+id/mainFragment"
+        android:name="com.fyp.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_signInFragment_to_bottomNavFragment"
             app:destination="@id/bottomNavFragment" />
         <action
             android:id="@+id/action_signInFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/signInFragment" />
         <action
             android:id="@+id/action_signInFragment_to_singUpFragment"
             app:destination="@id/signUpFragment" />
@@ -27,10 +27,10 @@
         android:label="fragment_bottom_nav"
         tools:layout="@layout/fragment_bottom_nav" />
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.fyp.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        android:id="@+id/signInFragment"
+        android:name="com.fyp.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_loginFragment_to_bottomNavFragment"
             app:destination="@id/bottomNavFragment" />
