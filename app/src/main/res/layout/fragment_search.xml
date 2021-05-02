@@ -4,54 +4,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".SearchFragment"
+    tools:context=".ui.SearchFragment"
     android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="50dp"
-        android:layout_marginTop="50dp"
-        android:orientation="horizontal" >
+        android:paddingTop="50dp"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:fontFamily="sans-serif-light"
+        android:includeFontPadding="false"
+        android:shadowColor="#0E0E0E"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:text="Кого ищем?" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:layout_height="70dp"
-            android:layout_width="70dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/pet_mock_image"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingLeft="20dp"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:text="Привет! Кого ищем?" />
-    </LinearLayout>
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
         android:layout_marginTop="20dp"
         android:orientation="horizontal" >
 
         <com.google.android.material.button.MaterialButton
-            android:layout_width="130dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:text="Собаки"
             android:backgroundTint="@color/colorWhite"
             android:textColor="@color/colorBlack" />
 
         <com.google.android.material.button.MaterialButton
-            android:layout_width="130dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_alignParentRight="true"
             android:text="Котики"
             android:backgroundTint="@color/colorWhite"
             android:textColor="@color/colorBlack"/>
-    </LinearLayout>
+    </RelativeLayout>
 
     <com.yarolegovich.discretescrollview.DiscreteScrollView
         android:id="@+id/search_fragment_recycle_view"

@@ -1,8 +1,10 @@
-package com.fyp;
+package com.fyp.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.fyp.R;
 
 public class MainActivity extends AppCompatActivity {
 

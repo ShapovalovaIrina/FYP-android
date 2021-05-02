@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:overScrollMode="never"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MainFragment">
+    tools:context=".ui.MainFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

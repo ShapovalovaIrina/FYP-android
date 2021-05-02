@@ -1,27 +1,19 @@
-package com.fyp;
+package com.fyp.ui;
 
-import android.content.res.Resources;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fyp.R;
 import com.fyp.adapter.CardPetAdapter;
 import com.fyp.pojo.Pet;
+import com.fyp.utils.LinearHorizontalSpacingDecoration;
 import com.fyp.viewmodel.PetViewModel;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.Pivot;
@@ -59,23 +51,5 @@ public class SearchFragment extends Fragment {
         });
 
         return view;
-    }
-}
-
-class LinearHorizontalSpacingDecoration extends RecyclerView.ItemDecoration {
-    private int innerSpacing;
-
-    public LinearHorizontalSpacingDecoration(int innerSpacing) {
-        this.innerSpacing = innerSpacing;
-    }
-
-    @Override
-    public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-        super.getItemOffsets(outRect, view, parent, state);
-
-        int itemPosition = parent.getChildAdapterPosition(view);
-
-        outRect.left = itemPosition == 0 ? 0 : innerSpacing;
-        outRect.right = itemPosition == state.getItemCount() - 1 ? 0 : innerSpacing;
     }
 }

@@ -1,4 +1,4 @@
-package com.fyp;
+package com.fyp.ui;
 
 import android.os.Bundle;
 
@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fyp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class BottomNavFragment extends Fragment {
