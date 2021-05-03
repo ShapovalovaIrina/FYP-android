@@ -58,23 +58,22 @@
                 android:layout_marginTop="150dp" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/google_sing_in_button"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:text="Вход c Google"
-                android:textAppearance="@style/CustomButtonTextAppearance"
-                android:textColor="#000000"
-                android:backgroundTint="#FFFFFF"
-                app:cornerRadius="5dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp" />
-
-            <com.google.android.material.button.MaterialButton
                 android:id="@+id/no_account_button"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:text="Нет аккаунта?"
+                android:textAppearance="@style/CustomButtonTextAppearance"
+                android:textColor="#000000"
+                app:cornerRadius="5dp"
+                android:layout_gravity="center" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/google_sing_in_button"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="Продолжить без входа"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:textAppearance="@style/CustomButtonTextAppearance"
                 android:textColor="#000000"
                 app:cornerRadius="5dp"
