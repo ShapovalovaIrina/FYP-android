@@ -5,6 +5,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +18,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.fyp.R;
+import com.fyp.pojo.User;
+import com.fyp.viewmodel.UserViewModel;
+import com.google.firebase.auth.FirebaseAuth;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -23,6 +30,8 @@ public class ProfileFragment extends Fragment {
     private EditText newName;
     private Button saveButton;
     private Button editButton;
+
+    private UserViewModel userViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,12 +48,23 @@ public class ProfileFragment extends Fragment {
         newName = view.findViewById(R.id.profile_fragment_new_name);
         saveButton = view.findViewById(R.id.profile_fragment_save_changes);
         editButton = view.findViewById(R.id.profile_fragment_edit_name);
+        Button signOutButton = view.findViewById(R.id.profile_fragment_sign_out);
 
         newName.setVisibility(GONE);
         saveButton.setVisibility(GONE);
 
         editButton.setOnClickListener(editNameButtonOnClickListener());
         saveButton.setOnClickListener(saveNameButtonOnClickListener());
+        signOutButton.setOnClickListener(signOutButtonOnClickListener());
+
+        // set up pet view model
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        userViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                name.setText(user.getName());
+            }
+        });
     }
 
     View.OnClickListener editNameButtonOnClickListener() {
@@ -70,8 +90,23 @@ public class ProfileFragment extends Fragment {
                 newName.setVisibility(GONE);
                 saveButton.setVisibility(GONE);
 
-                name.setText(newName.getText().toString());
+                userViewModel.updateFirebaseUserName(newName.getText().toString());
             }
         };
+    }
+
+    View.OnClickListener signOutButtonOnClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                navigateToMainFragment();
+            }
+        };
+    }
+
+    private void navigateToMainFragment() {
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.navigation_host_fragment);
+        navController.navigate(R.id.action_global_mainFragment);
     }
 }

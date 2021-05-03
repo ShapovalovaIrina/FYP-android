@@ -12,28 +12,31 @@
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_signInFragment_to_bottomNavFragment"
+            android:id="@+id/action_mainFragment_to_bottomNavFragment"
             app:destination="@id/bottomNavFragment" />
         <action
-            android:id="@+id/action_signInFragment_to_loginFragment"
+            android:id="@+id/action_mainFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
         <action
-            android:id="@+id/action_signInFragment_to_singUpFragment"
+            android:id="@+id/action_mainFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
     </fragment>
     <fragment
         android:id="@+id/bottomNavFragment"
         android:name="com.fyp.ui.BottomNavFragment"
         android:label="fragment_bottom_nav"
-        tools:layout="@layout/fragment_bottom_nav" />
+        tools:layout="@layout/fragment_bottom_nav" >
+    </fragment>
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.fyp.ui.SignInFragment"
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in">
         <action
-            android:id="@+id/action_loginFragment_to_bottomNavFragment"
-            app:destination="@id/bottomNavFragment" />
+            android:id="@+id/action_signInFragment_to_bottomNavFragment"
+            app:destination="@id/bottomNavFragment"
+            app:popUpTo="@id/signInFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -41,7 +44,17 @@
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up">
         <action
-            android:id="@+id/action_singUpFragment_to_bottomNavFragment"
-            app:destination="@id/bottomNavFragment" />
+            android:id="@+id/action_signUpFragment_to_bottomNavFragment"
+            app:destination="@id/bottomNavFragment"
+            app:popUpTo="@id/signUpFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
+
+    <include app:graph="@navigation/bottom_navigation_graph" />
+
+    <action
+        android:id="@+id/action_global_mainFragment"
+        app:destination="@id/mainFragment"
+        app:popUpTo="@id/mainFragment"
+        app:popUpToInclusive="true" />
 </navigation>

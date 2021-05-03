@@ -95,6 +95,19 @@
             android:textAppearance="@style/CustomButtonTextAppearance"
             style="?attr/materialButtonOutlinedStyle" />
 
+        <Button
+            android:id="@+id/profile_fragment_sign_out"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Выход из аккаунта"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            android:textAppearance="@style/CustomButtonTextAppearance"
+            style="?attr/materialButtonOutlinedStyle" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

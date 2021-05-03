@@ -17,6 +17,7 @@ public class PetViewModel extends ViewModel {
     public LiveData<List<Pet>> getPets() {
         System.out.println("View model get pets");
         if (pets == null) {
+            System.out.println("Create new mutable live data with pets list");
             pets = new MutableLiveData<List<Pet>>();
         }
         return pets;
