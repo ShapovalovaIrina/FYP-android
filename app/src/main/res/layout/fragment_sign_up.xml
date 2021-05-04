@@ -143,6 +143,19 @@
                 android:textAppearance="@style/CustomButtonTextAppearance"
                 android:textColor="#B3000000" />
 
+            <Button
+                android:id="@+id/sign_up_fragment_sign_in_button"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Войти"
+                android:layout_gravity="center"
+                android:textAppearance="@style/CustomButtonTextAppearance"
+                android:textColor="#B3000000" />
+
             <TextView
                 android:id="@+id/sign_up_fragment_not_receive_mail"
                 android:layout_width="match_parent"

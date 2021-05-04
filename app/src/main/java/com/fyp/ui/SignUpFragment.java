@@ -36,6 +36,7 @@ public class SignUpFragment extends Fragment {
     private CircularProgressIndicator circularProgressIndicator;
     private TextView notReceiveMail;
     private Button signUpButton;
+    private Button signInButton;
 
     private FirebaseAuth mAuth;
 
@@ -59,13 +60,16 @@ public class SignUpFragment extends Fragment {
         circularProgressIndicator = view.findViewById(R.id.sign_up_fragment_circular_progress_indicator);
         notReceiveMail = view.findViewById(R.id.sign_up_fragment_not_receive_mail);
         signUpButton = view.findViewById(R.id.sign_up_fragment_button);
+        signInButton = view.findViewById(R.id.sign_up_fragment_sign_in_button);
 
         notReceiveMail.setVisibility(View.GONE);
+        signInButton.setVisibility(View.GONE);
         circularProgressIndicator.setVisibility(View.GONE);
 
         navController = Navigation.findNavController(view);
 
         signUpButton.setOnClickListener(signUpButtonOnClickListener());
+        signInButton.setOnClickListener(signInButtonOnClickListener());
     }
 
     View.OnClickListener signUpButtonOnClickListener() {
@@ -75,6 +79,15 @@ public class SignUpFragment extends Fragment {
                 if (validateEmailInput() && validateNameInput() && validatePasswordInput())
                     circularProgressIndicator.setVisibility(View.VISIBLE);
                     createFirebasePasswordAccount(emailInput.getText().toString(), passwordInput.getText().toString());
+            }
+        };
+    }
+
+    View.OnClickListener signInButtonOnClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigateToSignInFragment();
             }
         };
     }
@@ -175,6 +188,7 @@ public class SignUpFragment extends Fragment {
                             Toast.makeText(getContext(), "Не получилось отправить письмо для подтверждения аккаунта", Toast.LENGTH_SHORT).show();
                             signUpButton.setVisibility(View.GONE);
                             notReceiveMail.setVisibility(View.VISIBLE);
+                            signInButton.setVisibility(View.VISIBLE);
 //                            final Snackbar snackbar = Snackbar
 //                                    .make(getView(), "Для завершения регистрации необходимо подтвердить почту", BaseTransientBottomBar.LENGTH_INDEFINITE)
 //                                    .setTextColor(getResources().getColor(R.color.colorWhite))
