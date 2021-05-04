@@ -17,6 +17,7 @@ import androidx.navigation.Navigation;
 import com.fyp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,6 +28,7 @@ public class SignInFragment extends Fragment {
     private NavController navController;
     private EditText emailInput;
     private EditText passwordInput;
+    private CircularProgressIndicator circularProgressIndicator;
 
     private FirebaseAuth mAuth;
 
@@ -45,6 +47,9 @@ public class SignInFragment extends Fragment {
 
         emailInput = view.findViewById(R.id.login_fragment_email);
         passwordInput = view.findViewById(R.id.login_fragment_password);
+        circularProgressIndicator = view.findViewById(R.id.sign_in_fragment_circular_progress_indicator);
+
+        circularProgressIndicator.setVisibility(View.GONE);
 
         navController = Navigation.findNavController(view);
 
@@ -56,6 +61,7 @@ public class SignInFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (validateEmailInput() && validatePasswordInput())
+                    circularProgressIndicator.setVisibility(View.VISIBLE);
                     signInWithPassword(emailInput.getText().toString(), passwordInput.getText().toString());
             }
         };
@@ -82,6 +88,7 @@ public class SignInFragment extends Fragment {
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        circularProgressIndicator.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
