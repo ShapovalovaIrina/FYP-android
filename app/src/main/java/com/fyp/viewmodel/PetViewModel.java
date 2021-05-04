@@ -1,86 +1,65 @@
 package com.fyp.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.fyp.R;
-import com.fyp.pojo.Pet;
+import com.fyp.network.RetrofitClient;
+import com.fyp.network.ServerAPI;
+import com.fyp.repository.PetRepository;
+import com.fyp.response.Pet;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class PetViewModel extends ViewModel {
-    private MutableLiveData<List<Pet>> pets;
-    private MutableLiveData<List<Pet>> favouritePets;
+    private PetRepository petRepository;
+    private MutableLiveData<List<Pet>> petResponse;
+
+    private final static String TAG = PetViewModel.class.getSimpleName();
 
     public LiveData<List<Pet>> getPets() {
-        System.out.println("View model get pets");
-        if (pets == null) {
-            System.out.println("Create new mutable live data with pets list");
-            pets = new MutableLiveData<List<Pet>>();
+        Log.d(TAG, "PetNetworkViewModel get pets");
+        if (petResponse == null) {
+            Log.d(TAG, "Create new mutable live data with pets list");
+            petResponse = new MutableLiveData<>();
         }
-        return pets;
-    }
-
-    public LiveData<List<Pet>> getFavouritePets() {
-        System.out.println("View model get favourite pets");
-        if (favouritePets == null) {
-            favouritePets = new MutableLiveData<List<Pet>>();
-            loadFavouritePets();
-        }
-        return favouritePets;
+        return petResponse;
     }
 
     public void loadAllPets() {
-        // TODO an asynchronous operation to fetch pets.
-        System.out.println("Create new list with pets");
-        List<Pet> petsList = new ArrayList<>();
-        petsList.add(new Pet("First cat", R.drawable.pet_mock_image));
-        petsList.add(new Pet("Second cat", R.drawable.pet_mock_image));
-        petsList.add(new Pet("Third cat", R.drawable.pet_mock_image));
-        petsList.add(new Pet("First dog", R.drawable.pet_mock_image));
-        petsList.add(new Pet("Second dog", R.drawable.pet_mock_image));
-        petsList.add(new Pet("Third dog", R.drawable.pet_mock_image));
+//        if (petRepository == null) {
+//            petRepository = new PetRepository();
+//        }
+//        petResponse.setValue(petRepository.getAllPets().getValue());
 
-        pets.setValue(petsList);
-    }
+        ServerAPI serverAPI = RetrofitClient.getRetrofitInstance().create(ServerAPI.class);
+        serverAPI.getAllPets().enqueue(new Callback<List<Pet>>() {
+            @Override
+            public void onResponse(Call<List<Pet>> call, Response<List<Pet>> response) {
+                Log.d(TAG, "loadAllPets onResponse response:");
+                if (response.body() != null) {
+                    for (Pet pet : response.body()) {
+                        Log.d(TAG, pet.toString());
+                    }
+                    petResponse.setValue(response.body());
+                }
+            }
 
-    public void loadCats() {
-        // TODO an asynchronous operation to fetch pets.
-        System.out.println("Create new list with cats");
-        List<Pet> petsList = new ArrayList<>();
-        petsList.add(new Pet("First cat", R.drawable.pet_mock_image));
-        petsList.add(new Pet("Second cat", R.drawable.pet_mock_image));
-        petsList.add(new Pet("Third cat", R.drawable.pet_mock_image));
-
-        pets.setValue(petsList);
-    }
-
-    public void loadDogs() {
-        // TODO an asynchronous operation to fetch pets.
-        System.out.println("Create new list with dogs");
-        List<Pet> petsList = new ArrayList<>();
-        petsList.add(new Pet("First dog", R.drawable.pet_mock_image));
-        petsList.add(new Pet("Second dog", R.drawable.pet_mock_image));
-        petsList.add(new Pet("Third dog", R.drawable.pet_mock_image));
-        pets.setValue(petsList);
+            @Override
+            public void onFailure(Call<List<Pet>> call, Throwable t) {
+                Log.d(TAG, "loadAllPets onFailure response: " + t.getMessage());
+                petResponse.setValue(null);
+            }
+        });
     }
 
     public void clearPets() {
-        // TODO an asynchronous operation to fetch pets.
-        System.out.println("Clear pet list");
-        List<Pet> petsList = new ArrayList<>();
-        pets.setValue(petsList);
-    }
-
-    private void loadFavouritePets() {
-        // TODO an asynchronous operation to fetch pets.
-        System.out.println("Create new list with favourite pets");
-        List<Pet> petsList = new ArrayList<>();
-        petsList.add(new Pet("First favourite pet", R.drawable.pet_mock_image));
-        petsList.add(new Pet("Second favourite pet", R.drawable.pet_mock_image));
-        petsList.add(new Pet("Third favourite pet", R.drawable.pet_mock_image));
-        favouritePets.setValue(petsList);
+        petResponse.setValue(null);
     }
 }

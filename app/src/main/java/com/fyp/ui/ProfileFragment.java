@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.fyp.R;
-import com.fyp.pojo.User;
+import com.fyp.pojo.UserMock;
 import com.fyp.viewmodel.UserViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -59,10 +59,10 @@ public class ProfileFragment extends Fragment {
 
         // set up pet view model
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-        userViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+        userViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<UserMock>() {
             @Override
-            public void onChanged(User user) {
-                name.setText(user.getName());
+            public void onChanged(UserMock userMock) {
+                name.setText(userMock.getName());
             }
         });
     }

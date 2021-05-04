@@ -1,10 +1,10 @@
 package com.fyp.pojo;
 
-public class Pet {
+public class PetMock {
     private String name;
     private int resourceId;
 
-    public Pet(String name, int resourceId) {
+    public PetMock(String name, int resourceId) {
         this.name = name;
         this.resourceId = resourceId;
     }
