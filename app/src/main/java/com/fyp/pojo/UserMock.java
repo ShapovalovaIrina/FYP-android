@@ -1,10 +1,10 @@
 package com.fyp.pojo;
 
-public class User {
+public class UserMock {
     private String name;
     private String email;
 
-    public User(String name, String email) {
+    public UserMock(String name, String email) {
         this.name = name;
         this.email = email;
     }

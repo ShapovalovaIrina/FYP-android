@@ -1,6 +1,12 @@
 package com.fyp.ui;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,15 +16,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
 import com.fyp.R;
-import com.fyp.pojo.User;
+import com.fyp.pojo.UserMock;
 import com.fyp.viewmodel.UserViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -59,10 +58,10 @@ public class ProfileFragment extends Fragment {
 
         // set up pet view model
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-        userViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
+        userViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<UserMock>() {
             @Override
-            public void onChanged(User user) {
-                name.setText(user.getName());
+            public void onChanged(UserMock userMock) {
+                name.setText(userMock.getName());
             }
         });
     }
