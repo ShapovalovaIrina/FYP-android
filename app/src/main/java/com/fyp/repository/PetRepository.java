@@ -2,7 +2,6 @@ package com.fyp.repository;
 
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.fyp.network.RetrofitClient;
@@ -23,8 +22,7 @@ public class PetRepository {
         serverAPI = RetrofitClient.getRetrofitInstance().create(ServerAPI.class);
     }
 
-    public LiveData<List<Pet>> getAllPets() {
-        final MutableLiveData<List<Pet>> data = new MutableLiveData<>();
+    public void getAllPets(final MutableLiveData<List<Pet>> data) {
         serverAPI.getAllPets().enqueue(new Callback<List<Pet>>() {
             @Override
             public void onResponse(Call<List<Pet>> call, Response<List<Pet>> response) {
@@ -43,6 +41,5 @@ public class PetRepository {
                 data.setValue(null);
             }
         });
-        return data;
     }
 }
