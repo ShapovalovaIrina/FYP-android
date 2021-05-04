@@ -9,12 +9,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fyp.R;
+import com.fyp.pojo.PetMock;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import com.fyp.R;
-import com.fyp.pojo.PetMock;
 
 public class CardPetMockAdapter extends RecyclerView.Adapter<CardPetMockAdapter.ViewHolder> {
     private List<PetMock> petsList = new ArrayList<>();

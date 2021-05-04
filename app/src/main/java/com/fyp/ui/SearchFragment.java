@@ -1,11 +1,6 @@
 package com.fyp.ui;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +8,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.fyp.R;
 import com.fyp.adapter.CardPetAdapter;
 import com.fyp.adapter.CardPetMockAdapter;
 import com.fyp.pojo.PetMock;
 import com.fyp.response.Pet;
 import com.fyp.utils.LinearHorizontalSpacingDecoration;
-import com.fyp.viewmodel.PetViewModel;
 import com.fyp.viewmodel.PetMockViewModel;
+import com.fyp.viewmodel.PetViewModel;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.Pivot;

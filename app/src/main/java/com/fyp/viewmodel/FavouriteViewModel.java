@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel;
 import com.fyp.network.RetrofitClient;
 import com.fyp.network.ServerAPI;
 import com.fyp.repository.FavouriteRepository;
-import com.fyp.repository.PetRepository;
 import com.fyp.response.Pet;
 
 import java.util.List;
