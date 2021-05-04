@@ -86,8 +86,12 @@ public class SignInFragment extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(getContext(), "Sign in user " + user.getDisplayName() + ", email " + user.getEmail(), Toast.LENGTH_SHORT).show();
-                            navigateToSearchFragment();
+                            if (user.isEmailVerified()) {
+                                Toast.makeText(getContext(), "Sign in user " + user.getDisplayName() + ", email " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                                navigateToSearchFragment();
+                            } else {
+                                Toast.makeText(getContext(), "Для того, чтобы продолжить, подтвердите, пожалуйста, аккаунт", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());

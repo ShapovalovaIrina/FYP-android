@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,9 @@ import androidx.navigation.Navigation;
 import com.fyp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,6 +35,8 @@ public class SignUpFragment extends Fragment {
     private EditText nameInput;
     private EditText passwordInput;
     private EditText passwordRepeatInput;
+    private CircularProgressIndicator circularProgressIndicator;
+    private ScrollView scrollView;
 
     private FirebaseAuth mAuth;
 
@@ -50,6 +57,10 @@ public class SignUpFragment extends Fragment {
         nameInput = view.findViewById(R.id.sign_up_fragment_username);
         passwordInput = view.findViewById(R.id.sign_up_fragment_password);
         passwordRepeatInput = view.findViewById(R.id.sign_up_fragment_repeat_password);
+        circularProgressIndicator = view.findViewById(R.id.sign_up_fragment_circular_progress_indicator);
+        scrollView = view.findViewById(R.id.sign_in_fragment_scroll_view);
+
+        circularProgressIndicator.setVisibility(View.GONE);
 
         navController = Navigation.findNavController(view);
 
@@ -61,6 +72,8 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (validateEmailInput() && validateNameInput() && validatePasswordInput())
+                    circularProgressIndicator.setVisibility(View.VISIBLE);
+                    disableBackground();
                     createFirebasePasswordAccount(emailInput.getText().toString(), passwordInput.getText().toString());
             }
         };
@@ -103,6 +116,12 @@ public class SignUpFragment extends Fragment {
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        try {
+                            Thread.sleep(10000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
@@ -112,12 +131,14 @@ public class SignUpFragment extends Fragment {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(getContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            circularProgressIndicator.setVisibility(View.GONE);
+                            enableBackground();
                         }
                     }
                 });
     }
 
-    private void updateFirebaseUserName(@NonNull FirebaseUser user, final String name) {
+    private void updateFirebaseUserName(@NonNull final FirebaseUser user, final String name) {
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(name)
                 .build();
@@ -131,7 +152,46 @@ public class SignUpFragment extends Fragment {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "User profile updated.");
                             Toast.makeText(getContext(), "Create user " + name + ", email " + userEmail, Toast.LENGTH_SHORT).show();
-                            navigateToSearchFragment();
+                            sendVerificationEmail(user);
+//                            navigateToSearchFragment();
+                        } else {
+                            // If update name fails, display a message to the user.
+                            Log.w(TAG, "updateProfile:failure", task.getException());
+                            Toast.makeText(getContext(), "Не получилось сохранить имя", Toast.LENGTH_SHORT).show();
+                            circularProgressIndicator.setVisibility(View.GONE);
+                            enableBackground();
+                        }
+                    }
+                });
+    }
+
+
+    private void sendVerificationEmail(@NonNull FirebaseUser user) {
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        circularProgressIndicator.setVisibility(View.GONE);
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "Email sent.");
+                            final Snackbar snackbar = Snackbar
+                                    .make(getView(), "Для завершения регистрации необходимо подтвердить почту", BaseTransientBottomBar.LENGTH_INDEFINITE)
+                                    .setTextColor(getResources().getColor(R.color.colorWhite))
+                                    .setActionTextColor(getResources().getColor(R.color.colorWhite));
+                            snackbar
+                                    .setAction("Ok", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            snackbar.dismiss();
+                                            navigateToSignInFragment();
+                                        }
+                                    })
+                                    .show();
+
+                        } else {
+                            Log.w(TAG, "sendEmailVerification:failure", task.getException());
+                            Toast.makeText(getContext(), "Не получилось отправить письмо для подтверждения аккаунта", Toast.LENGTH_SHORT).show();
+                            enableBackground();
                         }
                     }
                 });
@@ -139,5 +199,19 @@ public class SignUpFragment extends Fragment {
 
     private void navigateToSearchFragment() {
         navController.navigate(R.id.action_signUpFragment_to_bottomNavFragment);
+    }
+
+    private void navigateToSignInFragment() {
+        navController.navigate(R.id.action_signUpFragment_to_signInFragment);
+    }
+
+    private void disableBackground() {
+        scrollView.setEnabled(false);
+        scrollView.setBackgroundColor(getResources().getColor(R.color.colorGray));
+    }
+
+    private void enableBackground() {
+        scrollView.setEnabled(true);
+        scrollView.setBackgroundColor(getResources().getColor(R.color.colorWhite));
     }
 }

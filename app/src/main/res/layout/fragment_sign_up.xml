@@ -2,133 +2,146 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/login_scroll_view"
+    android:id="@+id/sign_in_fragment_scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:overScrollMode="never"
     tools:context=".ui.SignUpFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <TextView
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/sign_up_fragment_circular_progress_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:indeterminate="true" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:includeFontPadding="false"
-            android:paddingLeft="30sp"
-            android:paddingTop="40sp"
-            android:paddingRight="30sp"
-            android:shadowColor="#0E0E0E"
-            android:text="Регистрация"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="20sp" />
+            android:layout_alignParentStart="true"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20sp"
-            android:layout_marginRight="20sp"
-            android:fontFamily="sans-serif-light"
-            android:includeFontPadding="false"
-            android:paddingTop="40sp"
-            android:shadowColor="#0E0E0E"
-            android:text="Почта"
-            android:textColor="#000000"
-            android:textSize="20sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:includeFontPadding="false"
+                android:paddingLeft="30sp"
+                android:paddingTop="40sp"
+                android:paddingRight="30sp"
+                android:shadowColor="#0E0E0E"
+                android:text="Регистрация"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/sign_up_fragment_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:ems="10"
-            android:hint="example@yandex.ru"
-            android:inputType="textEmailAddress" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginRight="20sp"
+                android:fontFamily="sans-serif-light"
+                android:includeFontPadding="false"
+                android:paddingTop="40sp"
+                android:shadowColor="#0E0E0E"
+                android:text="Почта"
+                android:textColor="#000000"
+                android:textSize="20sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20sp"
-            android:layout_marginRight="20sp"
-            android:fontFamily="sans-serif-light"
-            android:includeFontPadding="false"
-            android:paddingTop="40sp"
-            android:shadowColor="#0E0E0E"
-            android:text="Ваше имя"
-            android:textColor="#000000"
-            android:textSize="20sp" />
+            <EditText
+                android:id="@+id/sign_up_fragment_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:ems="10"
+                android:hint="example@yandex.ru"
+                android:inputType="textEmailAddress" />
 
-        <EditText
-            android:id="@+id/sign_up_fragment_username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:ems="10"
-            android:hint="Имя"
-            android:inputType="textPersonName" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginRight="20sp"
+                android:fontFamily="sans-serif-light"
+                android:includeFontPadding="false"
+                android:paddingTop="40sp"
+                android:shadowColor="#0E0E0E"
+                android:text="Ваше имя"
+                android:textColor="#000000"
+                android:textSize="20sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20sp"
-            android:layout_marginRight="20sp"
-            android:fontFamily="sans-serif-light"
-            android:includeFontPadding="false"
-            android:paddingTop="40sp"
-            android:shadowColor="#0E0E0E"
-            android:text="Пароль"
-            android:textColor="#000000"
-            android:textSize="20sp" />
+            <EditText
+                android:id="@+id/sign_up_fragment_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:ems="10"
+                android:hint="Имя"
+                android:inputType="textPersonName" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20sp"
-            android:layout_marginRight="20sp"
-            android:fontFamily="sans-serif-thin"
-            android:includeFontPadding="false"
-            android:paddingTop="10sp"
-            android:shadowColor="#0E0E0E"
-            android:text="Длина пароля должна быть не менее 6 символов"
-            android:textColor="#000000"
-            android:textSize="15sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginRight="20sp"
+                android:fontFamily="sans-serif-light"
+                android:includeFontPadding="false"
+                android:paddingTop="40sp"
+                android:shadowColor="#0E0E0E"
+                android:text="Пароль"
+                android:textColor="#000000"
+                android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/sign_up_fragment_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:ems="10"
-            android:hint="Введите пароль"
-            android:inputType="textPassword" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:layout_marginRight="20sp"
+                android:fontFamily="sans-serif-thin"
+                android:includeFontPadding="false"
+                android:paddingTop="10sp"
+                android:shadowColor="#0E0E0E"
+                android:text="Длина пароля должна быть не менее 6 символов"
+                android:textColor="#000000"
+                android:textSize="15sp" />
 
-        <EditText
-            android:id="@+id/sign_up_fragment_repeat_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:ems="10"
-            android:hint="Повторите введенный пароль"
-            android:inputType="textPassword" />
+            <EditText
+                android:id="@+id/sign_up_fragment_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:ems="10"
+                android:hint="Введите пароль"
+                android:inputType="textPassword" />
 
-        <Button
-            android:id="@+id/sign_up_fragment_button"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:text="Войти"
-            android:textAppearance="@style/CustomButtonTextAppearance"
-            android:textColor="#B3000000" />
-    </LinearLayout>
+            <EditText
+                android:id="@+id/sign_up_fragment_repeat_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:ems="10"
+                android:hint="Повторите введенный пароль"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/sign_up_fragment_button"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Зарегистрироваться"
+                android:textAppearance="@style/CustomButtonTextAppearance"
+                android:textColor="#B3000000" />
+        </LinearLayout>
+    </RelativeLayout>
 </ScrollView>
