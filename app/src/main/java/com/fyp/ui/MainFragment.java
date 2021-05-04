@@ -26,8 +26,10 @@ public class MainFragment extends Fragment {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null) {
-            Toast.makeText(getContext(), "Firebase user is signed", Toast.LENGTH_SHORT).show();
-            navigateToSearchFragment();
+            if (currentUser.isEmailVerified()) {
+                Toast.makeText(getContext(), "Firebase user is signed", Toast.LENGTH_SHORT).show();
+                navigateToSearchFragment();
+            }
         }
     }
 
