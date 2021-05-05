@@ -23,18 +23,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="20dp" >
-
-<!--        <CheckBox-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Приют друг"-->
-<!--            android:checked="true" />-->
-
-<!--        <CheckBox-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Рандомный приют"-->
-<!--            android:checked="true" />-->
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
