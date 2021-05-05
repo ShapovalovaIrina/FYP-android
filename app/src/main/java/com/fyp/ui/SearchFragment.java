@@ -42,6 +42,8 @@ public class SearchFragment extends Fragment {
 
     private TextView startSearch;
 
+    private FilterView filterView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,6 +51,12 @@ public class SearchFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_search, container, false);
 
         cardPetRecycleView = view.findViewById(R.id.search_fragment_recycle_view);
+        startSearch = view.findViewById(R.id.search_fragment_start_search);
+        MaterialButtonToggleGroup buttonToggleGroup = view.findViewById(R.id.search_fragment_button_group);
+
+        filterView = new FilterView(view);
+
+        // set up recycle view
         cardPetRecycleView.setVisibility(View.GONE);
         cardPetRecycleView.addItemDecoration(new LinearHorizontalSpacingDecoration(32));
         cardPetRecycleView.setItemTransformer(new ScaleTransformer.Builder()
@@ -58,6 +66,7 @@ public class SearchFragment extends Fragment {
                 .setPivotY(Pivot.Y.CENTER) // CENTER is a default one
                 .build());
 
+        // set up card adapter, pet view model
         if (SERVER_ENABLED) {
             Log.d(TAG, "Initialize petViewModel and CardPetAdapter");
 
@@ -102,11 +111,8 @@ public class SearchFragment extends Fragment {
             });
         }
 
-        // handle buttons checks
-        MaterialButtonToggleGroup buttonToggleGroup = view.findViewById(R.id.search_fragment_button_group);
         buttonToggleGroup.addOnButtonCheckedListener(petTypeButtonToggleGroupListener());
 
-        startSearch = view.findViewById(R.id.search_fragment_start_search);
         return view;
     }
 
