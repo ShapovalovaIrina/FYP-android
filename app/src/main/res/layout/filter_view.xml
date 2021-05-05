@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:background="@color/colorWhite"
+    android:id="@+id/filter_view_parent_linear_layout">
+
+    <CheckBox
+        android:id="@+id/filter_view_parent_check_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Все приюты"
+        android:checked="true" />
+
+    <LinearLayout
+        android:id="@+id/filter_view_children_checkbox_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="20dp" >
+
+<!--        <CheckBox-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Приют друг"-->
+<!--            android:checked="true" />-->
+
+<!--        <CheckBox-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Рандомный приют"-->
+<!--            android:checked="true" />-->
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/filter_view_save_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Сохранить"
+        android:textColor="#000000"
+        android:backgroundTint="#FFFFFF"
+        android:textAppearance="@style/CustomButtonTextAppearance"
+        style="?attr/materialButtonOutlinedStyle" />
+</LinearLayout>
