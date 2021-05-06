@@ -92,71 +92,91 @@ public class PetFragment extends Fragment {
     }
 
     private void setPetMockInformation(PetMock petMock) {
-        ((TextView) rootView.findViewById(R.id.fragment_pet_information_name)).setText(petMock.getName());
-        ((ImageView) rootView.findViewById(R.id.fragment_pet_image)).setImageResource(petMock.getResourceId());
-
-        rootView.findViewById(R.id.fragment_pet_information_breed_layout).setVisibility(View.GONE);
-        rootView.findViewById(R.id.fragment_pet_information_age_layout).setVisibility(View.GONE);
-        rootView.findViewById(R.id.fragment_pet_information_gender_layout).setVisibility(View.GONE);
-        rootView.findViewById(R.id.fragment_pet_information_description).setVisibility(View.GONE);
-
-        rootView.findViewById(R.id.fragment_pet_information_shelter_title).setVisibility(View.GONE);
-        rootView.findViewById(R.id.fragment_pet_information_shelter_vk_link).setVisibility(View.GONE);
-        rootView.findViewById(R.id.fragment_pet_information_shelter_site_link).setVisibility(View.GONE);
+        setName(petMock.getName());
+        setImage(petMock.getResourceId());
+        setBreed(null);
+        setBirth(null);
+        setGender(null);
+        setDescription(null);
+        setShelter(null);
     }
 
     private void setPetInformation(Pet pet) {
-        TextView name = rootView.findViewById(R.id.fragment_pet_information_name);
-        ImageView image = rootView.findViewById(R.id.fragment_pet_image);
-        LinearLayout breedLayout = rootView.findViewById(R.id.fragment_pet_information_breed_layout);
-        LinearLayout ageLayout = rootView.findViewById(R.id.fragment_pet_information_age_layout);
-        LinearLayout genderLayout = rootView.findViewById(R.id.fragment_pet_information_gender_layout);
-        TextView description = rootView.findViewById(R.id.fragment_pet_information_description);
+        setName(pet.getName());
+        setImage(pet.getFirstPhoto());
+        setBreed(pet.getBreed());
+        setBirth(pet.getBirth());
+        setGender(pet.getGender());
+        setDescription(pet.getDescription());
+        setShelter(pet.getShelter());
+    }
 
-        TextView shelterTitle = rootView.findViewById(R.id.fragment_pet_information_shelter_title);
-        Button shelterVKLink = rootView.findViewById(R.id.fragment_pet_information_shelter_vk_link);
-        Button shelterSiteLink = rootView.findViewById(R.id.fragment_pet_information_shelter_site_link);
+    private void setName(@NonNull String name) {
+        ((TextView) rootView.findViewById(R.id.fragment_pet_information_name)).setText(name);
+    }
 
-        name.setText(pet.getName());
-        Glide.with(image)
-                .load(pet.getFirstPhoto())
+    private void setImage(@NonNull Integer resourceId) {
+        ((ImageView) rootView.findViewById(R.id.fragment_pet_image)).setImageResource(resourceId);
+    }
+
+    private void setImage(@NonNull String imageURL) {
+        ImageView imageView = rootView.findViewById(R.id.fragment_pet_image);
+        Glide.with(imageView)
+                .load(imageURL)
                 .centerCrop()
                 .error(R.drawable.ic_baseline_image_24)
-                .into(image);
+                .into(imageView);
+    }
 
-        if (pet.getBreed() == null) {
+    private void setBreed(String breed) {
+        LinearLayout breedLayout = rootView.findViewById(R.id.fragment_pet_information_breed_layout);
+        if (breed == null) {
             breedLayout.setVisibility(View.GONE);
         } else {
-            TextView breed = breedLayout.findViewById(R.id.fragment_pet_information_breed);
-            breed.setText(pet.getBreed());
+            TextView breedTextView = breedLayout.findViewById(R.id.fragment_pet_information_breed);
+            breedTextView.setText(breed);
         }
+    }
 
-        if (pet.getBirth() == null) {
-            ageLayout.setVisibility(View.GONE);
+    private void setBirth(String birth) {
+        LinearLayout birthLayout = rootView.findViewById(R.id.fragment_pet_information_age_layout);
+        if (birth == null) {
+            birthLayout.setVisibility(View.GONE);
         } else {
-            TextView age = ageLayout.findViewById(R.id.fragment_pet_information_age);
-            age.setText(pet.getBirth());
+            TextView birthTextView = birthLayout.findViewById(R.id.fragment_pet_information_age);
+            birthTextView.setText(birth);
         }
+    }
 
-        if (pet.getGender() == null) {
+    private void setGender(String gender) {
+        LinearLayout genderLayout = rootView.findViewById(R.id.fragment_pet_information_gender_layout);
+        if (gender == null) {
             genderLayout.setVisibility(View.GONE);
         } else {
-            TextView gender = genderLayout.findViewById(R.id.fragment_pet_information_gender);
-            gender.setText(pet.getGender());
+            TextView genderTextView = genderLayout.findViewById(R.id.fragment_pet_information_gender);
+            genderTextView.setText(gender);
         }
+    }
 
-        if (pet.getDescription() == null) {
-            description.setVisibility(View.GONE);
+    private void setDescription(String description) {
+        TextView descriptionTextView = rootView.findViewById(R.id.fragment_pet_information_description);
+        if (description == null) {
+            descriptionTextView.setVisibility(View.GONE);
         } else {
-            description.setText(pet.getDescription());
+            descriptionTextView.setText(description);
         }
+    }
 
-        if (pet.getShelter() == null && pet.getShelter().getTitle() == null) {
-            shelterTitle.setVisibility(View.GONE);
-            shelterVKLink.setVisibility(View.GONE);
-            shelterVKLink.setVisibility(View.GONE);
+    private void setShelter(Shelter shelter) {
+        LinearLayout shelterLayout = rootView.findViewById(R.id.fragment_pet_information_shelter_linear_layout);
+
+        if (shelter == null || shelter.getTitle() == null) {
+            shelterLayout.setVisibility(View.GONE);
         } else {
-            Shelter shelter = pet.getShelter();
+            TextView shelterTitle = rootView.findViewById(R.id.fragment_pet_information_shelter_title);
+            Button shelterVKLink = rootView.findViewById(R.id.fragment_pet_information_shelter_vk_link);
+            Button shelterSiteLink = rootView.findViewById(R.id.fragment_pet_information_shelter_site_link);
+
             shelterTitle.setText(shelter.getTitle());
             if (shelter.getVk_link() == null) {
                 shelterVKLink.setVisibility(View.GONE);
