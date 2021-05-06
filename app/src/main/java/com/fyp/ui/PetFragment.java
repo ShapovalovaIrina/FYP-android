@@ -1,10 +1,13 @@
 package com.fyp.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
@@ -22,15 +26,29 @@ import com.fyp.pojo.PetMock;
 import com.fyp.response.Pet;
 import com.fyp.response.Shelter;
 import com.fyp.viewmodel.FavouriteMockViewModel;
+import com.fyp.viewmodel.FavouriteViewModel;
 import com.fyp.viewmodel.PetMockViewModel;
 import com.fyp.viewmodel.PetViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 
 import static com.fyp.constant.Constants.SERVER_ENABLED;
 
 public class PetFragment extends Fragment {
+    private final String TAG = PetFragment.class.getSimpleName();
+
     private View rootView;
     private BottomNavigationView bottomNavigationView;
+    private CheckBox favouriteCheckBox;
+
+    private Pet pet;
+    private PetMock mockPet;
+    private FavouriteViewModel favouriteViewModel;
+    private FavouriteMockViewModel favouriteMockViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,27 +61,40 @@ public class PetFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         rootView = view;
-
         bottomNavigationView = view.getRootView().findViewById(R.id.bottom_navigation);
+        favouriteCheckBox = view.findViewById(R.id.fragment_pet_information_favourite);
+
         bottomNavigationView.setVisibility(View.GONE);
 
-        NavigationDirection navigationDirection;
-        int absoluteAdapterPosition;
-        if (getArguments() != null) {
-            navigationDirection = (NavigationDirection) getArguments().getSerializable("NavigationDirection");
-            absoluteAdapterPosition = getArguments().getInt("AbsoluteAdapterPosition");
+        Boolean isFavourite = getArguments().getBoolean("IsFavourite");
+        NavigationDirection navigationDirection = (NavigationDirection) getArguments().getSerializable("NavigationDirection");
+        int absoluteAdapterPosition = getArguments().getInt("AbsoluteAdapterPosition");
+        Toast.makeText(
+                getContext(),
+                "NavigationDirection: " + navigationDirection + ". AbsoluteAdapterPosition: " + absoluteAdapterPosition,
+                Toast.LENGTH_SHORT)
+                .show();
 
-            if (navigationDirection == NavigationDirection.FROM_SEARCH_TO_PET) {
+        favouriteCheckBox.setChecked(isFavourite);
+        switch (navigationDirection) {
+            case FROM_SEARCH_TO_PET:
                 if (SERVER_ENABLED) {
                     initSearchViewModel(absoluteAdapterPosition);
                 } else {
                     initSearchMockViewModel(absoluteAdapterPosition);
                 }
-            } else if (navigationDirection == NavigationDirection.FROM_FAVOURITE_TO_PET) {
-                initFavouriteMockViewModel(absoluteAdapterPosition);
-            } else {
-                Toast.makeText(getContext(), "Ops, navigationDirection value problems", Toast.LENGTH_SHORT).show();
-            }
+                break;
+            case FROM_FAVOURITE_TO_PET:
+                favouriteCheckBox.setChecked(true);
+                if (SERVER_ENABLED) {
+                    initFavouriteViewModel(absoluteAdapterPosition);
+                } else {
+                    initFavouriteMockViewModel(absoluteAdapterPosition);
+                }
+                break;
+            case NONE:
+                Toast.makeText(getContext(), "NONE navigationDirection", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
@@ -74,41 +105,118 @@ public class PetFragment extends Fragment {
     }
 
     private void initSearchViewModel(int absoluteAdapterPosition) {
+        // set up pet info from search adapter position
         PetViewModel petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
-        Pet pet = petViewModel.getPet(absoluteAdapterPosition);
+        pet = petViewModel.getPet(absoluteAdapterPosition);
         setPetInformation(pet);
+
+        // set up favourite view model for add/remove favourite pet
+        favouriteViewModel = new ViewModelProvider(requireActivity()).get(FavouriteViewModel.class);
+        favouriteViewModel.getCodeResponse().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                Toast.makeText(getContext(), "Favourite code response " + integer, Toast.LENGTH_SHORT).show();
+            }
+        });
+        favouriteCheckBox.setOnCheckedChangeListener(favouriteButtonOnCheckedChangeListener());
     }
 
     private void initSearchMockViewModel(int absoluteAdapterPosition) {
+        // set up pet info from search adapter position
         PetMockViewModel petMockViewModel = new ViewModelProvider(requireActivity()).get(PetMockViewModel.class);
-        PetMock mockPet = petMockViewModel.getPet(absoluteAdapterPosition);
+        mockPet = petMockViewModel.getPet(absoluteAdapterPosition);
         setPetMockInformation(mockPet);
+
+        // set up favourite view model for add/remove favourite pet
+        favouriteMockViewModel = new ViewModelProvider(requireActivity()).get(FavouriteMockViewModel.class);
+        favouriteCheckBox.setOnCheckedChangeListener(favouriteButtonMockOnCheckedChangeListener());
+    }
+
+    private void initFavouriteViewModel(int absoluteAdapterPosition) {
+        favouriteViewModel = new ViewModelProvider(requireActivity()).get(FavouriteViewModel.class);
+        pet = favouriteViewModel.getPet(absoluteAdapterPosition);
+        setPetInformation(pet);
+
+        favouriteCheckBox.setOnCheckedChangeListener(favouriteButtonOnCheckedChangeListener());
     }
 
     private void initFavouriteMockViewModel(int absoluteAdapterPosition) {
-        FavouriteMockViewModel favouriteMockViewModel = new ViewModelProvider(requireActivity()).get(FavouriteMockViewModel.class);
-        PetMock mockPet = favouriteMockViewModel.getPet(absoluteAdapterPosition);
+        favouriteMockViewModel = new ViewModelProvider(requireActivity()).get(FavouriteMockViewModel.class);
+        mockPet = favouriteMockViewModel.getPet(absoluteAdapterPosition);
         setPetMockInformation(mockPet);
+
+        favouriteCheckBox.setOnCheckedChangeListener(favouriteButtonMockOnCheckedChangeListener());
+    }
+
+    CompoundButton.OnCheckedChangeListener favouriteButtonOnCheckedChangeListener() {
+        return new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (favouriteViewModel != null) {
+                    FirebaseUser firebaseCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    firebaseCurrentUser.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                String token = task.getResult().getToken();
+                                if (isChecked) {
+                                    favouriteViewModel.addFavourite(token, pet);
+                                    favouriteViewModel.addFavouriteId(pet.getId());
+                                } else {
+                                    favouriteViewModel.removeFavourite(token, pet);
+                                    favouriteViewModel.removeFavouriteId(pet.getId());
+                                }
+                            } else {
+                                Log.d(TAG, "Error in firebaseCurrentUser.getIdToken. task.isSuccessful false");
+                            }
+                        }
+                    });
+                }
+            }
+        };
+    }
+
+    CompoundButton.OnCheckedChangeListener favouriteButtonMockOnCheckedChangeListener() {
+        return new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                Log.d(TAG, "favouriteButton state changed to " + isChecked);
+                if (favouriteMockViewModel != null)
+                    if (isChecked) {
+                        Log.d(TAG, "favouriteMockViewModel.addFavourite");
+                        favouriteMockViewModel.addFavourite(mockPet);
+                        favouriteMockViewModel.addFavouriteId(mockPet.getId());
+                    } else {
+                        Log.d(TAG, "favouriteMockViewModel.removeFavourite");
+                        favouriteMockViewModel.removeFavourite(mockPet);
+                        favouriteMockViewModel.removeFavouriteId(mockPet.getId());
+                    }
+            }
+        };
     }
 
     private void setPetMockInformation(PetMock petMock) {
-        setName(petMock.getName());
-        setImage(petMock.getResourceId());
-        setBreed(null);
-        setBirth(null);
-        setGender(null);
-        setDescription(null);
-        setShelter(null);
+        if (petMock != null) {
+            setName(petMock.getName());
+            setImage(petMock.getResourceId());
+            setBreed(null);
+            setBirth(null);
+            setGender(null);
+            setDescription(null);
+            setShelter(null);
+        }
     }
 
     private void setPetInformation(Pet pet) {
-        setName(pet.getName());
-        setImage(pet.getFirstPhoto());
-        setBreed(pet.getBreed());
-        setBirth(pet.getBirth());
-        setGender(pet.getGender());
-        setDescription(pet.getDescription());
-        setShelter(pet.getShelter());
+        if (pet != null) {
+            setName(pet.getName());
+            setImage(pet.getFirstPhoto());
+            setBreed(pet.getBreed());
+            setBirth(pet.getBirth());
+            setGender(pet.getGender());
+            setDescription(pet.getDescription());
+            setShelter(pet.getShelter());
+        }
     }
 
     private void setName(@NonNull String name) {

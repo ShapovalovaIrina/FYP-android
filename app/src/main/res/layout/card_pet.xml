@@ -27,20 +27,21 @@
                 android:id="@+id/card_pet_name"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="4"
+                android:layout_weight="1"
                 android:text="Pet name"
                 android:gravity="center_vertical"
                 android:paddingLeft="20dp"
                 android:textSize="18sp" />
 
-            <ImageView
-                android:layout_width="0dp"
+            <CheckBox
+                android:id="@+id/card_pet_favourite"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:adjustViewBounds="false"
-                android:scaleType="center"
-                android:src="@drawable/ic_baseline_favorite_24" />
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:button="@drawable/ic_favourite_icon"
+                app:buttonTint="@android:color/darker_gray"
+                android:checked="false" />
         </LinearLayout>
-
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
