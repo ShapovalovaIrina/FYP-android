@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/pet_profile_scroll_view"
+    android:overScrollMode="never"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:id="@+id/fragment_pet_information_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/fragment_pet_information_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/pet_name"
+            android:textSize="30sp"
+            android:paddingBottom="15dp"/>
+
+        <!--  Pet breed  -->
+        <LinearLayout
+            android:id="@+id/fragment_pet_information_breed_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="@string/pet_breed"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fragment_pet_information_breed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/pet_breed_husky"
+                android:textSize="25sp" />
+        </LinearLayout>
+
+        <!--  Pet age  -->
+        <LinearLayout
+            android:id="@+id/fragment_pet_information_age_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif"
+                android:text="@string/pet_age"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fragment_pet_information_age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/pet_age_1_year"
+                android:textSize="25sp" />
+        </LinearLayout>
+
+        <!--  Pet gender  -->
+        <LinearLayout
+            android:id="@+id/fragment_pet_information_gender_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif"
+                android:text="@string/pet_gender"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fragment_pet_information_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/pet_gender_girl"
+                android:textSize="25sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/fragment_pet_information_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:paddingTop="10dp"
+            android:paddingBottom="15dp"
+            android:text="@string/pet_info_text" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:paddingBottom="15dp"
+            android:text="Контакты приюта"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/fragment_pet_information_shelter_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="Приют друг"
+            android:textSize="25sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/fragment_pet_information_shelter_vk_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ВКонтакте"
+                app:icon="@drawable/ic_baseline_send_24"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:textAppearance="@style/CustomButtonTextAppearance"
+                app:iconTint="#000000" />
+
+            <Button
+                android:id="@+id/fragment_pet_information_shelter_site_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Сайт"
+                app:icon="@drawable/ic_baseline_send_24"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:textAppearance="@style/CustomButtonTextAppearance"
+                app:iconTint="#000000"
+                android:layout_marginLeft="20dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

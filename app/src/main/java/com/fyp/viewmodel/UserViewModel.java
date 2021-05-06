@@ -25,6 +25,7 @@ public class UserViewModel extends ViewModel {
         System.out.println("View model get user");
         if (userLiveData == null) {
             userLiveData = new MutableLiveData<UserMock>();
+            Log.d(TAG, "userLiveData = NULL. Get current user info");
             getCurrentUser();
         }
         return userLiveData;

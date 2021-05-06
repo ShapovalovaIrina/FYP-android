@@ -26,6 +26,15 @@ public class PetViewModel extends ViewModel {
         return petResponse;
     }
 
+    public Pet getPet(int position) {
+        Log.d(TAG, "View model get pet at position " + position);
+        if (petResponse != null && petResponse.getValue() != null) {
+            return petResponse.getValue().get(position);
+        } else {
+            return null;
+        }
+    }
+
     public void loadAllPets() {
         if (petRepository == null) {
             petRepository = new PetRepository();
