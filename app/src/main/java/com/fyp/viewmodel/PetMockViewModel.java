@@ -21,7 +21,7 @@ public class PetMockViewModel extends ViewModel {
         Log.d(TAG, "View model get pets");
         if (pets == null) {
             Log.d(TAG, "Create NEW mutable live data with pets list");
-            pets = new MutableLiveData<List<PetMock>>();
+            pets = new MutableLiveData<>();
         }
         return pets;
     }
@@ -38,12 +38,12 @@ public class PetMockViewModel extends ViewModel {
     public void loadAllPets() {
         Log.d(TAG,"Create NEW list with pets");
         List<PetMock> petsList = new ArrayList<>();
-        petsList.add(new PetMock("First cat", R.drawable.pet_mock_image));
-        petsList.add(new PetMock("Second cat", R.drawable.pet_mock_image));
-        petsList.add(new PetMock("Third cat", R.drawable.pet_mock_image));
-        petsList.add(new PetMock("First dog", R.drawable.pet_mock_image));
-        petsList.add(new PetMock("Second dog", R.drawable.pet_mock_image));
-        petsList.add(new PetMock("Third dog", R.drawable.pet_mock_image));
+        petsList.add(new PetMock("1", "First cat", R.drawable.pet_mock_image));
+        petsList.add(new PetMock("2", "Second cat", R.drawable.pet_mock_image));
+        petsList.add(new PetMock("3", "Third cat", R.drawable.pet_mock_image));
+        petsList.add(new PetMock("4", "First dog", R.drawable.pet_mock_image));
+        petsList.add(new PetMock("5", "Second dog", R.drawable.pet_mock_image));
+        petsList.add(new PetMock("6", "Third dog", R.drawable.pet_mock_image));
 
         pets.setValue(petsList);
     }
@@ -51,9 +51,9 @@ public class PetMockViewModel extends ViewModel {
     public void loadCats() {
         Log.d(TAG, "Create NEW list with cats");
         List<PetMock> petsList = new ArrayList<>();
-        petsList.add(new PetMock("First cat", R.drawable.pet_mock_image));
-        petsList.add(new PetMock("Second cat", R.drawable.pet_mock_image));
-        petsList.add(new PetMock("Third cat", R.drawable.pet_mock_image));
+        petsList.add(new PetMock("1", "First cat", R.drawable.pet_mock_image));
+        petsList.add(new PetMock("2", "Second cat", R.drawable.pet_mock_image));
+        petsList.add(new PetMock("3", "Third cat", R.drawable.pet_mock_image));
 
         pets.setValue(petsList);
     }
@@ -61,9 +61,9 @@ public class PetMockViewModel extends ViewModel {
     public void loadDogs() {
         Log.d(TAG,"Create NEW list with dogs");
         List<PetMock> petsList = new ArrayList<>();
-        petsList.add(new PetMock("First dog", R.drawable.pet_mock_image));
-        petsList.add(new PetMock("Second dog", R.drawable.pet_mock_image));
-        petsList.add(new PetMock("Third dog", R.drawable.pet_mock_image));
+        petsList.add(new PetMock("4", "First dog", R.drawable.pet_mock_image));
+        petsList.add(new PetMock("5", "Second dog", R.drawable.pet_mock_image));
+        petsList.add(new PetMock("6", "Third dog", R.drawable.pet_mock_image));
         pets.setValue(petsList);
     }
 

@@ -34,7 +34,7 @@
                 android:textSize="18sp" />
 
             <CheckBox
-                android:id="@+id/search_fragment_favourite"
+                android:id="@+id/card_pet_favourite"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"

@@ -9,11 +9,13 @@ import androidx.lifecycle.ViewModel;
 import com.fyp.repository.FavouriteRepository;
 import com.fyp.response.Pet;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class FavouriteViewModel extends ViewModel {
     private FavouriteRepository favouriteRepository;
     private MutableLiveData<List<Pet>> favouritePets;
+    private MutableLiveData<HashSet<String>> favouritePetsIds;
     private MutableLiveData<Integer> codeResponse;
 
     private final static String TAG = FavouriteViewModel.class.getSimpleName();
@@ -37,10 +39,24 @@ public class FavouriteViewModel extends ViewModel {
         return codeResponse;
     }
 
-    public void loadAllFavourite(String JWTToken) {
-        if (favouriteRepository == null) {
-            favouriteRepository = new FavouriteRepository();
+    public LiveData<HashSet<String>> getFavouritePetsIds(String JWTToken) {
+        Log.d(TAG, "FavouriteViewModel getFavouritePetsIds");
+        if (favouritePetsIds == null) {
+            Log.d(TAG, "Create NEW mutable live data with ids");
+            favouritePetsIds = new MutableLiveData<>();
+
+            if (favouriteRepository == null) favouriteRepository = new FavouriteRepository();
+            if (codeResponse == null) codeResponse = new MutableLiveData<>();
+            favouriteRepository.getAllFavouritePetsIds(favouritePetsIds, codeResponse, JWTToken);
         }
+        return favouritePetsIds;
+    }
+
+    public void loadAllFavourite(String JWTToken) {
+        if (favouriteRepository == null) favouriteRepository = new FavouriteRepository();
+        if (favouritePets == null) favouritePets = new MutableLiveData<>();
+        if (codeResponse == null) codeResponse = new MutableLiveData<>();
+
         favouriteRepository.getAllFavouritePets(favouritePets, codeResponse, JWTToken);
     }
 
@@ -54,17 +70,39 @@ public class FavouriteViewModel extends ViewModel {
     }
 
     public void addFavourite(String JWTToken, Pet pet) {
-        if (favouriteRepository == null) {
-            favouriteRepository = new FavouriteRepository();
-        }
+        if (favouriteRepository == null) favouriteRepository = new FavouriteRepository();
+        if (favouritePets == null) favouritePets = new MutableLiveData<>();
+        if (codeResponse == null) codeResponse = new MutableLiveData<>();
+
         favouriteRepository.addFavourite(favouritePets, codeResponse, JWTToken, pet);
     }
 
-    public void removeFavourite(String JWTToken, Pet pet) {
-        if (favouriteRepository == null) {
-            favouriteRepository = new FavouriteRepository();
+    public void addFavouriteId(String petId) {
+        if (favouritePetsIds == null) {
+            favouritePetsIds = new MutableLiveData<>();
         }
+        HashSet<String> list = favouritePetsIds.getValue();
+        if (list == null) list = new HashSet<>();
+        list.add(petId);
+        favouritePetsIds.setValue(list);
+    }
+
+    public void removeFavourite(String JWTToken, Pet pet) {
+        if (favouriteRepository == null) favouriteRepository = new FavouriteRepository();
+        if (favouritePets == null) favouritePets = new MutableLiveData<>();
+        if (codeResponse == null) codeResponse = new MutableLiveData<>();
+
         favouriteRepository.removeFavourite(favouritePets, codeResponse, JWTToken, pet);
+    }
+
+    public void removeFavouriteId(String petId) {
+        if (favouritePetsIds == null) {
+            favouritePetsIds = new MutableLiveData<>();
+        }
+        HashSet<String> list = favouritePetsIds.getValue();
+        if (list == null) list = new HashSet<>();
+        list.remove(petId);
+        favouritePetsIds.setValue(list);
     }
 
     public void clearFavourite() {

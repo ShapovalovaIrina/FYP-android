@@ -1,7 +1,9 @@
 package com.fyp.network;
 
 import com.fyp.response.Pet;
+import com.fyp.response.Status;
 
+import java.util.HashSet;
 import java.util.List;
 
 import retrofit2.Call;
@@ -20,14 +22,19 @@ public interface ServerAPI {
             @Header("Authorization") String token
     );
 
+    @GET("/users/favourite/id")
+    Call<HashSet<String>> getAllFavouriteIds(
+            @Header("Authorization") String token
+    );
+
     @POST("/users/favourite/{pet_id}")
-    Call<List<Pet>> addFavourite(
+    Call<Status> addFavourite(
             @Header("Authorization") String token,
             @Path("pet_id") String petId
     );
 
     @DELETE("/users/favourite/{pet_id}")
-    Call<List<Pet>> removeFavourite(
+    Call<Status> removeFavourite(
             @Header("Authorization") String token,
             @Path("pet_id") String petId
     );

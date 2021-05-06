@@ -81,22 +81,23 @@ public class FavouriteFragment extends Fragment {
                     String idToken = task.getResult().getToken();
                     // set up pet view model
                     FavouriteViewModel favouriteViewModel = new ViewModelProvider(requireActivity()).get(FavouriteViewModel.class);
+                    cardPetAdapter.setFavouriteViewModel(favouriteViewModel, getViewLifecycleOwner(), idToken);
+                    favouriteViewModel.getCodeResponse().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+                        @Override
+                        public void onChanged(Integer integer) {
+                            Toast.makeText(getContext(), "Favourite code response " + integer, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     favouriteViewModel.getFavouritePets(idToken).observe(getViewLifecycleOwner(), new Observer<List<Pet>>() {
                         @Override
                         public void onChanged(List<Pet> petResponse) {
                             Log.d(TAG, "favouriteViewModel onChanged triggered");
                             if (petResponse != null) {
-                                Toast.makeText(getContext(), "Update pet response", Toast.LENGTH_SHORT).show();
-                                Log.d(TAG, "favouriteViewModel onChanged petResponses:");
-                                for (Pet pet : petResponse) {
-                                    Log.d(TAG, pet.toString());
-                                }
+                                Toast.makeText(getContext(), "Успешно загрузили избранных питомцев", Toast.LENGTH_SHORT).show();
 
-                                Log.d(TAG, "favouriteViewModel onChanged set up adapter data");
+                                cardPetAdapter.clearItems();
                                 cardPetAdapter.setItems(petResponse);
-                                Toast.makeText(getContext(), "Успешно загрузили избранных питомцев (не пусто)", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getContext(), "Успешно загрузили избранных питомцев (пусто)", Toast.LENGTH_SHORT).show();
+                                cardPetRecycleView.scrollToPosition(0);
                             }
                         }
                     });
@@ -114,11 +115,14 @@ public class FavouriteFragment extends Fragment {
         cardPetRecycleView.setAdapter(cardPetMockAdapter);
 
         FavouriteMockViewModel favouriteModel = new ViewModelProvider(requireActivity()).get(FavouriteMockViewModel.class);
+        cardPetMockAdapter.setFavouriteMockViewModel(favouriteModel, getViewLifecycleOwner());
         favouriteModel.getFavouritePets().observe(getViewLifecycleOwner(), new Observer<List<PetMock>>() {
             @Override
             public void onChanged(List<PetMock> petMocks) {
                 Log.d(TAG, "Get pets from view model & set them");
+                cardPetMockAdapter.clearItems();
                 cardPetMockAdapter.setItems(petMocks);
+                cardPetRecycleView.scrollToPosition(0);
             }
         });
     }

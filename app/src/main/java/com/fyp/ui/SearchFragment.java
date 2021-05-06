@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,9 +20,16 @@ import com.fyp.adapter.NavigationDirection;
 import com.fyp.pojo.PetMock;
 import com.fyp.response.Pet;
 import com.fyp.utils.LinearHorizontalSpacingDecoration;
+import com.fyp.viewmodel.FavouriteMockViewModel;
+import com.fyp.viewmodel.FavouriteViewModel;
 import com.fyp.viewmodel.PetMockViewModel;
 import com.fyp.viewmodel.PetViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.Pivot;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
@@ -69,52 +77,68 @@ public class SearchFragment extends Fragment {
 
         // set up card adapter, pet view model
         if (SERVER_ENABLED) {
-            Log.d(TAG, "Initialize petViewModel and CardPetAdapter");
-
             cardPetAdapter = new CardPetAdapter(NavigationDirection.FROM_SEARCH_TO_PET);
             cardPetRecycleView.setAdapter(cardPetAdapter);
 
-            // set up pet view model
             petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
-            petViewModel.getPets().observe(getViewLifecycleOwner(), new Observer<List<Pet>>() {
-                @Override
-                public void onChanged(List<Pet> petResponse) {
-                    Log.d(TAG, "petNetworkViewModel onChanged triggered");
-                    if (petResponse != null) {
-                        Toast.makeText(getContext(), "Update pet response", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "petNetworkViewModel onChanged petResponses:");
-                        for (Pet pet : petResponse) {
-                            Log.d(TAG, pet.toString());
-                        }
+            setPetViewModelPetsObserver(petViewModel);
 
-                        Log.d(TAG, "petNetworkViewModel onChanged set up adapter data");
-                        cardPetAdapter.clearItems();
-                        cardPetAdapter.setItems(petResponse);
-                        cardPetRecycleView.scrollToPosition(0);
+            FavouriteViewModel favouriteViewModel = new ViewModelProvider(requireActivity()).get(FavouriteViewModel.class);
+
+            FirebaseUser firebaseCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+            firebaseCurrentUser.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                @Override
+                public void onComplete(@NonNull Task<GetTokenResult> task) {
+                    if (task.isSuccessful()) {
+                        String idToken = task.getResult().getToken();
+                        cardPetAdapter.setFavouriteViewModel(favouriteViewModel, getViewLifecycleOwner(), idToken);
+                    } else {
+                        Toast.makeText(getContext(), "Ошибка во время получения токена", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         } else {
-            Log.d(TAG, "Initialize petMockViewModel and CardPetMockAdapter");
-
             cardPetMockAdapter = new CardPetMockAdapter(NavigationDirection.FROM_SEARCH_TO_PET);
             cardPetRecycleView.setAdapter(cardPetMockAdapter);
 
             // set up pet mock view model
             petMockViewModel = new ViewModelProvider(requireActivity()).get(PetMockViewModel.class);
-            petMockViewModel.getPets().observe(getViewLifecycleOwner(), new Observer<List<PetMock>>() {
-                @Override
-                public void onChanged(List<PetMock> petMocks) {
-                    cardPetMockAdapter.clearItems();
-                    cardPetMockAdapter.setItems(petMocks);
-                    cardPetRecycleView.scrollToPosition(0);
-                }
-            });
+            setPetMockViewModelPetsObserver(petMockViewModel);
+
+            FavouriteMockViewModel favouriteMockViewModel = new ViewModelProvider(requireActivity()).get(FavouriteMockViewModel.class);
+            cardPetMockAdapter.setFavouriteMockViewModel(favouriteMockViewModel, getViewLifecycleOwner());
         }
 
         buttonToggleGroup.addOnButtonCheckedListener(petTypeButtonToggleGroupListener());
 
         return view;
+    }
+
+    private void setPetViewModelPetsObserver(PetViewModel petViewModel) {
+        petViewModel.getPets().observe(getViewLifecycleOwner(), new Observer<List<Pet>>() {
+            @Override
+            public void onChanged(List<Pet> petResponse) {
+                if (petResponse != null) {
+                    Toast.makeText(getContext(), "Update pet data", Toast.LENGTH_SHORT).show();
+
+                    Log.d(TAG, "petNetworkViewModel onChanged set up adapter data");
+                    cardPetAdapter.clearItems();
+                    cardPetAdapter.setItems(petResponse);
+                    cardPetRecycleView.scrollToPosition(0);
+                }
+            }
+        });
+    }
+
+    private void setPetMockViewModelPetsObserver(PetMockViewModel petMockViewModel) {
+        petMockViewModel.getPets().observe(getViewLifecycleOwner(), new Observer<List<PetMock>>() {
+            @Override
+            public void onChanged(List<PetMock> petMocks) {
+                cardPetMockAdapter.clearItems();
+                cardPetMockAdapter.setItems(petMocks);
+                cardPetRecycleView.scrollToPosition(0);
+            }
+        });
     }
 
     MaterialButtonToggleGroup.OnButtonCheckedListener petTypeButtonToggleGroupListener() {
@@ -150,7 +174,6 @@ public class SearchFragment extends Fragment {
         cardPetRecycleView.setVisibility(View.VISIBLE);
 
         if (SERVER_ENABLED) {
-            Log.d(TAG, "petViewModel.loadAllPets");
             petViewModel.loadAllPets();
         } else {
             if (checkedId == R.id.search_fragment_cat_button) {

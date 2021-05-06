@@ -66,6 +66,7 @@ public class PetFragment extends Fragment {
 
         bottomNavigationView.setVisibility(View.GONE);
 
+        Boolean isFavourite = getArguments().getBoolean("IsFavourite");
         NavigationDirection navigationDirection = (NavigationDirection) getArguments().getSerializable("NavigationDirection");
         int absoluteAdapterPosition = getArguments().getInt("AbsoluteAdapterPosition");
         Toast.makeText(
@@ -74,6 +75,7 @@ public class PetFragment extends Fragment {
                 Toast.LENGTH_SHORT)
                 .show();
 
+        favouriteCheckBox.setChecked(isFavourite);
         switch (navigationDirection) {
             case FROM_SEARCH_TO_PET:
                 if (SERVER_ENABLED) {
@@ -100,46 +102,6 @@ public class PetFragment extends Fragment {
     public void onPause() {
         super.onPause();
         bottomNavigationView.setVisibility(View.VISIBLE);
-    }
-
-    CompoundButton.OnCheckedChangeListener favouriteButtonMockOnCheckedChangeListener() {
-        return new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (favouriteMockViewModel != null)
-                    if (isChecked) {
-                        favouriteMockViewModel.addFavourite(mockPet);
-                    } else {
-                        favouriteMockViewModel.removeFavourite(mockPet);
-                    }
-            }
-        };
-    }
-
-    CompoundButton.OnCheckedChangeListener favouriteButtonOnCheckedChangeListener() {
-        return new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (favouriteViewModel != null) {
-                    FirebaseUser firebaseCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
-                    firebaseCurrentUser.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                            if (task.isSuccessful()) {
-                                String token = task.getResult().getToken();
-                                if (isChecked) {
-                                    favouriteViewModel.addFavourite(token, pet);
-                                } else {
-                                    favouriteViewModel.removeFavourite(token, pet);
-                                }
-                            } else {
-                                Log.d(TAG, "Error in firebaseCurrentUser.getIdToken. task.isSuccessful false");
-                            }
-                        }
-                    });
-                }
-            }
-        };
     }
 
     private void initSearchViewModel(int absoluteAdapterPosition) {
@@ -174,12 +136,63 @@ public class PetFragment extends Fragment {
         favouriteViewModel = new ViewModelProvider(requireActivity()).get(FavouriteViewModel.class);
         pet = favouriteViewModel.getPet(absoluteAdapterPosition);
         setPetInformation(pet);
+
+        favouriteCheckBox.setOnCheckedChangeListener(favouriteButtonOnCheckedChangeListener());
     }
 
     private void initFavouriteMockViewModel(int absoluteAdapterPosition) {
         favouriteMockViewModel = new ViewModelProvider(requireActivity()).get(FavouriteMockViewModel.class);
         mockPet = favouriteMockViewModel.getPet(absoluteAdapterPosition);
         setPetMockInformation(mockPet);
+
+        favouriteCheckBox.setOnCheckedChangeListener(favouriteButtonMockOnCheckedChangeListener());
+    }
+
+    CompoundButton.OnCheckedChangeListener favouriteButtonOnCheckedChangeListener() {
+        return new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (favouriteViewModel != null) {
+                    FirebaseUser firebaseCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    firebaseCurrentUser.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                String token = task.getResult().getToken();
+                                if (isChecked) {
+                                    favouriteViewModel.addFavourite(token, pet);
+                                    favouriteViewModel.addFavouriteId(pet.getId());
+                                } else {
+                                    favouriteViewModel.removeFavourite(token, pet);
+                                    favouriteViewModel.removeFavouriteId(pet.getId());
+                                }
+                            } else {
+                                Log.d(TAG, "Error in firebaseCurrentUser.getIdToken. task.isSuccessful false");
+                            }
+                        }
+                    });
+                }
+            }
+        };
+    }
+
+    CompoundButton.OnCheckedChangeListener favouriteButtonMockOnCheckedChangeListener() {
+        return new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                Log.d(TAG, "favouriteButton state changed to " + isChecked);
+                if (favouriteMockViewModel != null)
+                    if (isChecked) {
+                        Log.d(TAG, "favouriteMockViewModel.addFavourite");
+                        favouriteMockViewModel.addFavourite(mockPet);
+                        favouriteMockViewModel.addFavouriteId(mockPet.getId());
+                    } else {
+                        Log.d(TAG, "favouriteMockViewModel.removeFavourite");
+                        favouriteMockViewModel.removeFavourite(mockPet);
+                        favouriteMockViewModel.removeFavouriteId(mockPet.getId());
+                    }
+            }
+        };
     }
 
     private void setPetMockInformation(PetMock petMock) {
