@@ -35,8 +35,6 @@ public class CardPetAdapter extends RecyclerView.Adapter<CardPetAdapter.ViewHold
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            Log.d(TAG, "ViewHolder constructor. Init views");
             image = itemView.findViewById(R.id.card_pet_image);
             name = itemView.findViewById(R.id.card_pet_name);
 
@@ -63,6 +61,8 @@ public class CardPetAdapter extends RecyclerView.Adapter<CardPetAdapter.ViewHold
         }
 
         private void navigateToPetFragment(View view) {
+            Log.d(TAG, "ViewHolder, navigateToPetFragment. navigationDirection: " + navigationDirection);
+
             Bundle bundle = new Bundle();
             bundle.putInt("AbsoluteAdapterPosition", getAbsoluteAdapterPosition());
             bundle.putSerializable("NavigationDirection", navigationDirection);
@@ -108,7 +108,6 @@ public class CardPetAdapter extends RecyclerView.Adapter<CardPetAdapter.ViewHold
     }
 
     public void setItems(Collection<Pet> items) {
-        Log.d(TAG, "CardPetAdapter setItems");
         petsList.addAll(items);
         notifyDataSetChanged();
     }

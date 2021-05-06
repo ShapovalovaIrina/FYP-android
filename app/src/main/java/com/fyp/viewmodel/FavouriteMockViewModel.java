@@ -18,21 +18,42 @@ public class FavouriteMockViewModel extends ViewModel {
     private final String TAG = FavouriteMockViewModel.class.getSimpleName();
 
     public LiveData<List<PetMock>> getFavouritePets() {
-        Log.d(TAG, "FavouriteMockViewModel get favourite pets");
+        Log.d(TAG, "FavouriteMockViewModel getFavouritePets");
         if (favouritePets == null) {
-            favouritePets = new MutableLiveData<List<PetMock>>();
-            loadFavouritePets();
+            Log.d(TAG, "Create NEW mutable live data with pets");
+            favouritePets = new MutableLiveData<>();
+            // loadFavouritePets();
         }
         return favouritePets;
     }
 
     public PetMock getPet(int position) {
-        Log.d(TAG, "View model get pet at position " + position);
+        Log.d(TAG, "Get pet at position " + position);
         if (favouritePets != null && favouritePets.getValue() != null) {
             return favouritePets.getValue().get(position);
         } else {
             return null;
         }
+    }
+
+    public void addFavourite(PetMock mockPet) {
+        if (favouritePets == null) {
+            favouritePets = new MutableLiveData<>();
+        }
+        List<PetMock> list = favouritePets.getValue();
+        if (list == null) list = new ArrayList<>();
+        list.add(mockPet);
+        favouritePets.setValue(list);
+    }
+
+    public void removeFavourite(PetMock mockPet) {
+        if (favouritePets == null) {
+            favouritePets = new MutableLiveData<>();
+        }
+        List<PetMock> list = favouritePets.getValue();
+        if (list == null) list = new ArrayList<>();
+        list.remove(mockPet);
+        favouritePets.setValue(list);
     }
 
     private void loadFavouritePets() {

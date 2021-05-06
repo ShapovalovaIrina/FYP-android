@@ -36,5 +36,14 @@
         android:id="@+id/petFragment"
         android:name="com.fyp.ui.PetFragment"
         android:label="fragment_pet"
-        tools:layout="@layout/fragment_pet" />
+        tools:layout="@layout/fragment_pet" >
+        <argument
+            android:name="NavigationDirection"
+            app:argType="com.fyp.adapter.NavigationDirection"
+            android:defaultValue="NONE" />
+        <argument
+            android:name="AbsoluteAdapterPosition"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
 </navigation>

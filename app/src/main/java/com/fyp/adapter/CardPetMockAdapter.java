@@ -1,6 +1,7 @@
 package com.fyp.adapter;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import java.util.Collection;
 import java.util.List;
 
 public class CardPetMockAdapter extends RecyclerView.Adapter<CardPetMockAdapter.ViewHolder> {
+    private final String TAG = CardPetMockAdapter.class.getSimpleName();
+
     private List<PetMock> petsList = new ArrayList<>();
     private NavigationDirection navigationDirection;
 
@@ -50,6 +53,8 @@ public class CardPetMockAdapter extends RecyclerView.Adapter<CardPetMockAdapter.
         }
 
         private void navigateToPetFragment(View view) {
+            Log.d(TAG, "ViewHolder, navigateToPetFragment. navigationDirection: " + navigationDirection);
+
             Bundle bundle = new Bundle();
             bundle.putInt("AbsoluteAdapterPosition", getAbsoluteAdapterPosition());
             bundle.putSerializable("NavigationDirection", navigationDirection);
