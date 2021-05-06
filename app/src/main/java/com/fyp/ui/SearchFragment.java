@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.fyp.R;
 import com.fyp.adapter.CardPetAdapter;
 import com.fyp.adapter.CardPetMockAdapter;
+import com.fyp.adapter.NavigationDirection;
 import com.fyp.pojo.PetMock;
 import com.fyp.response.Pet;
 import com.fyp.utils.LinearHorizontalSpacingDecoration;
@@ -70,7 +71,7 @@ public class SearchFragment extends Fragment {
         if (SERVER_ENABLED) {
             Log.d(TAG, "Initialize petViewModel and CardPetAdapter");
 
-            cardPetAdapter = new CardPetAdapter();
+            cardPetAdapter = new CardPetAdapter(NavigationDirection.FROM_SEARCH_TO_PET);
             cardPetRecycleView.setAdapter(cardPetAdapter);
 
             // set up pet view model
@@ -96,7 +97,7 @@ public class SearchFragment extends Fragment {
         } else {
             Log.d(TAG, "Initialize petMockViewModel and CardPetMockAdapter");
 
-            cardPetMockAdapter = new CardPetMockAdapter();
+            cardPetMockAdapter = new CardPetMockAdapter(NavigationDirection.FROM_SEARCH_TO_PET);
             cardPetRecycleView.setAdapter(cardPetMockAdapter);
 
             // set up pet mock view model
@@ -145,7 +146,6 @@ public class SearchFragment extends Fragment {
     }
 
     private void oneButtonPressed(int checkedId) {
-        Log.d(TAG, "Press one button");
         startSearch.setVisibility(View.GONE);
         cardPetRecycleView.setVisibility(View.VISIBLE);
 

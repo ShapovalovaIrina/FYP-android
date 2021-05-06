@@ -1,5 +1,6 @@
 package com.fyp.adapter;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -22,8 +25,9 @@ public class CardPetAdapter extends RecyclerView.Adapter<CardPetAdapter.ViewHold
     private final String TAG = CardPetAdapter.class.getSimpleName();
 
     private List<Pet> petsList = new ArrayList<>();
+    private NavigationDirection navigationDirection;
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private final String TAG = ViewHolder.class.getSimpleName();
 
         private ImageView image;
@@ -35,6 +39,8 @@ public class CardPetAdapter extends RecyclerView.Adapter<CardPetAdapter.ViewHold
             Log.d(TAG, "ViewHolder constructor. Init views");
             image = itemView.findViewById(R.id.card_pet_image);
             name = itemView.findViewById(R.id.card_pet_name);
+
+            image.setOnClickListener(onImageClickListener());
         }
 
         public void bind(Pet pet) {
@@ -47,9 +53,30 @@ public class CardPetAdapter extends RecyclerView.Adapter<CardPetAdapter.ViewHold
                     .into(image);
         }
 
-        @Override
-        public void onClick(View view) {
-            // TODO do something
+        View.OnClickListener onImageClickListener() {
+            return new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    navigateToPetFragment(view);
+                }
+            };
+        }
+
+        private void navigateToPetFragment(View view) {
+            Bundle bundle = new Bundle();
+            bundle.putInt("AbsoluteAdapterPosition", getAbsoluteAdapterPosition());
+            bundle.putSerializable("NavigationDirection", navigationDirection);
+            NavController navController = Navigation.findNavController(view);
+            switch (navigationDirection) {
+                case FROM_SEARCH_TO_PET:
+                    navController.navigate(R.id.action_searchFragment_to_petFragment, bundle);
+                    break;
+                case FROM_FAVOURITE_TO_PET:
+                    navController.navigate(R.id.action_favouriteFragment_to_petFragment, bundle);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -61,11 +88,13 @@ public class CardPetAdapter extends RecyclerView.Adapter<CardPetAdapter.ViewHold
         return new CardPetAdapter.ViewHolder(view);
     }
 
-    public CardPetAdapter() {
+    public CardPetAdapter(NavigationDirection navigationDirection) {
+        this.navigationDirection = navigationDirection;
     }
 
-    public CardPetAdapter(List<Pet> petsList) {
+    public CardPetAdapter(List<Pet> petsList, NavigationDirection navigationDirection) {
         this.petsList = petsList;
+        this.navigationDirection = navigationDirection;
     }
 
     @Override

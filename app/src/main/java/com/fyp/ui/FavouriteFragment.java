@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.fyp.R;
 import com.fyp.adapter.CardPetAdapter;
 import com.fyp.adapter.CardPetMockAdapter;
+import com.fyp.adapter.NavigationDirection;
 import com.fyp.pojo.PetMock;
 import com.fyp.response.Pet;
 import com.fyp.utils.LinearHorizontalSpacingDecoration;
@@ -56,8 +57,6 @@ public class FavouriteFragment extends Fragment {
                 .setPivotX(Pivot.X.CENTER) // CENTER is a default one
                 .setPivotY(Pivot.Y.CENTER) // CENTER is a default one
                 .build());
-        cardPetMockAdapter = new CardPetMockAdapter();
-        cardPetRecycleView.setAdapter(cardPetMockAdapter);
 
         if (SERVER_ENABLED) {
             initServerAdapterAndViewModel();
@@ -71,7 +70,7 @@ public class FavouriteFragment extends Fragment {
     private void initServerAdapterAndViewModel() {
         Log.d(TAG, "Initialize favouriteViewModel and CardPetAdapter");
 
-        cardPetAdapter = new CardPetAdapter();
+        cardPetAdapter = new CardPetAdapter(NavigationDirection.FROM_FAVOURITE_TO_PET);
         cardPetRecycleView.setAdapter(cardPetAdapter);
 
         FirebaseUser firebaseCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -111,7 +110,7 @@ public class FavouriteFragment extends Fragment {
     private void initMockAdapterAndViewModel() {
         Log.d(TAG, "Initialize FavouriteMockViewModel and CardPetMockAdapter");
 
-        cardPetMockAdapter = new CardPetMockAdapter();
+        cardPetMockAdapter = new CardPetMockAdapter(NavigationDirection.FROM_FAVOURITE_TO_PET);
         cardPetRecycleView.setAdapter(cardPetMockAdapter);
 
         FavouriteMockViewModel favouriteModel = new ViewModelProvider(requireActivity()).get(FavouriteMockViewModel.class);

@@ -1,5 +1,6 @@
 package com.fyp.adapter;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fyp.R;
@@ -18,8 +21,9 @@ import java.util.List;
 
 public class CardPetMockAdapter extends RecyclerView.Adapter<CardPetMockAdapter.ViewHolder> {
     private List<PetMock> petsList = new ArrayList<>();
+    private NavigationDirection navigationDirection;
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView image;
         private TextView name;
 
@@ -27,6 +31,8 @@ public class CardPetMockAdapter extends RecyclerView.Adapter<CardPetMockAdapter.
             super(itemView);
             image = itemView.findViewById(R.id.card_pet_image);
             name = itemView.findViewById(R.id.card_pet_name);
+
+            image.setOnClickListener(onImageClickListener());
         }
 
         public void bind(PetMock pet) {
@@ -34,9 +40,30 @@ public class CardPetMockAdapter extends RecyclerView.Adapter<CardPetMockAdapter.
             image.setImageResource(pet.getResourceId());
         }
 
-        @Override
-        public void onClick(View view) {
-            // TODO do something
+        View.OnClickListener onImageClickListener() {
+            return new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    navigateToPetFragment(view);
+                }
+            };
+        }
+
+        private void navigateToPetFragment(View view) {
+            Bundle bundle = new Bundle();
+            bundle.putInt("AbsoluteAdapterPosition", getAbsoluteAdapterPosition());
+            bundle.putSerializable("NavigationDirection", navigationDirection);
+            NavController navController = Navigation.findNavController(view);
+            switch (navigationDirection) {
+                case FROM_SEARCH_TO_PET:
+                    navController.navigate(R.id.action_searchFragment_to_petFragment, bundle);
+                    break;
+                case FROM_FAVOURITE_TO_PET:
+                    navController.navigate(R.id.action_favouriteFragment_to_petFragment, bundle);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -48,10 +75,13 @@ public class CardPetMockAdapter extends RecyclerView.Adapter<CardPetMockAdapter.
         return new ViewHolder(view);
     }
 
-    public CardPetMockAdapter() {}
+    public CardPetMockAdapter(NavigationDirection navigationDirection) {
+        this.navigationDirection = navigationDirection;
+    }
 
-    public CardPetMockAdapter(List<PetMock> petsList) {
+    public CardPetMockAdapter(List<PetMock> petsList, NavigationDirection navigationDirection) {
         this.petsList = petsList;
+        this.navigationDirection = navigationDirection;
     }
 
     @Override
