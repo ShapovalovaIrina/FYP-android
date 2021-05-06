@@ -22,7 +22,6 @@ import com.fyp.utils.LinearHorizontalSpacingDecoration;
 import com.fyp.viewmodel.PetMockViewModel;
 import com.fyp.viewmodel.PetViewModel;
 import com.google.android.material.button.MaterialButtonToggleGroup;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.Pivot;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
