@@ -1,6 +1,9 @@
 package com.fyp.ui;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class ProfileFragment extends Fragment {
+    private final String TAG = ProfileFragment.class.getSimpleName();
     private TextView name;
     private EditText newName;
     private Button saveButton;
@@ -35,7 +39,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        System.out.println("Profile fragment is created");
+        Log.d(TAG, "onCreateView");
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
@@ -48,6 +52,7 @@ public class ProfileFragment extends Fragment {
         saveButton = view.findViewById(R.id.profile_fragment_save_changes);
         editButton = view.findViewById(R.id.profile_fragment_edit_name);
         Button signOutButton = view.findViewById(R.id.profile_fragment_sign_out);
+        Button sendFeedBack = view.findViewById(R.id.profile_fragment_send_feedback);
 
         newName.setVisibility(GONE);
         saveButton.setVisibility(GONE);
@@ -55,6 +60,7 @@ public class ProfileFragment extends Fragment {
         editButton.setOnClickListener(editNameButtonOnClickListener());
         saveButton.setOnClickListener(saveNameButtonOnClickListener());
         signOutButton.setOnClickListener(signOutButtonOnClickListener());
+        sendFeedBack.setOnClickListener(sendFeedBackButtonOnClickListener());
 
         // set up pet view model
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
@@ -67,39 +73,45 @@ public class ProfileFragment extends Fragment {
     }
 
     View.OnClickListener editNameButtonOnClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                name.setVisibility(GONE);
-                editButton.setVisibility(GONE);
+        return view -> {
+            name.setVisibility(GONE);
+            editButton.setVisibility(GONE);
 
-                newName.setVisibility(VISIBLE);
-                saveButton.setVisibility(VISIBLE);
-            }
+            newName.setVisibility(VISIBLE);
+            saveButton.setVisibility(VISIBLE);
         };
     }
 
     View.OnClickListener saveNameButtonOnClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                name.setVisibility(VISIBLE);
-                editButton.setVisibility(VISIBLE);
+        return view -> {
+            name.setVisibility(VISIBLE);
+            editButton.setVisibility(VISIBLE);
 
-                newName.setVisibility(GONE);
-                saveButton.setVisibility(GONE);
+            newName.setVisibility(GONE);
+            saveButton.setVisibility(GONE);
 
-                userViewModel.updateFirebaseUserName(newName.getText().toString());
-            }
+            userViewModel.updateFirebaseUserName(newName.getText().toString());
         };
     }
 
     View.OnClickListener signOutButtonOnClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                navigateToMainFragment();
+        return view -> {
+            FirebaseAuth.getInstance().signOut();
+            navigateToMainFragment();
+        };
+    }
+
+    View.OnClickListener sendFeedBackButtonOnClickListener() {
+        return view -> {
+            String[] addresses = {"TestMail@yandex.ru"};
+            String subject = "Обратная связь по приложению Find your pet";
+
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+            intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+            if (getContext() != null && intent.resolveActivity(getContext().getPackageManager()) != null) {
+                startActivity(intent);
             }
         };
     }

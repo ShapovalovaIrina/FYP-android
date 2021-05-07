@@ -133,7 +133,6 @@
             android:textSize="12sp"
             android:textAppearance="@style/CustomButtonTextAppearance"
             app:icon="@drawable/ic_baseline_send_24"
-            app:iconTint="#000000"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon" />
     </LinearLayout>
 </ScrollView>
