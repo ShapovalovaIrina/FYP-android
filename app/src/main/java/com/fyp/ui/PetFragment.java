@@ -1,5 +1,7 @@
 package com.fyp.ui;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -203,7 +205,7 @@ public class PetFragment extends Fragment {
             setBirth(null);
             setGender(null);
             setDescription(null);
-            setShelter(null);
+            setShelter(petMock.getShelter());
         }
     }
 
@@ -288,10 +290,24 @@ public class PetFragment extends Fragment {
             shelterTitle.setText(shelter.getTitle());
             if (shelter.getVk_link() == null) {
                 shelterVKLink.setVisibility(View.GONE);
+            } else {
+                shelterVKLink.setOnClickListener(linkButtonOnClickListener(shelter.getVk_link()));
             }
             if (shelter.getSite_link() == null) {
                 shelterSiteLink.setVisibility(View.GONE);
+            } else {
+                shelterSiteLink.setOnClickListener(linkButtonOnClickListener(shelter.getSite_link()));
             }
         }
+    }
+
+    private View.OnClickListener linkButtonOnClickListener(String uri) {
+        return view -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(uri));
+            if (getContext() != null && intent.resolveActivity(getContext().getPackageManager()) != null) {
+                startActivity(intent);
+            }
+        };
     }
 }

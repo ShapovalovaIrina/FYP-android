@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.fyp.R;
 import com.fyp.pojo.PetMock;
+import com.fyp.response.Shelter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -106,9 +107,13 @@ public class FavouriteMockViewModel extends ViewModel {
     private void loadFavouritePets() {
         Log.d(TAG, "Create NEW list with favourite pets");
         List<PetMock> petsList = new ArrayList<>();
-        petsList.add(new PetMock("1", "First favourite pet", R.drawable.pet_mock_image));
-        petsList.add(new PetMock("2", "Second favourite pet", R.drawable.pet_mock_image));
-        petsList.add(new PetMock("3", "Third favourite pet", R.drawable.pet_mock_image));
+        Shelter shelter = new Shelter();
+        shelter.setTitle("Тестовый приют");
+        shelter.setVk_link("https://vk.com/habr");
+        shelter.setSite_link("https://yandex.ru/");
+        petsList.add(new PetMock("1", "First favourite pet", R.drawable.pet_mock_image, shelter));
+        petsList.add(new PetMock("2", "Second favourite pet", R.drawable.pet_mock_image, shelter));
+        petsList.add(new PetMock("3", "Third favourite pet", R.drawable.pet_mock_image, shelter));
         favouritePets.setValue(petsList);
     }
 }
