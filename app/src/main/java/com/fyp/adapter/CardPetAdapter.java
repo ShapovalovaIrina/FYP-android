@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -100,12 +99,11 @@ public class CardPetAdapter extends RecyclerView.Adapter<CardPetAdapter.ViewHold
         }
 
         private void navigateToPetFragment(View view) {
-            Log.d(TAG, "ViewHolder, navigateToPetFragment. navigationDirection: " + navigationDirection);
-
             Bundle bundle = new Bundle();
             bundle.putInt("AbsoluteAdapterPosition", getAbsoluteAdapterPosition());
             bundle.putSerializable("NavigationDirection", navigationDirection);
             bundle.putBoolean("IsFavourite", isFavourite.isChecked());
+
             NavController navController = Navigation.findNavController(view);
             switch (navigationDirection) {
                 case FROM_SEARCH_TO_PET:
@@ -128,13 +126,28 @@ public class CardPetAdapter extends RecyclerView.Adapter<CardPetAdapter.ViewHold
         return new CardPetAdapter.ViewHolder(view);
     }
 
-    public CardPetAdapter(NavigationDirection navigationDirection) {
+    public CardPetAdapter(
+            NavigationDirection navigationDirection,
+            FavouriteViewModel favouriteViewModel,
+            LifecycleOwner lifecycleOwner,
+            String idToken) {
         this.navigationDirection = navigationDirection;
+        this.favouriteViewModel = favouriteViewModel;
+        this.idToken = idToken;
+        favouriteViewModel.getFavouritePetsIds(idToken).observe(lifecycleOwner, strings -> favouritePetsIds = strings);
     }
 
-    public CardPetAdapter(List<Pet> petsList, NavigationDirection navigationDirection) {
+    public CardPetAdapter(
+            List<Pet> petsList,
+            NavigationDirection navigationDirection,
+            FavouriteViewModel favouriteViewModel,
+            LifecycleOwner lifecycleOwner,
+            String idToken) {
         this.petsList = petsList;
         this.navigationDirection = navigationDirection;
+        this.favouriteViewModel = favouriteViewModel;
+        this.idToken = idToken;
+        favouriteViewModel.getFavouritePetsIds(idToken).observe(lifecycleOwner, strings -> favouritePetsIds = strings);
     }
 
     @Override
@@ -150,17 +163,6 @@ public class CardPetAdapter extends RecyclerView.Adapter<CardPetAdapter.ViewHold
     public void setItems(Collection<Pet> items) {
         petsList.addAll(items);
         notifyDataSetChanged();
-    }
-
-    public void setFavouriteViewModel(FavouriteViewModel favouriteViewModel, LifecycleOwner lifecycleOwner, String idToken) {
-        this.favouriteViewModel = favouriteViewModel;
-        this.idToken = idToken;
-        favouriteViewModel.getFavouritePetsIds(idToken).observe(lifecycleOwner, new Observer<HashSet<String>>() {
-            @Override
-            public void onChanged(HashSet<String> strings) {
-                favouritePetsIds = strings;
-            }
-        });
     }
 
     public void clearItems() {

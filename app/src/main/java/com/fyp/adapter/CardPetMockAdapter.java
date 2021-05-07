@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -88,12 +87,11 @@ public class CardPetMockAdapter extends RecyclerView.Adapter<CardPetMockAdapter.
         }
 
         private void navigateToPetFragment(View view) {
-            Log.d(TAG, "ViewHolder, navigateToPetFragment. navigationDirection: " + navigationDirection);
-
             Bundle bundle = new Bundle();
             bundle.putInt("AbsoluteAdapterPosition", getAbsoluteAdapterPosition());
             bundle.putSerializable("NavigationDirection", navigationDirection);
             bundle.putBoolean("IsFavourite", isFavourite.isChecked());
+
             NavController navController = Navigation.findNavController(view);
             switch (navigationDirection) {
                 case FROM_SEARCH_TO_PET:
@@ -116,13 +114,24 @@ public class CardPetMockAdapter extends RecyclerView.Adapter<CardPetMockAdapter.
         return new ViewHolder(view);
     }
 
-    public CardPetMockAdapter(NavigationDirection navigationDirection) {
+    public CardPetMockAdapter(
+            NavigationDirection navigationDirection,
+            FavouriteMockViewModel favouriteMockViewModel,
+            LifecycleOwner lifecycleOwner) {
         this.navigationDirection = navigationDirection;
+        this.favouriteMockViewModel = favouriteMockViewModel;
+        favouriteMockViewModel.getFavouritePetsIds().observe(lifecycleOwner, strings -> favouritePetsIds = strings);
     }
 
-    public CardPetMockAdapter(List<PetMock> petsList, NavigationDirection navigationDirection) {
+    public CardPetMockAdapter(
+            List<PetMock> petsList,
+            NavigationDirection navigationDirection,
+            FavouriteMockViewModel favouriteMockViewModel,
+            LifecycleOwner lifecycleOwner) {
         this.petsList = petsList;
         this.navigationDirection = navigationDirection;
+        this.favouriteMockViewModel = favouriteMockViewModel;
+        favouriteMockViewModel.getFavouritePetsIds().observe(lifecycleOwner, strings -> favouritePetsIds = strings);
     }
 
     @Override
@@ -138,16 +147,6 @@ public class CardPetMockAdapter extends RecyclerView.Adapter<CardPetMockAdapter.
     public void setItems(Collection<PetMock> items) {
         petsList.addAll(items);
         notifyDataSetChanged();
-    }
-
-    public void setFavouriteMockViewModel(FavouriteMockViewModel favouriteMockViewModel, LifecycleOwner lifecycleOwner) {
-        this.favouriteMockViewModel = favouriteMockViewModel;
-        favouriteMockViewModel.getFavouritePetsIds().observe(lifecycleOwner, new Observer<HashSet<String>>() {
-            @Override
-            public void onChanged(HashSet<String> strings) {
-                favouritePetsIds = strings;
-            }
-        });
     }
 
     public void clearItems() {

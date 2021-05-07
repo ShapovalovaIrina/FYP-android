@@ -8,28 +8,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.fyp.R;
 import com.fyp.adapter.CardPetAdapter;
 import com.fyp.adapter.CardPetMockAdapter;
 import com.fyp.adapter.NavigationDirection;
-import com.fyp.pojo.PetMock;
-import com.fyp.response.Pet;
 import com.fyp.utils.LinearHorizontalSpacingDecoration;
 import com.fyp.viewmodel.FavouriteMockViewModel;
 import com.fyp.viewmodel.FavouriteViewModel;
 import com.fyp.viewmodel.PetMockViewModel;
 import com.fyp.viewmodel.PetViewModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.Pivot;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
@@ -77,36 +70,40 @@ public class SearchFragment extends Fragment {
 
         // set up card adapter, pet view model
         if (SERVER_ENABLED) {
-            cardPetAdapter = new CardPetAdapter(NavigationDirection.FROM_SEARCH_TO_PET);
-            cardPetRecycleView.setAdapter(cardPetAdapter);
-
+            // set up pet mock view model
             petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
             setPetViewModelPetsObserver(petViewModel);
 
             FavouriteViewModel favouriteViewModel = new ViewModelProvider(requireActivity()).get(FavouriteViewModel.class);
 
+            // set up favourite mock view model
             FirebaseUser firebaseCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
-            firebaseCurrentUser.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                @Override
-                public void onComplete(@NonNull Task<GetTokenResult> task) {
-                    if (task.isSuccessful()) {
-                        String idToken = task.getResult().getToken();
-                        cardPetAdapter.setFavouriteViewModel(favouriteViewModel, getViewLifecycleOwner(), idToken);
-                    } else {
-                        Toast.makeText(getContext(), "Ошибка во время получения токена", Toast.LENGTH_SHORT).show();
-                    }
+            firebaseCurrentUser.getIdToken(true).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    String idToken = task.getResult().getToken();
+
+                    cardPetAdapter = new CardPetAdapter(
+                            NavigationDirection.FROM_SEARCH_TO_PET,
+                            favouriteViewModel,
+                            getViewLifecycleOwner(),
+                            idToken);
+                    cardPetRecycleView.setAdapter(cardPetAdapter);
+                } else {
+                    Toast.makeText(getContext(), "Ошибка во время получения токена", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
-            cardPetMockAdapter = new CardPetMockAdapter(NavigationDirection.FROM_SEARCH_TO_PET);
-            cardPetRecycleView.setAdapter(cardPetMockAdapter);
-
             // set up pet mock view model
             petMockViewModel = new ViewModelProvider(requireActivity()).get(PetMockViewModel.class);
             setPetMockViewModelPetsObserver(petMockViewModel);
 
+            // set up favourite mock view model
             FavouriteMockViewModel favouriteMockViewModel = new ViewModelProvider(requireActivity()).get(FavouriteMockViewModel.class);
-            cardPetMockAdapter.setFavouriteMockViewModel(favouriteMockViewModel, getViewLifecycleOwner());
+            cardPetMockAdapter = new CardPetMockAdapter(
+                    NavigationDirection.FROM_SEARCH_TO_PET,
+                    favouriteMockViewModel,
+                    getViewLifecycleOwner());
+            cardPetRecycleView.setAdapter(cardPetMockAdapter);
         }
 
         buttonToggleGroup.addOnButtonCheckedListener(petTypeButtonToggleGroupListener());
@@ -115,29 +112,23 @@ public class SearchFragment extends Fragment {
     }
 
     private void setPetViewModelPetsObserver(PetViewModel petViewModel) {
-        petViewModel.getPets().observe(getViewLifecycleOwner(), new Observer<List<Pet>>() {
-            @Override
-            public void onChanged(List<Pet> petResponse) {
-                if (petResponse != null) {
-                    Toast.makeText(getContext(), "Update pet data", Toast.LENGTH_SHORT).show();
+        petViewModel.getPets().observe(getViewLifecycleOwner(), petResponse -> {
+            if (petResponse != null) {
+                Toast.makeText(getContext(), "Update pet data", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "petNetworkViewModel onChanged set up adapter data");
 
-                    Log.d(TAG, "petNetworkViewModel onChanged set up adapter data");
-                    cardPetAdapter.clearItems();
-                    cardPetAdapter.setItems(petResponse);
-                    cardPetRecycleView.scrollToPosition(0);
-                }
+                cardPetAdapter.clearItems();
+                cardPetAdapter.setItems(petResponse);
+                cardPetRecycleView.scrollToPosition(0);
             }
         });
     }
 
     private void setPetMockViewModelPetsObserver(PetMockViewModel petMockViewModel) {
-        petMockViewModel.getPets().observe(getViewLifecycleOwner(), new Observer<List<PetMock>>() {
-            @Override
-            public void onChanged(List<PetMock> petMocks) {
-                cardPetMockAdapter.clearItems();
-                cardPetMockAdapter.setItems(petMocks);
-                cardPetRecycleView.scrollToPosition(0);
-            }
+        petMockViewModel.getPets().observe(getViewLifecycleOwner(), petMocks -> {
+            cardPetMockAdapter.clearItems();
+            cardPetMockAdapter.setItems(petMocks);
+            cardPetRecycleView.scrollToPosition(0);
         });
     }
 
