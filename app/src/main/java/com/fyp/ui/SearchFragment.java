@@ -56,6 +56,8 @@ public class SearchFragment extends Fragment {
         super.onPause();
         searchFragmentViewModel.setRecycleViewItemPosition(cardPetRecycleView.getCurrentItem());
         searchFragmentViewModel.setCheckedIds(buttonToggleGroup.getCheckedButtonIds());
+        searchFragmentViewModel.setFilterParentCheckBox(filterView.getParentCheckBoxState());
+        searchFragmentViewModel.setFilterChildrenCheckBoxes(filterView.getChildrenCheckBoxesState());
     }
 
     @Override
@@ -81,7 +83,11 @@ public class SearchFragment extends Fragment {
         }
 
         /* Init views for filtering */
-        filterView = new FilterView(view);
+        filterView = new FilterView(
+                view,
+                searchFragmentViewModel.getFilterParentCheckBox(),
+                searchFragmentViewModel.getFilterChildrenCheckBoxes()
+        );
 
         buttonToggleGroup.addOnButtonCheckedListener(petTypeButtonToggleGroupListener());
 
