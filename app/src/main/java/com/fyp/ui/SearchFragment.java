@@ -20,6 +20,7 @@ import com.fyp.viewmodel.FavouriteMockViewModel;
 import com.fyp.viewmodel.FavouriteViewModel;
 import com.fyp.viewmodel.PetMockViewModel;
 import com.fyp.viewmodel.PetViewModel;
+import com.fyp.viewmodel.SearchFragmentViewModel;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -42,9 +43,22 @@ public class SearchFragment extends Fragment {
     private PetMockViewModel petMockViewModel;
     private PetViewModel petViewModel;
 
+    private MaterialButtonToggleGroup buttonToggleGroup;
+
     private TextView startSearch;
 
     private FilterView filterView;
+    private SearchFragmentViewModel searchFragmentViewModel;
+    private boolean firstSet = true;
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        searchFragmentViewModel.setRecycleViewItemPosition(cardPetRecycleView.getCurrentItem());
+        searchFragmentViewModel.setCheckedIds(buttonToggleGroup.getCheckedButtonIds());
+        searchFragmentViewModel.setFilterParentCheckBox(filterView.getParentCheckBoxState());
+        searchFragmentViewModel.setFilterChildrenCheckBoxes(filterView.getChildrenCheckBoxesState());
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,12 +68,30 @@ public class SearchFragment extends Fragment {
 
         cardPetRecycleView = view.findViewById(R.id.search_fragment_recycle_view);
         startSearch = view.findViewById(R.id.search_fragment_start_search);
-        MaterialButtonToggleGroup buttonToggleGroup = view.findViewById(R.id.search_fragment_button_group);
+        buttonToggleGroup = view.findViewById(R.id.search_fragment_button_group);
 
-        filterView = new FilterView(view);
+        /* Get searchFragmentViewModel
+        * Restore button state. IMPORTANT must be after buttonToggleGroup = view.findViewById */
+        searchFragmentViewModel = new ViewModelProvider(requireActivity()).get(SearchFragmentViewModel.class);
+        if (searchFragmentViewModel.getCheckedIds() != null && searchFragmentViewModel.getCheckedIds().size() != 0) {
+            startSearch.setVisibility(View.GONE);
+            cardPetRecycleView.setVisibility(View.VISIBLE);
+            for (int id : searchFragmentViewModel.getCheckedIds()) buttonToggleGroup.check(id);
+        } else {
+            startSearch.setVisibility(View.VISIBLE);
+            cardPetRecycleView.setVisibility(View.GONE);
+        }
 
-        // set up recycle view
-        cardPetRecycleView.setVisibility(View.GONE);
+        /* Init views for filtering */
+        filterView = new FilterView(
+                view,
+                searchFragmentViewModel.getFilterParentCheckBox(),
+                searchFragmentViewModel.getFilterChildrenCheckBoxes()
+        );
+
+        buttonToggleGroup.addOnButtonCheckedListener(petTypeButtonToggleGroupListener());
+
+        /* set up recycle view */
         cardPetRecycleView.addItemDecoration(new LinearHorizontalSpacingDecoration(32));
         cardPetRecycleView.setItemTransformer(new ScaleTransformer.Builder()
                 .setMaxScale(1.2f)
@@ -68,15 +100,14 @@ public class SearchFragment extends Fragment {
                 .setPivotY(Pivot.Y.CENTER) // CENTER is a default one
                 .build());
 
-        // set up card adapter, pet view model
+        /* set up card adapter and set it for recycler view,
+           Pet view model, favourite view model */
         if (SERVER_ENABLED) {
-            // set up pet mock view model
             petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
             setPetViewModelPetsObserver(petViewModel);
-
             FavouriteViewModel favouriteViewModel = new ViewModelProvider(requireActivity()).get(FavouriteViewModel.class);
 
-            // set up favourite mock view model
+            /* Init adapter with Firebase id token */
             FirebaseUser firebaseCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
             firebaseCurrentUser.getIdToken(true).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
@@ -88,25 +119,23 @@ public class SearchFragment extends Fragment {
                             getViewLifecycleOwner(),
                             idToken);
                     cardPetRecycleView.setAdapter(cardPetAdapter);
+                    if (searchFragmentViewModel.getRecycleViewItemPosition() != null) cardPetRecycleView.scrollToPosition(searchFragmentViewModel.getRecycleViewItemPosition());
                 } else {
                     Toast.makeText(getContext(), "Ошибка во время получения токена", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
-            // set up pet mock view model
             petMockViewModel = new ViewModelProvider(requireActivity()).get(PetMockViewModel.class);
             setPetMockViewModelPetsObserver(petMockViewModel);
-
-            // set up favourite mock view model
             FavouriteMockViewModel favouriteMockViewModel = new ViewModelProvider(requireActivity()).get(FavouriteMockViewModel.class);
+
             cardPetMockAdapter = new CardPetMockAdapter(
                     NavigationDirection.FROM_SEARCH_TO_PET,
                     favouriteMockViewModel,
                     getViewLifecycleOwner());
             cardPetRecycleView.setAdapter(cardPetMockAdapter);
+            if (searchFragmentViewModel.getRecycleViewItemPosition() != null) cardPetRecycleView.scrollToPosition(searchFragmentViewModel.getRecycleViewItemPosition());
         }
-
-        buttonToggleGroup.addOnButtonCheckedListener(petTypeButtonToggleGroupListener());
 
         return view;
     }
@@ -114,40 +143,44 @@ public class SearchFragment extends Fragment {
     private void setPetViewModelPetsObserver(PetViewModel petViewModel) {
         petViewModel.getPets().observe(getViewLifecycleOwner(), petResponse -> {
             if (petResponse != null) {
-                Toast.makeText(getContext(), "Update pet data", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "petNetworkViewModel onChanged set up adapter data");
-
-                cardPetAdapter.clearItems();
-                cardPetAdapter.setItems(petResponse);
-                cardPetRecycleView.scrollToPosition(0);
+                if (!firstSet) {
+                    cardPetAdapter.clearItems();
+                    cardPetAdapter.setItems(petResponse);
+                    cardPetRecycleView.scrollToPosition(0);
+                } else {
+                    cardPetAdapter.setItems(petResponse);
+                    firstSet = false;
+                }
             }
         });
     }
 
     private void setPetMockViewModelPetsObserver(PetMockViewModel petMockViewModel) {
         petMockViewModel.getPets().observe(getViewLifecycleOwner(), petMocks -> {
-            cardPetMockAdapter.clearItems();
-            cardPetMockAdapter.setItems(petMocks);
-            cardPetRecycleView.scrollToPosition(0);
+            if (!firstSet) {
+                cardPetMockAdapter.clearItems();
+                cardPetMockAdapter.setItems(petMocks);
+                cardPetRecycleView.scrollToPosition(0);
+            } else {
+                cardPetMockAdapter.setItems(petMocks);
+                firstSet = false;
+            }
         });
     }
 
     MaterialButtonToggleGroup.OnButtonCheckedListener petTypeButtonToggleGroupListener() {
-        return new MaterialButtonToggleGroup.OnButtonCheckedListener() {
-            @Override
-            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                List<Integer> checkedIds = group.getCheckedButtonIds();
-                switch (checkedIds.size()) {
-                    case 2:
-                        twoButtonsPressed();
-                        break;
-                    case 1:
-                        oneButtonPressed(checkedIds.get(0));
-                        break;
-                    case 0:
-                        zeroButtonPressed();
-                        break;
-                }
+        return (group, checkedId, isChecked) -> {
+            List<Integer> checkedIds = group.getCheckedButtonIds();
+            switch (checkedIds.size()) {
+                case 2:
+                    twoButtonsPressed();
+                    break;
+                case 1:
+                    oneButtonPressed(checkedIds.get(0));
+                    break;
+                case 0:
+                    zeroButtonPressed();
+                    break;
             }
         };
     }

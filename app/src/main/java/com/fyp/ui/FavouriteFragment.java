@@ -81,7 +81,6 @@ public class FavouriteFragment extends Fragment {
 
                     favouriteViewModel.getCodeResponse().observe(getViewLifecycleOwner(), integer -> Toast.makeText(getContext(), "Favourite code response " + integer, Toast.LENGTH_SHORT).show());
                     favouriteViewModel.getFavouritePets(idToken).observe(getViewLifecycleOwner(), petResponse -> {
-                        Log.d(TAG, "favouriteViewModel onChanged triggered");
                         if (petResponse != null) {
                             Toast.makeText(getContext(), "Успешно загрузили избранных питомцев", Toast.LENGTH_SHORT).show();
                             cardPetAdapter.clearItems();
@@ -97,8 +96,6 @@ public class FavouriteFragment extends Fragment {
     }
 
     private void initMockAdapterAndViewModel() {
-        Log.d(TAG, "Initialize FavouriteMockViewModel and CardPetMockAdapter");
-
         FavouriteMockViewModel favouriteModel = new ViewModelProvider(requireActivity()).get(FavouriteMockViewModel.class);
 
         cardPetMockAdapter = new CardPetMockAdapter(
@@ -108,7 +105,6 @@ public class FavouriteFragment extends Fragment {
         cardPetRecycleView.setAdapter(cardPetMockAdapter);
 
         favouriteModel.getFavouritePets().observe(getViewLifecycleOwner(), petMocks -> {
-            Log.d(TAG, "Get pets from view model & set them");
             cardPetMockAdapter.clearItems();
             cardPetMockAdapter.setItems(petMocks);
             cardPetRecycleView.scrollToPosition(0);

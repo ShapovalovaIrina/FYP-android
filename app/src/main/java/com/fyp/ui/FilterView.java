@@ -27,7 +27,17 @@ public class FilterView {
     private CheckBox parentCheckBox;
     private List<CheckBox> childCheckBoxes;
 
-    public FilterView(View view) {
+    public boolean getParentCheckBoxState() {
+        return parentCheckBox.isChecked();
+    }
+
+    public List<Boolean> getChildrenCheckBoxesState() {
+        List<Boolean> states = new ArrayList<>();
+        for (CheckBox checkBox : childCheckBoxes) states.add(checkBox.isChecked());
+        return states;
+    }
+
+    public FilterView(View view, Boolean savedParentCheckBoxState, List<Boolean> savedChildrenCheckBoxesState) {
         rootView = view;
         filterLinearLayout = view.findViewById(R.id.filter_view_parent_linear_layout);
         scrollViewLinearLayout = view.findViewById(R.id.search_fragment_discrete_scroll_view);
@@ -39,73 +49,65 @@ public class FilterView {
         filterLinearLayout.setVisibility(View.GONE);
         scrollViewLinearLayout.setVisibility(View.VISIBLE);
 
+        initChildrenCheckBoxes();
+
+        if (savedParentCheckBoxState != null && savedChildrenCheckBoxesState != null) {
+            parentCheckBox.setChecked(savedParentCheckBoxState);
+            for (int i = 0; i < savedChildrenCheckBoxesState.size(); i++)
+                childCheckBoxes.get(i).setChecked(savedChildrenCheckBoxesState.get(i));
+        }
+
         saveButton.setOnClickListener(saveButtonOnClickListener());
         showMoreButton.setOnCheckedChangeListener(showMoreButtonOnCheckedChangeListener());
         parentCheckBox.setOnCheckedChangeListener(parentCheckBoxOnCheckedChangeListener());
-
-        initChildrenCheckBoxes();
     }
 
     View.OnClickListener saveButtonOnClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(rootView.getContext(), "Параметры успешно сохранены", Toast.LENGTH_SHORT).show();
-                showMoreButton.setChecked(false);
-            }
+        return view -> {
+            Toast.makeText(rootView.getContext(), "Параметры успешно сохранены", Toast.LENGTH_SHORT).show();
+            showMoreButton.setChecked(false);
         };
     }
 
     CompoundButton.OnCheckedChangeListener showMoreButtonOnCheckedChangeListener() {
-        return new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
-                    // show filter view
-                    onExpandFilterView();
-                } else {
-                    // hide filter view
-                    onCollapseFilterView();
-                }
+        return (compoundButton, isChecked) -> {
+            if (isChecked) {
+                onExpandFilterView();
+            } else {
+                onCollapseFilterView();
             }
         };
     }
 
     CompoundButton.OnCheckedChangeListener childCheckBoxOnCheckedChangeListener() {
-        return new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (parentCheckBox.isChecked() && !isChecked) {
-                    Toast.makeText(rootView.getContext(), "Uncheck parent (child)", Toast.LENGTH_SHORT).show();
+        return (compoundButton, isChecked) -> {
+            if (parentCheckBox.isChecked() && !isChecked) {
+                Toast.makeText(rootView.getContext(), "Uncheck parent (child)", Toast.LENGTH_SHORT).show();
+                parentCheckBox.setOnCheckedChangeListener(null);
+                parentCheckBox.setChecked(false);
+                parentCheckBox.setOnCheckedChangeListener(parentCheckBoxOnCheckedChangeListener());
+            } else if (!parentCheckBox.isChecked() && isChecked) {
+                boolean allChildrenChecked = true;
+                for (CheckBox child : childCheckBoxes) {
+                    if (!child.isChecked()) {
+                        allChildrenChecked = false;
+                        break;
+                    }
+                }
+                if (allChildrenChecked) {
+                    Toast.makeText(rootView.getContext(), "Check parent (child)", Toast.LENGTH_SHORT).show();
                     parentCheckBox.setOnCheckedChangeListener(null);
-                    parentCheckBox.setChecked(false);
+                    parentCheckBox.setChecked(true);
                     parentCheckBox.setOnCheckedChangeListener(parentCheckBoxOnCheckedChangeListener());
-                } else if (!parentCheckBox.isChecked() && isChecked) {
-                    boolean allChildrenChecked = true;
-                    for (CheckBox child : childCheckBoxes) {
-                        if (!child.isChecked()) {
-                            allChildrenChecked = false;
-                            break;
-                        }
-                    }
-                    if (allChildrenChecked) {
-                        Toast.makeText(rootView.getContext(), "Check parent (child)", Toast.LENGTH_SHORT).show();
-                        parentCheckBox.setOnCheckedChangeListener(null);
-                        parentCheckBox.setChecked(true);
-                        parentCheckBox.setOnCheckedChangeListener(parentCheckBoxOnCheckedChangeListener());
-                    }
                 }
             }
         };
     }
 
     CompoundButton.OnCheckedChangeListener parentCheckBoxOnCheckedChangeListener() {
-        return new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                for (CheckBox checkBox : childCheckBoxes) {
-                    checkBox.setChecked(isChecked);
-                }
+        return (compoundButton, isChecked) -> {
+            for (CheckBox checkBox : childCheckBoxes) {
+                checkBox.setChecked(isChecked);
             }
         };
     }

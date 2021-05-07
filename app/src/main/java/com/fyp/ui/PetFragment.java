@@ -71,11 +71,6 @@ public class PetFragment extends Fragment {
         Boolean isFavourite = getArguments().getBoolean("IsFavourite");
         NavigationDirection navigationDirection = (NavigationDirection) getArguments().getSerializable("NavigationDirection");
         int absoluteAdapterPosition = getArguments().getInt("AbsoluteAdapterPosition");
-        Toast.makeText(
-                getContext(),
-                "NavigationDirection: " + navigationDirection + ". AbsoluteAdapterPosition: " + absoluteAdapterPosition,
-                Toast.LENGTH_SHORT)
-                .show();
 
         favouriteCheckBox.setChecked(isFavourite);
         switch (navigationDirection) {
