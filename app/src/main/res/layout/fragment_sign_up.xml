@@ -23,6 +23,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="20sp"
             android:layout_alignParentStart="true"
             android:orientation="vertical">
 
@@ -31,9 +33,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:includeFontPadding="false"
-                android:paddingLeft="30sp"
                 android:paddingTop="40sp"
-                android:paddingRight="30sp"
                 android:shadowColor="#0E0E0E"
                 android:text="Регистрация"
                 android:textAlignment="center"
@@ -43,8 +43,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20sp"
-                android:layout_marginRight="20sp"
                 android:fontFamily="sans-serif-light"
                 android:includeFontPadding="false"
                 android:paddingTop="40sp"
@@ -57,8 +55,6 @@
                 android:id="@+id/sign_up_fragment_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:ems="10"
                 android:hint="example@yandex.ru"
                 android:inputType="textEmailAddress" />
@@ -66,8 +62,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20sp"
-                android:layout_marginRight="20sp"
                 android:fontFamily="sans-serif-light"
                 android:includeFontPadding="false"
                 android:paddingTop="40sp"
@@ -80,8 +74,6 @@
                 android:id="@+id/sign_up_fragment_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:ems="10"
                 android:hint="Имя"
                 android:inputType="textPersonName" />
@@ -89,8 +81,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20sp"
-                android:layout_marginRight="20sp"
                 android:fontFamily="sans-serif-light"
                 android:includeFontPadding="false"
                 android:paddingTop="40sp"
@@ -102,8 +92,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20sp"
-                android:layout_marginRight="20sp"
                 android:fontFamily="sans-serif-thin"
                 android:includeFontPadding="false"
                 android:paddingTop="10sp"
@@ -116,8 +104,6 @@
                 android:id="@+id/sign_up_fragment_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:ems="10"
                 android:hint="Введите пароль"
                 android:inputType="textPassword" />
@@ -126,8 +112,7 @@
                 android:id="@+id/sign_up_fragment_repeat_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+                android:paddingTop="20dp"
                 android:ems="10"
                 android:hint="Повторите введенный пароль"
                 android:inputType="textPassword" />
@@ -137,9 +122,9 @@
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:text="Зарегистрироваться"
+                android:layout_gravity="center"
                 android:textAppearance="@style/CustomButtonTextAppearance"
                 android:textColor="#B3000000" />
 
@@ -148,28 +133,31 @@
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginTop="20dp"
                 android:text="Войти"
                 android:layout_gravity="center"
                 android:textAppearance="@style/CustomButtonTextAppearance"
                 android:textColor="#B3000000" />
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/sign_up_fragment_not_receive_mail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20sp"
-                android:layout_marginRight="20sp"
-                android:fontFamily="sans-serif-light"
-                android:includeFontPadding="false"
-                android:paddingTop="10sp"
-                android:shadowColor="#0E0E0E"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:text="Не получили письмо?"
-                android:gravity="center"
+                android:textAppearance="@style/CustomButtonTextAppearance"
                 android:textColor="#000000"
-                android:textSize="15sp" />
+                android:layout_gravity="center" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sign_up_fragment_already_have_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="Уже есть аккаунт?"
+                android:textAppearance="@style/CustomButtonTextAppearance"
+                android:textColor="#000000"
+                android:layout_gravity="center" />
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>

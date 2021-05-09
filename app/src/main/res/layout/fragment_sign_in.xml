@@ -22,6 +22,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="20sp"
             android:orientation="vertical">
 
             <TextView
@@ -29,8 +31,6 @@
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:paddingTop="40sp"
-                android:paddingLeft="30sp"
-                android:paddingRight="30sp"
                 android:shadowColor="#0E0E0E"
                 android:fontFamily="sans-serif-light"
                 android:textAlignment="center"
@@ -43,8 +43,6 @@
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:paddingTop="40sp"
-                android:layout_marginLeft="20sp"
-                android:layout_marginRight="20sp"
                 android:shadowColor="#0E0E0E"
                 android:fontFamily="sans-serif-light"
                 android:textColor="#000000"
@@ -55,8 +53,6 @@
                 android:id="@+id/login_fragment_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:ems="10"
                 android:hint="example@yandex.ru"
                 android:inputType="textEmailAddress" />
@@ -66,8 +62,6 @@
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
                 android:paddingTop="40sp"
-                android:layout_marginLeft="20sp"
-                android:layout_marginRight="20sp"
                 android:shadowColor="#0E0E0E"
                 android:fontFamily="sans-serif-light"
                 android:textColor="#000000"
@@ -78,8 +72,6 @@
                 android:id="@+id/login_fragment_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:ems="10"
                 android:hint="Пароль"
                 android:inputType="textPassword" />
@@ -89,8 +81,7 @@
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
                 android:text="Войти"
                 android:textAppearance="@style/CustomButtonTextAppearance"
                 android:textColor="#B3000000" />

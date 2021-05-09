@@ -34,7 +34,9 @@ public class SignUpFragment extends Fragment {
     private EditText passwordInput;
     private EditText passwordRepeatInput;
     private CircularProgressIndicator circularProgressIndicator;
-    private TextView notReceiveMail;
+
+    private Button notReceiveMail;
+    private Button alreadyHaveAccount;
     private Button signUpButton;
     private Button signInButton;
 
@@ -59,6 +61,7 @@ public class SignUpFragment extends Fragment {
         passwordRepeatInput = view.findViewById(R.id.sign_up_fragment_repeat_password);
         circularProgressIndicator = view.findViewById(R.id.sign_up_fragment_circular_progress_indicator);
         notReceiveMail = view.findViewById(R.id.sign_up_fragment_not_receive_mail);
+        alreadyHaveAccount = view.findViewById(R.id.sign_up_fragment_already_have_account);
         signUpButton = view.findViewById(R.id.sign_up_fragment_button);
         signInButton = view.findViewById(R.id.sign_up_fragment_sign_in_button);
 
@@ -70,24 +73,29 @@ public class SignUpFragment extends Fragment {
 
         signUpButton.setOnClickListener(signUpButtonOnClickListener());
         signInButton.setOnClickListener(signInButtonOnClickListener());
+        alreadyHaveAccount.setOnClickListener(signInButtonOnClickListener());
+        notReceiveMail.setOnClickListener(notReceiveButtonOnClickListener());
     }
 
     View.OnClickListener signUpButtonOnClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (validateEmailInput() && validateNameInput() && validatePasswordInput())
-                    circularProgressIndicator.setVisibility(View.VISIBLE);
-                    createFirebasePasswordAccount(emailInput.getText().toString(), passwordInput.getText().toString());
+        return view -> {
+            if (validateEmailInput() && validateNameInput() && validatePasswordInput()) {
+                circularProgressIndicator.setVisibility(View.VISIBLE);
+                createFirebasePasswordAccount(emailInput.getText().toString(), passwordInput.getText().toString());
             }
         };
     }
 
     View.OnClickListener signInButtonOnClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navigateToSignInFragment();
+        return view -> navigateToSignInFragment();
+    }
+
+    View.OnClickListener notReceiveButtonOnClickListener() {
+        return view -> {
+            FirebaseUser user = mAuth.getCurrentUser();
+            if (user!= null) {
+                Toast.makeText(getContext(), "Письмо повторно отправлено на почту " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                sendVerificationEmail(user);
             }
         };
     }
@@ -129,12 +137,6 @@ public class SignUpFragment extends Fragment {
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        try {
-                            Thread.sleep(10000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
@@ -165,7 +167,6 @@ public class SignUpFragment extends Fragment {
                             Log.d(TAG, "User profile updated.");
                             Toast.makeText(getContext(), "Create user " + name + ", email " + userEmail, Toast.LENGTH_SHORT).show();
                             sendVerificationEmail(user);
-//                            navigateToSearchFragment();
                         } else {
                             // If update name fails, display a message to the user.
                             Log.w(TAG, "updateProfile:failure", task.getException());
@@ -176,7 +177,6 @@ public class SignUpFragment extends Fragment {
                 });
     }
 
-
     private void sendVerificationEmail(@NonNull FirebaseUser user) {
         user.sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -185,34 +185,16 @@ public class SignUpFragment extends Fragment {
                         circularProgressIndicator.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
                             Log.d(TAG, "Email sent.");
-                            Toast.makeText(getContext(), "Не получилось отправить письмо для подтверждения аккаунта", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Для завершения регистрации подтвердите, пожалуйста, почту", Toast.LENGTH_SHORT).show();
                             signUpButton.setVisibility(View.GONE);
                             notReceiveMail.setVisibility(View.VISIBLE);
                             signInButton.setVisibility(View.VISIBLE);
-//                            final Snackbar snackbar = Snackbar
-//                                    .make(getView(), "Для завершения регистрации необходимо подтвердить почту", BaseTransientBottomBar.LENGTH_INDEFINITE)
-//                                    .setTextColor(getResources().getColor(R.color.colorWhite))
-//                                    .setActionTextColor(getResources().getColor(R.color.colorWhite));
-//                            snackbar
-//                                    .setAction("Ok", new View.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(View view) {
-//                                            snackbar.dismiss();
-//                                            navigateToSignInFragment();
-//                                        }
-//                                    })
-//                                    .show();
-
                         } else {
                             Log.w(TAG, "sendEmailVerification:failure", task.getException());
                             Toast.makeText(getContext(), "Не получилось отправить письмо для подтверждения аккаунта", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-    }
-
-    private void navigateToSearchFragment() {
-        navController.navigate(R.id.action_signUpFragment_to_bottomNavFragment);
     }
 
     private void navigateToSignInFragment() {

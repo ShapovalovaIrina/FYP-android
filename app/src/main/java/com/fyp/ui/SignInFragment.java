@@ -57,12 +57,10 @@ public class SignInFragment extends Fragment {
     }
 
     View.OnClickListener loginButtonOnClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (validateEmailInput() && validatePasswordInput())
-                    circularProgressIndicator.setVisibility(View.VISIBLE);
-                    signInWithPassword(emailInput.getText().toString(), passwordInput.getText().toString());
+        return view -> {
+            if (validateEmailInput() && validatePasswordInput()) {
+                circularProgressIndicator.setVisibility(View.VISIBLE);
+                signInWithPassword(emailInput.getText().toString(), passwordInput.getText().toString());
             }
         };
     }
