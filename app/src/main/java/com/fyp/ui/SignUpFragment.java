@@ -101,7 +101,6 @@ public class SignUpFragment extends Fragment {
     }
 
     private boolean validateEmailInput() {
-        Log.d(TAG, "Email " + emailInput.getText().toString());
         if (emailInput.getText().toString().equals("")) {
             Toast.makeText(getActivity(), "Для регистрации необходимо указать почту", Toast.LENGTH_LONG).show();
             return false;
@@ -110,7 +109,6 @@ public class SignUpFragment extends Fragment {
     }
 
     private boolean validateNameInput() {
-        Log.d(TAG, "Name " + nameInput.getText().toString());
         if (nameInput.getText().toString().equals("")) {
             Toast.makeText(getActivity(), "Для регистрации необходимо указать Ваше имя", Toast.LENGTH_LONG).show();
             return false;
@@ -119,7 +117,6 @@ public class SignUpFragment extends Fragment {
     }
 
     private boolean validatePasswordInput() {
-        Log.d(TAG, "Password " + passwordInput.getText().toString());
         if (passwordInput.getText().toString().equals("") || passwordRepeatInput.getText().toString().equals("")) {
             Toast.makeText(getActivity(), "Для регистрации необходимо указать пароль и повторить его", Toast.LENGTH_LONG).show();
             return false;
@@ -179,7 +176,6 @@ public class SignUpFragment extends Fragment {
                     }
                 });
     }
-
 
     private void sendVerificationEmail(@NonNull FirebaseUser user) {
         user.sendEmailVerification()
