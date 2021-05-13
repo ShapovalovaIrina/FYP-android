@@ -24,10 +24,18 @@ public class FavouriteViewModel extends ViewModel {
         Log.d(TAG, "FavouriteViewModel getFavouritePets");
         if (favouritePets == null) {
             Log.d(TAG, "Create NEW mutable live data with pets");
-            favouritePets = new MutableLiveData<>();
             loadAllFavourite(JWTToken);
         }
         return favouritePets;
+    }
+
+    public LiveData<HashSet<String>> getFavouritePetsIds(String JWTToken) {
+        Log.d(TAG, "FavouriteViewModel getFavouritePetsIds");
+        if (favouritePetsIds == null) {
+            Log.d(TAG, "Create NEW mutable live data with ids");
+            loadAllFavourite(JWTToken);
+        }
+        return favouritePetsIds;
     }
 
     public LiveData<Integer> getCodeResponse() {
@@ -39,25 +47,13 @@ public class FavouriteViewModel extends ViewModel {
         return codeResponse;
     }
 
-    public LiveData<HashSet<String>> getFavouritePetsIds(String JWTToken) {
-        Log.d(TAG, "FavouriteViewModel getFavouritePetsIds");
-        if (favouritePetsIds == null) {
-            Log.d(TAG, "Create NEW mutable live data with ids");
-            favouritePetsIds = new MutableLiveData<>();
-
-            if (favouriteRepository == null) favouriteRepository = new FavouriteRepository();
-            if (codeResponse == null) codeResponse = new MutableLiveData<>();
-            favouriteRepository.getAllFavouritePetsIds(favouritePetsIds, codeResponse, JWTToken);
-        }
-        return favouritePetsIds;
-    }
-
     public void loadAllFavourite(String JWTToken) {
         if (favouriteRepository == null) favouriteRepository = new FavouriteRepository();
         if (favouritePets == null) favouritePets = new MutableLiveData<>();
+        if (favouritePetsIds == null) favouritePetsIds = new MutableLiveData<>();
         if (codeResponse == null) codeResponse = new MutableLiveData<>();
 
-        favouriteRepository.getAllFavouritePets(favouritePets, codeResponse, JWTToken);
+        favouriteRepository.getAllFavouritePets(favouritePets, favouritePetsIds, codeResponse, JWTToken);
     }
 
     public Pet getPet(int position) {

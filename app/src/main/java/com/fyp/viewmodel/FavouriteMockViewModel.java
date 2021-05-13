@@ -22,7 +22,7 @@ public class FavouriteMockViewModel extends ViewModel {
         Log.d(TAG, "FavouriteMockViewModel getFavouritePets");
         if (favouritePets == null) {
             Log.d(TAG, "Create NEW mutable live data with pets");
-            favouritePets = new MutableLiveData<>();
+            loadFavouritePets();
         }
         return favouritePets;
     }
@@ -31,10 +31,15 @@ public class FavouriteMockViewModel extends ViewModel {
         Log.d(TAG, "FavouriteMockViewModel getFavouritePetsIds");
         if (favouritePetsIds == null) {
             Log.d(TAG, "Create NEW mutable live data with ids");
-            favouritePetsIds = new MutableLiveData<>();
-            favouritePetsIds.setValue(new HashSet<>());
+            loadFavouritePets();
         }
         return favouritePetsIds;
+    }
+
+    private void loadFavouritePets() {
+        favouritePets = new MutableLiveData<>();
+        favouritePetsIds = new MutableLiveData<>();
+        favouritePetsIds.setValue(new HashSet<>());
     }
 
     public PetMock getPet(int position) {
