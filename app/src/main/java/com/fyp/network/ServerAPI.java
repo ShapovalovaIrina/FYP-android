@@ -22,11 +22,6 @@ public interface ServerAPI {
             @Header("Authorization") String token
     );
 
-    @GET("/users/favourite/id")
-    Call<HashSet<String>> getAllFavouriteIds(
-            @Header("Authorization") String token
-    );
-
     @POST("/users/favourite/{pet_id}")
     Call<Status> addFavourite(
             @Header("Authorization") String token,

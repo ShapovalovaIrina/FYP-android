@@ -27,7 +27,8 @@ public class FavouriteRepository {
     }
 
     public void getAllFavouritePets(
-            @NonNull final MutableLiveData<List<Pet>> data,
+            @NonNull final MutableLiveData<List<Pet>> favouriteData,
+            @NonNull final MutableLiveData<HashSet<String>> favouriteIDData,
             @NonNull final MutableLiveData<Integer> codeResponse,
             String JWTToken) {
         serverAPI.getAllFavourite(JWTToken).enqueue(new Callback<List<Pet>>() {
@@ -44,13 +45,16 @@ public class FavouriteRepository {
                         codeResponse.setValue(403);
                         break;
                     case 200:
+                        HashSet<String> petId = new HashSet<>();
                         if (response.body() != null) {
                             for (Pet pet : response.body()) {
+                                petId.add(pet.getId());
                                 Log.d(TAG, pet.toString());
                             }
                         }
                         codeResponse.setValue(200);
-                        data.setValue(response.body());
+                        favouriteData.setValue(response.body());
+                        favouriteIDData.setValue(petId);
                         break;
                 }
             }
@@ -58,43 +62,7 @@ public class FavouriteRepository {
             @Override
             public void onFailure(Call<List<Pet>> call, Throwable t) {
                 Log.d(TAG, "getAllFavouritePets onFailure response: " + t.getMessage());
-                data.setValue(null);
-            }
-        });
-    }
-
-    public void getAllFavouritePetsIds(
-            @NonNull final MutableLiveData<HashSet<String>> data,
-            @NonNull final MutableLiveData<Integer> codeResponse,
-            String JWTToken) {
-        serverAPI.getAllFavouriteIds(JWTToken).enqueue(new Callback<HashSet<String>>() {
-            @Override
-            public void onResponse(Call<HashSet<String>> call, Response<HashSet<String>> response) {
-                Log.d(TAG, "getAllFavouritePetsIds onResponse response");
-                switch (response.code()) {
-                    case 401:
-                        Log.d(TAG, "getAllFavouritePetsIds onResponse 401 Unauthenticated");
-                        codeResponse.setValue(401);
-                        break;
-                    case 403:
-                        Log.d(TAG, "getAllFavouritePetsIds onResponse 403 Access forbidden");
-                        codeResponse.setValue(403);
-                        break;
-                    case 404:
-                        Log.d(TAG, "addFavourite onResponse 404 Not found");
-                        codeResponse.setValue(404);
-                        break;
-                    case 200:
-                        codeResponse.setValue(200);
-                        data.setValue(response.body());
-                        break;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<HashSet<String>> call, Throwable t) {
-                Log.d(TAG, "getAllFavouritePets onFailure response: " + t.getMessage());
-                data.setValue(null);
+                favouriteData.setValue(null);
             }
         });
     }
