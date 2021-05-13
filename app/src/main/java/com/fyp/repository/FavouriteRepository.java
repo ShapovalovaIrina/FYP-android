@@ -63,6 +63,7 @@ public class FavouriteRepository {
             public void onFailure(Call<List<Pet>> call, Throwable t) {
                 Log.d(TAG, "getAllFavouritePets onFailure response: " + t.getMessage());
                 favouriteData.setValue(null);
+                favouriteIDData.setValue(null);
             }
         });
     }
