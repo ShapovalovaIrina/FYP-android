@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +21,8 @@ import androidx.navigation.Navigation;
 import com.fyp.R;
 import com.fyp.pojo.UserMock;
 import com.fyp.viewmodel.UserViewModel;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 import static android.view.View.GONE;
@@ -30,7 +31,8 @@ import static android.view.View.VISIBLE;
 public class ProfileFragment extends Fragment {
     private final String TAG = ProfileFragment.class.getSimpleName();
     private TextView name;
-    private EditText newName;
+    private TextInputLayout nameInputLayout;
+    private TextInputEditText nameInputEditText;
     private Button saveButton;
     private Button editButton;
 
@@ -48,14 +50,14 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         name = view.findViewById(R.id.profile_fragment_name);
-        newName = view.findViewById(R.id.profile_fragment_new_name);
+        nameInputLayout = view.findViewById(R.id.profile_fragment_name_input_layout);
+        nameInputEditText = view.findViewById(R.id.profile_fragment_name_input_edit_text);
         saveButton = view.findViewById(R.id.profile_fragment_save_changes);
         editButton = view.findViewById(R.id.profile_fragment_edit_name);
         Button signOutButton = view.findViewById(R.id.profile_fragment_sign_out);
         Button sendFeedBack = view.findViewById(R.id.profile_fragment_send_feedback);
 
-        newName.setVisibility(GONE);
-        saveButton.setVisibility(GONE);
+        hideEditName();
 
         editButton.setOnClickListener(editNameButtonOnClickListener());
         saveButton.setOnClickListener(saveNameButtonOnClickListener());
@@ -73,25 +75,40 @@ public class ProfileFragment extends Fragment {
     }
 
     View.OnClickListener editNameButtonOnClickListener() {
-        return view -> {
-            name.setVisibility(GONE);
-            editButton.setVisibility(GONE);
-
-            newName.setVisibility(VISIBLE);
-            saveButton.setVisibility(VISIBLE);
-        };
+        return view -> showEditName();
     }
 
     View.OnClickListener saveNameButtonOnClickListener() {
         return view -> {
-            name.setVisibility(VISIBLE);
-            editButton.setVisibility(VISIBLE);
-
-            newName.setVisibility(GONE);
-            saveButton.setVisibility(GONE);
-
-            userViewModel.updateFirebaseUserName(newName.getText().toString());
+            if (validateName()) {
+                hideEditName();
+                userViewModel.updateFirebaseUserName(nameInputEditText.getText().toString());
+            }
         };
+    }
+
+    private boolean validateName() {
+        if (nameInputEditText.getText().toString().equals("")) {
+            nameInputLayout.setError("Имя не может быть пустым");
+            return false;
+        }
+        return true;
+    }
+
+    private void hideEditName() {
+        name.setVisibility(VISIBLE);
+        editButton.setVisibility(VISIBLE);
+
+        nameInputLayout.setVisibility(GONE);
+        saveButton.setVisibility(GONE);
+    }
+
+    private void showEditName() {
+        name.setVisibility(GONE);
+        editButton.setVisibility(GONE);
+
+        nameInputLayout.setVisibility(VISIBLE);
+        saveButton.setVisibility(VISIBLE);
     }
 
     View.OnClickListener signOutButtonOnClickListener() {
