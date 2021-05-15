@@ -16,7 +16,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
             android:includeFontPadding="false"
             android:paddingTop="40sp"
             android:shadowColor="#0E0E0E"
@@ -28,7 +27,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
             android:includeFontPadding="false"
             android:paddingTop="40sp"
             android:shadowColor="#0E0E0E"
@@ -49,7 +47,6 @@
                 android:layout_weight="1"
                 android:textSize="20sp"
                 android:textColor="@color/colorBlack"
-                android:fontFamily="sans-serif-thin"
                 android:text="Name"
                 android:gravity="center_vertical"/>
 
@@ -58,11 +55,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Изменить"
-                android:textColor="#000000"
                 android:textSize="12sp"
-                android:fontFamily="sans-serif-thin"
                 app:icon="@drawable/ic_baseline_edit_24"
-                app:iconTint="#000000"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon" />
         </LinearLayout>
 
@@ -89,7 +83,6 @@
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:text="Сохранить изменения"
-            android:textColor="#000000"
             android:textSize="12sp"
             style="?attr/materialButtonOutlinedStyle" />
 
@@ -99,14 +92,12 @@
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:text="Выход из аккаунта"
-            android:textColor="#000000"
             android:textSize="12sp"
             style="?attr/materialButtonOutlinedStyle" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
             android:includeFontPadding="false"
             android:paddingTop="50sp"
             android:shadowColor="#0E0E0E"
@@ -120,7 +111,6 @@
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
             android:text="Обратная связь"
-            android:textColor="#000000"
             android:textSize="12sp"
             app:icon="@drawable/ic_baseline_send_24"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon" />
