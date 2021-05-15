@@ -85,6 +85,8 @@ public class SearchFragment extends Fragment {
         /* Init views for filtering */
         filterView = new FilterView(
                 view,
+                requireActivity(),
+                getViewLifecycleOwner(),
                 searchFragmentViewModel.getFilterParentCheckBox(),
                 searchFragmentViewModel.getFilterChildrenCheckBoxes()
         );

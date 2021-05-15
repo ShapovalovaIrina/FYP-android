@@ -1,9 +1,9 @@
 package com.fyp.network;
 
 import com.fyp.response.Pet;
+import com.fyp.response.Shelter;
 import com.fyp.response.Status;
 
-import java.util.HashSet;
 import java.util.List;
 
 import retrofit2.Call;
@@ -14,9 +14,11 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ServerAPI {
+    /* Pets */
     @GET("/pets")
     Call<List<Pet>> getAllPets();
 
+    /* Favourites */
     @GET("/users/favourite")
     Call<List<Pet>> getAllFavourite(
             @Header("Authorization") String token
@@ -33,4 +35,8 @@ public interface ServerAPI {
             @Header("Authorization") String token,
             @Path("pet_id") String petId
     );
+
+    /* Shelters */
+    @GET("/shelters")
+    Call<List<Shelter>> getAllShelters();
 }

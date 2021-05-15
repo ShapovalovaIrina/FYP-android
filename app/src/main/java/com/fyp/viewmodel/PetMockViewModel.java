@@ -40,6 +40,7 @@ public class PetMockViewModel extends ViewModel {
         Log.d(TAG,"Create NEW list with pets");
         List<PetMock> petsList = new ArrayList<>();
         Shelter shelter = new Shelter();
+        shelter.setId(1);
         shelter.setTitle("Тестовый приют");
         shelter.setVk_link("https://vk.com/habr");
         shelter.setSite_link("https://yandex.ru/");
@@ -57,6 +58,7 @@ public class PetMockViewModel extends ViewModel {
         Log.d(TAG, "Create NEW list with cats");
         List<PetMock> petsList = new ArrayList<>();
         Shelter shelter = new Shelter();
+        shelter.setId(1);
         shelter.setTitle("Тестовый приют");
         shelter.setVk_link("https://vk.com/habr");
         shelter.setSite_link("https://yandex.ru/");
@@ -71,6 +73,7 @@ public class PetMockViewModel extends ViewModel {
         Log.d(TAG,"Create NEW list with dogs");
         List<PetMock> petsList = new ArrayList<>();
         Shelter shelter = new Shelter();
+        shelter.setId(1);
         shelter.setTitle("Тестовый приют");
         shelter.setVk_link("https://vk.com/habr");
         shelter.setSite_link("https://yandex.ru/");
