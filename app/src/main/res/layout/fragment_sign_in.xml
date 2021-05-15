@@ -30,10 +30,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:includeFontPadding="false"
                 android:paddingTop="40sp"
-                android:shadowColor="#0E0E0E"
-                android:fontFamily="sans-serif-light"
                 android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="20sp"
@@ -83,8 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="center"
-                android:text="Войти"
-                android:textColor="#B3000000" />
+                android:text="Войти" />
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>

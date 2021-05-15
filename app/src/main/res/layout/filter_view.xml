@@ -30,8 +30,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Сохранить"
-        android:textColor="#000000"
-        android:backgroundTint="#FFFFFF"
-        android:textAppearance="@style/CustomButtonTextAppearance"
         style="?attr/materialButtonOutlinedStyle" />
 </LinearLayout>
