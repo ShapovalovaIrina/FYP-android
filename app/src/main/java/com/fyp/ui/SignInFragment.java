@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +18,8 @@ import com.fyp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,9 +28,13 @@ public class SignInFragment extends Fragment {
     private static final String TAG = "EmailPassword";
 
     private NavController navController;
-    private EditText emailInput;
-    private EditText passwordInput;
+    private TextInputLayout emailInputLayout;
+    private TextInputLayout passwordInputLayout;
+    private TextInputEditText emailInputEditText;
+    private TextInputEditText passwordInputEditText;
+
     private CircularProgressIndicator circularProgressIndicator;
+    private LinearLayout formLinearLayout;
 
     private FirebaseAuth mAuth;
 
@@ -45,37 +51,43 @@ public class SignInFragment extends Fragment {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        emailInput = view.findViewById(R.id.login_fragment_email);
-        passwordInput = view.findViewById(R.id.login_fragment_password);
+        emailInputLayout = view.findViewById(R.id.sign_in_fragment_email_input_layout);
+        emailInputEditText = view.findViewById(R.id.sign_in_fragment_email_input_edit_text);
+        passwordInputLayout = view.findViewById(R.id.sign_in_fragment_password_input_layout);
+        passwordInputEditText = view.findViewById(R.id.sign_in_fragment_password_input_edit_text);
         circularProgressIndicator = view.findViewById(R.id.sign_in_fragment_circular_progress_indicator);
+        formLinearLayout = view.findViewById(R.id.sign_in_fragment_form_linear_layout);
 
         circularProgressIndicator.setVisibility(View.GONE);
 
         navController = Navigation.findNavController(view);
 
-        view.findViewById(R.id.login_fragment_button).setOnClickListener(loginButtonOnClickListener());
+        view.findViewById(R.id.sign_in_fragment_button).setOnClickListener(loginButtonOnClickListener());
     }
 
     View.OnClickListener loginButtonOnClickListener() {
         return view -> {
+            emailInputLayout.setError(null);
+            passwordInputLayout.setError(null);
             if (validateEmailInput() && validatePasswordInput()) {
+                formLinearLayout.setVisibility(View.INVISIBLE);
                 circularProgressIndicator.setVisibility(View.VISIBLE);
-                signInWithPassword(emailInput.getText().toString(), passwordInput.getText().toString());
+                signInWithPassword(emailInputEditText.getText().toString(), passwordInputEditText.getText().toString());
             }
         };
     }
 
     private boolean validateEmailInput() {
-        if (emailInput.getText().toString().equals("")) {
-            Toast.makeText(getActivity(), "Для входа в аккаунт необходимо указать почту", Toast.LENGTH_LONG).show();
+        if (emailInputEditText.getText().toString().equals("")) {
+            emailInputLayout.setError("Для входа в аккаунт необходимо указать почту");
             return false;
         }
         return true;
     }
 
     private boolean validatePasswordInput() {
-        if (passwordInput.getText().toString().equals("")) {
-            Toast.makeText(getActivity(), "Для входа в аккаунт необходимо указать пароль", Toast.LENGTH_LONG).show();
+        if (passwordInputEditText.getText().toString().equals("")) {
+            passwordInputLayout.setError("Для входа в аккаунт необходимо указать пароль");
             return false;
         }
         return true;
@@ -86,19 +98,23 @@ public class SignInFragment extends Fragment {
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        circularProgressIndicator.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user.isEmailVerified()) {
+                                circularProgressIndicator.setVisibility(View.GONE);
                                 Toast.makeText(getContext(), "Sign in user " + user.getDisplayName() + ", email " + user.getEmail(), Toast.LENGTH_SHORT).show();
                                 navigateToSearchFragment();
                             } else {
+                                formLinearLayout.setVisibility(View.VISIBLE);
+                                circularProgressIndicator.setVisibility(View.GONE);
                                 Toast.makeText(getContext(), "Для того, чтобы продолжить, подтвердите, пожалуйста, аккаунт", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             // If sign in fails, display a message to the user.
+                            formLinearLayout.setVisibility(View.VISIBLE);
+                            circularProgressIndicator.setVisibility(View.GONE);
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(getContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }

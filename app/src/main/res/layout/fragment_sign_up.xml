@@ -40,82 +40,80 @@
                 android:textColor="#000000"
                 android:textSize="20sp" />
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/sign_up_fragment_email_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:includeFontPadding="false"
-                android:paddingTop="40sp"
-                android:shadowColor="#0E0E0E"
-                android:text="Почта"
-                android:textColor="#000000"
-                android:textSize="20sp" />
+                android:layout_marginTop="40sp"
+                app:startIconDrawable="@drawable/ic_baseline_email_24"
+                android:hint="Почта"
+                app:errorEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" >
 
-            <EditText
-                android:id="@+id/sign_up_fragment_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="example@yandex.ru"
-                android:inputType="textEmailAddress" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/sign_up_fragment_email_input_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:includeFontPadding="false"
-                android:paddingTop="40sp"
-                android:shadowColor="#0E0E0E"
-                android:text="Ваше имя"
-                android:textColor="#000000"
-                android:textSize="20sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/sign_up_fragment_username"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/sign_up_fragment_name_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Имя"
-                android:inputType="textPersonName" />
+                android:layout_marginTop="20sp"
+                app:startIconDrawable="@drawable/ic_baseline_person_outline_24"
+                android:hint="Ваше имя"
+                app:errorEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" >
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:includeFontPadding="false"
-                android:paddingTop="40sp"
-                android:shadowColor="#0E0E0E"
-                android:text="Пароль"
-                android:textColor="#000000"
-                android:textSize="20sp" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/sign_up_fragment_name_input_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-thin"
-                android:includeFontPadding="false"
-                android:paddingTop="10sp"
-                android:shadowColor="#0E0E0E"
-                android:text="Длина пароля должна быть не менее 6 символов"
-                android:textColor="#000000"
-                android:textSize="15sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/sign_up_fragment_password"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/sign_up_fragment_password_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Введите пароль"
-                android:inputType="textPassword" />
+                android:layout_marginTop="20sp"
+                android:hint="Пароль"
+                app:errorEnabled="true"
+                app:endIconMode="password_toggle"
+                app:helperTextEnabled="true"
+                app:helperText="Длина пароля должна быть не менее 6 символов"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" >
 
-            <EditText
-                android:id="@+id/sign_up_fragment_repeat_password"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/sign_up_fragment_password_input_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/sign_up_fragment_repeat_password_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="20dp"
-                android:ems="10"
-                android:hint="Повторите введенный пароль"
-                android:inputType="textPassword" />
+                android:layout_marginTop="20sp"
+                android:hint="Повторите пароль"
+                app:errorEnabled="true"
+                app:endIconMode="password_toggle"
+                app:helperTextEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/sign_up_fragment_repeat_password_input_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/sign_up_fragment_button"
@@ -123,9 +121,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Зарегистрироваться"
                 android:layout_gravity="center"
-                android:textAppearance="@style/CustomButtonTextAppearance"
+                android:text="Зарегистрироваться"
                 android:textColor="#B3000000" />
 
             <Button
@@ -136,14 +133,16 @@
                 android:layout_marginTop="20dp"
                 android:text="Войти"
                 android:layout_gravity="center"
-                android:textAppearance="@style/CustomButtonTextAppearance"
                 android:textColor="#B3000000" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/sign_up_fragment_not_receive_mail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:fontFamily="sans-serif-light"
+                android:includeFontPadding="false"
+                android:paddingTop="10sp"
+                android:shadowColor="#0E0E0E"
                 android:text="Не получили письмо?"
                 android:textAppearance="@style/CustomButtonTextAppearance"
                 android:textColor="#000000"

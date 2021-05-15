@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +19,8 @@ import com.fyp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,10 +30,16 @@ public class SignUpFragment extends Fragment {
     private static final String TAG = SignUpFragment.class.getSimpleName();
 
     private NavController navController;
-    private EditText emailInput;
-    private EditText nameInput;
-    private EditText passwordInput;
-    private EditText passwordRepeatInput;
+    private TextInputLayout emailInput;
+    private TextInputLayout nameInput;
+    private TextInputLayout passwordInput;
+    private TextInputLayout passwordRepeatInput;
+
+    private TextInputEditText emailInputEdit;
+    private TextInputEditText nameInputEdit;
+    private TextInputEditText passwordInputEdit;
+    private TextInputEditText passwordRepeatInputEdit;
+
     private CircularProgressIndicator circularProgressIndicator;
 
     private Button notReceiveMail;
@@ -55,10 +62,16 @@ public class SignUpFragment extends Fragment {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        emailInput = view.findViewById(R.id.sign_up_fragment_email);
-        nameInput = view.findViewById(R.id.sign_up_fragment_username);
-        passwordInput = view.findViewById(R.id.sign_up_fragment_password);
-        passwordRepeatInput = view.findViewById(R.id.sign_up_fragment_repeat_password);
+        emailInput = view.findViewById(R.id.sign_up_fragment_email_input_layout);
+        nameInput = view.findViewById(R.id.sign_up_fragment_name_input_layout);
+        passwordInput = view.findViewById(R.id.sign_up_fragment_password_input_layout);
+        passwordRepeatInput = view.findViewById(R.id.sign_up_fragment_repeat_password_input_layout);
+
+        emailInputEdit = view.findViewById(R.id.sign_up_fragment_email_input_edit_text);
+        nameInputEdit = view.findViewById(R.id.sign_up_fragment_name_input_edit_text);
+        passwordInputEdit = view.findViewById(R.id.sign_up_fragment_password_input_edit_text);
+        passwordRepeatInputEdit = view.findViewById(R.id.sign_up_fragment_repeat_password_input_edit_text);
+
         circularProgressIndicator = view.findViewById(R.id.sign_up_fragment_circular_progress_indicator);
         notReceiveMail = view.findViewById(R.id.sign_up_fragment_not_receive_mail);
         alreadyHaveAccount = view.findViewById(R.id.sign_up_fragment_already_have_account);
@@ -79,9 +92,12 @@ public class SignUpFragment extends Fragment {
 
     View.OnClickListener signUpButtonOnClickListener() {
         return view -> {
+            emailInput.setError(null);
+            nameInput.setError(null);
+            passwordInput.setError(null);
             if (validateEmailInput() && validateNameInput() && validatePasswordInput()) {
                 circularProgressIndicator.setVisibility(View.VISIBLE);
-                createFirebasePasswordAccount(emailInput.getText().toString(), passwordInput.getText().toString());
+                createFirebasePasswordAccount(emailInputEdit.getText().toString(), passwordInputEdit.getText().toString());
             }
         };
     }
@@ -101,32 +117,32 @@ public class SignUpFragment extends Fragment {
     }
 
     private boolean validateEmailInput() {
-        if (emailInput.getText().toString().equals("")) {
-            Toast.makeText(getActivity(), "Для регистрации необходимо указать почту", Toast.LENGTH_LONG).show();
+        if (emailInputEdit.getText().toString().equals("")) {
+            emailInput.setError("Для регистрации необходимо указать почту");
             return false;
         }
         return true;
     }
 
     private boolean validateNameInput() {
-        if (nameInput.getText().toString().equals("")) {
-            Toast.makeText(getActivity(), "Для регистрации необходимо указать Ваше имя", Toast.LENGTH_LONG).show();
+        if (nameInputEdit.getText().toString().equals("")) {
+            nameInput.setError("Для регистрации необходимо указать Ваше имя");
             return false;
         }
         return true;
     }
 
     private boolean validatePasswordInput() {
-        if (passwordInput.getText().toString().equals("") || passwordRepeatInput.getText().toString().equals("")) {
-            Toast.makeText(getActivity(), "Для регистрации необходимо указать пароль и повторить его", Toast.LENGTH_LONG).show();
+        if (passwordInputEdit.getText().toString().equals("") || passwordRepeatInputEdit.getText().toString().equals("")) {
+            passwordInput.setError("Для регистрации необходимо указать пароль и повторить его");
             return false;
         }
-        if (passwordInput.getText().toString().length() < 6 || passwordRepeatInput.getText().toString().length() < 6) {
-            Toast.makeText(getActivity(), "Длина пароля должна быть не меньше 6 символов", Toast.LENGTH_LONG).show();
+        if (passwordInputEdit.getText().toString().length() < 6 || passwordRepeatInputEdit.getText().toString().length() < 6) {
+            passwordInput.setError("Длина пароля должна быть не меньше 6 символов");
             return false;
         }
-        if (!passwordInput.getText().toString().equals(passwordRepeatInput.getText().toString())) {
-            Toast.makeText(getActivity(), "Введенные пароли не совпадают", Toast.LENGTH_LONG).show();
+        if (!passwordInputEdit.getText().toString().equals(passwordRepeatInputEdit.getText().toString())) {
+            passwordInput.setError("Введенные пароли не совпадают");
             return false;
         }
         return true;
@@ -141,7 +157,7 @@ public class SignUpFragment extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateFirebaseUserName(user, nameInput.getText().toString());
+                            updateFirebaseUserName(user, nameInputEdit.getText().toString());
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
