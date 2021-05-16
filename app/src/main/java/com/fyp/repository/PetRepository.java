@@ -22,8 +22,8 @@ public class PetRepository {
         serverAPI = RetrofitClient.getRetrofitInstance().create(ServerAPI.class);
     }
 
-    public void getAllPets(final MutableLiveData<List<Pet>> data) {
-        serverAPI.getAllPets().enqueue(new Callback<List<Pet>>() {
+    public void getAllPets(final MutableLiveData<List<Pet>> data, String typeArray, String shelterArray) {
+        serverAPI.getAllPets(typeArray, shelterArray).enqueue(new Callback<List<Pet>>() {
             @Override
             public void onResponse(Call<List<Pet>> call, Response<List<Pet>> response) {
                 Log.d(TAG, "getAllPets onResponse response:");

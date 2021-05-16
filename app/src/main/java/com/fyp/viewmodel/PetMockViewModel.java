@@ -54,34 +54,34 @@ public class PetMockViewModel extends ViewModel {
         pets.setValue(petsList);
     }
 
-    public void loadCats() {
-        Log.d(TAG, "Create NEW list with cats");
-        List<PetMock> petsList = new ArrayList<>();
-        Shelter shelter = new Shelter();
-        shelter.setId(1);
-        shelter.setTitle("Тестовый приют");
-        shelter.setVk_link("https://vk.com/habr");
-        shelter.setSite_link("https://yandex.ru/");
-        petsList.add(new PetMock("1", "First cat", R.drawable.pet_mock_image, shelter));
-        petsList.add(new PetMock("2", "Second cat", R.drawable.pet_mock_image, shelter));
-        petsList.add(new PetMock("3", "Third cat", R.drawable.pet_mock_image, shelter));
-
-        pets.setValue(petsList);
-    }
-
-    public void loadDogs() {
-        Log.d(TAG,"Create NEW list with dogs");
-        List<PetMock> petsList = new ArrayList<>();
-        Shelter shelter = new Shelter();
-        shelter.setId(1);
-        shelter.setTitle("Тестовый приют");
-        shelter.setVk_link("https://vk.com/habr");
-        shelter.setSite_link("https://yandex.ru/");
-        petsList.add(new PetMock("4", "First dog", R.drawable.pet_mock_image, shelter));
-        petsList.add(new PetMock("5", "Second dog", R.drawable.pet_mock_image, shelter));
-        petsList.add(new PetMock("6", "Third dog", R.drawable.pet_mock_image, shelter));
-        pets.setValue(petsList);
-    }
+//    public void loadCats() {
+//        Log.d(TAG, "Create NEW list with cats");
+//        List<PetMock> petsList = new ArrayList<>();
+//        Shelter shelter = new Shelter();
+//        shelter.setId(1);
+//        shelter.setTitle("Тестовый приют");
+//        shelter.setVk_link("https://vk.com/habr");
+//        shelter.setSite_link("https://yandex.ru/");
+//        petsList.add(new PetMock("1", "First cat", R.drawable.pet_mock_image, shelter));
+//        petsList.add(new PetMock("2", "Second cat", R.drawable.pet_mock_image, shelter));
+//        petsList.add(new PetMock("3", "Third cat", R.drawable.pet_mock_image, shelter));
+//
+//        pets.setValue(petsList);
+//    }
+//
+//    public void loadDogs() {
+//        Log.d(TAG,"Create NEW list with dogs");
+//        List<PetMock> petsList = new ArrayList<>();
+//        Shelter shelter = new Shelter();
+//        shelter.setId(1);
+//        shelter.setTitle("Тестовый приют");
+//        shelter.setVk_link("https://vk.com/habr");
+//        shelter.setSite_link("https://yandex.ru/");
+//        petsList.add(new PetMock("4", "First dog", R.drawable.pet_mock_image, shelter));
+//        petsList.add(new PetMock("5", "Second dog", R.drawable.pet_mock_image, shelter));
+//        petsList.add(new PetMock("6", "Third dog", R.drawable.pet_mock_image, shelter));
+//        pets.setValue(petsList);
+//    }
 
     public void clearPets() {
         Log.d(TAG,"Clear pet list");

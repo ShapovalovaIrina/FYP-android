@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.fyp.network.RetrofitClient;
 import com.fyp.network.ServerAPI;
 import com.fyp.response.Shelter;
+import com.fyp.response.Type;
 
 import java.util.List;
 
@@ -14,11 +15,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ShelterRepository {
-    private final String TAG = ShelterRepository.class.getSimpleName();
+public class TypeShelterRepository {
+    private final String TAG = TypeShelterRepository.class.getSimpleName();
     private ServerAPI serverAPI;
 
-    public ShelterRepository() {
+    public TypeShelterRepository() {
         serverAPI = RetrofitClient.getRetrofitInstance().create(ServerAPI.class);
     }
 
@@ -35,6 +36,24 @@ public class ShelterRepository {
             @Override
             public void onFailure(Call<List<Shelter>> call, Throwable t) {
                 Log.d(TAG, "getAllShelters onFailure response: " + t.getMessage());
+                data.setValue(null);
+            }
+        });
+    }
+
+    public void getAllTypes(final MutableLiveData<List<Type>> data) {
+        serverAPI.getAllTypes().enqueue(new Callback<List<Type>>() {
+            @Override
+            public void onResponse(Call<List<Type>> call, Response<List<Type>> response) {
+                Log.d(TAG, "getAllTypes onResponse response:");
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Type>> call, Throwable t) {
+                Log.d(TAG, "getAllTypes onFailure response: " + t.getMessage());
                 data.setValue(null);
             }
         });

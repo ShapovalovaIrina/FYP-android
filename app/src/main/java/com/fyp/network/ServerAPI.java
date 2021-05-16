@@ -3,6 +3,7 @@ package com.fyp.network;
 import com.fyp.response.Pet;
 import com.fyp.response.Shelter;
 import com.fyp.response.Status;
+import com.fyp.response.Type;
 
 import java.util.List;
 
@@ -12,11 +13,15 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ServerAPI {
     /* Pets */
     @GET("/pets")
-    Call<List<Pet>> getAllPets();
+    Call<List<Pet>> getAllPets(
+            @Query("type_id") String typeArray,
+            @Query("shelter_id") String shelterArray
+    );
 
     /* Favourites */
     @GET("/users/favourite")
@@ -39,4 +44,9 @@ public interface ServerAPI {
     /* Shelters */
     @GET("/shelters")
     Call<List<Shelter>> getAllShelters();
+
+
+    /* Types */
+    @GET("/types")
+    Call<List<Type>> getAllTypes();
 }
