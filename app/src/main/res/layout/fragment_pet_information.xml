@@ -10,7 +10,7 @@
         android:id="@+id/fragment_pet_image"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:src="@drawable/pet_mock_image"
+        android:src="@drawable/dog_mock_image"
         android:scaleType="centerCrop" />
 
     <LinearLayout

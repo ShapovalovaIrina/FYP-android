@@ -20,6 +20,7 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class FilterView {
     private View rootView;
@@ -31,12 +32,16 @@ public class FilterView {
 
     private CheckBox parentCheckBoxTypes;
     private List<CheckBox> childCheckBoxesTypes = new ArrayList<>();
+    private List<Integer> childCheckBoxesTypesID = new ArrayList<>();
     private CheckBox parentCheckBoxShelters;
     private List<CheckBox> childCheckBoxesShelters = new ArrayList<>();
+    private List<Integer> childCheckBoxesSheltersID = new ArrayList<>();
 
     private CheckBox showMoreButton;
     private Button saveButton;
 
+    /* Функции, которые вызываются извне */
+    /* Сохранение состояния check boxes */
     public boolean getShelterParentCheckBoxState() {
         return parentCheckBoxShelters.isChecked();
     }
@@ -57,6 +62,27 @@ public class FilterView {
         return states;
     }
 
+    /* Считывание состояние check boxes для реализации фильтрации */
+    public String getTypeFilter() {
+        if (parentCheckBoxTypes.isChecked()) return null;
+        StringJoiner typeFilter = new StringJoiner(",");
+        for (int i = 0; i < childCheckBoxesTypes.size(); i++) {
+            if (childCheckBoxesTypes.get(i).isChecked()) typeFilter.add(Integer.toString(childCheckBoxesTypesID.get(i)));
+        }
+        return typeFilter.toString();
+    }
+
+    public String getShelterFilter() {
+        if (parentCheckBoxShelters.isChecked()) return null;
+        StringJoiner shelterFilter = new StringJoiner(",");
+        for (int i = 0; i < childCheckBoxesShelters.size(); i++) {
+            if (childCheckBoxesShelters.get(i).isChecked()) shelterFilter.add(Integer.toString(childCheckBoxesSheltersID.get(i)));
+        }
+        return shelterFilter.toString();
+    }
+
+    /* Функции, которые реализуют внутренюю логику */
+    /* Конструктор */
     public FilterView(
             View view,
             ViewModelStoreOwner requiredActivity,
@@ -77,8 +103,7 @@ public class FilterView {
 
         saveButton = view.findViewById(R.id.filter_view_save_button);
 
-        filterLinearLayout.setVisibility(View.GONE);
-        scrollRecyclerView.setVisibility(View.VISIBLE);
+        onCollapseFilterView();
 
         TypeShelterViewModel typeShelterViewModel = new ViewModelProvider(requiredActivity).get(TypeShelterViewModel.class);
         typeShelterViewModel.getShelters().observe(lifecycleOwner, shelters -> {
@@ -157,7 +182,6 @@ public class FilterView {
     }
 
     public void onExpandFilterView() {
-        Toast.makeText(rootView.getContext(), "Expand filter view", Toast.LENGTH_SHORT).show();
         // scrollViewLinearLayout.setBackgroundColor(getResources().getColor(R.color.colorGray));
         scrollRecyclerView.setVisibility(View.GONE);
 
@@ -166,7 +190,6 @@ public class FilterView {
     }
 
     public void onCollapseFilterView() {
-        Toast.makeText(rootView.getContext(), "Collapse filter view", Toast.LENGTH_SHORT).show();
         filterLinearLayout.setVisibility(View.GONE);
 
         // scrollViewLinearLayout.setBackgroundColor(getResources().getColor(R.color.colorWhite));
@@ -183,6 +206,7 @@ public class FilterView {
 
             childrenCheckBoxLinearLayoutShelters.addView(checkBox);
             childCheckBoxesShelters.add(checkBox);
+            childCheckBoxesSheltersID.add(s.getId());
         }
     }
 
@@ -196,6 +220,7 @@ public class FilterView {
 
             childrenCheckBoxLinearLayoutTypes.addView(checkBox);
             childCheckBoxesTypes.add(checkBox);
+            childCheckBoxesTypesID.add(t.getId());
         }
     }
 }

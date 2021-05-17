@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -21,6 +22,7 @@ import com.fyp.viewmodel.FavouriteViewModel;
 import com.fyp.viewmodel.PetMockViewModel;
 import com.fyp.viewmodel.PetViewModel;
 import com.fyp.viewmodel.SearchFragmentViewModel;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
@@ -41,6 +43,8 @@ public class SearchFragment extends Fragment {
     private PetViewModel petViewModel;
 
     private Button startSearch;
+    private TextView nothingFoundTextView;
+    private CircularProgressIndicator circularProgressIndicator;
 
     private FilterView filterView;
     private SearchFragmentViewModel searchFragmentViewModel;
@@ -66,6 +70,10 @@ public class SearchFragment extends Fragment {
 
         cardPetRecycleView = view.findViewById(R.id.search_fragment_recycle_view);
         startSearch = view.findViewById(R.id.search_fragment_start_search);
+        nothingFoundTextView = view.findViewById(R.id.search_fragment_nothing_found);
+        circularProgressIndicator = view.findViewById(R.id.search_fragment_circular_progress_indicator);
+
+        showRecyclerView();
 
         startSearch.setOnClickListener(startSearchButtonOnClickListener());
 
@@ -134,13 +142,18 @@ public class SearchFragment extends Fragment {
     private void setPetViewModelPetsObserver(PetViewModel petViewModel) {
         petViewModel.getPets().observe(getViewLifecycleOwner(), petResponse -> {
             if (petResponse != null) {
-                if (!firstSet) {
-                    cardPetAdapter.clearItems();
-                    cardPetAdapter.setItems(petResponse);
-                    cardPetRecycleView.scrollToPosition(0);
+                if (petResponse.size() == 0) {
+                    showNothingFound();
                 } else {
-                    cardPetAdapter.setItems(petResponse);
-                    firstSet = false;
+                    showRecyclerView();
+                    if (!firstSet) {
+                        cardPetAdapter.clearItems();
+                        cardPetAdapter.setItems(petResponse);
+                        cardPetRecycleView.scrollToPosition(0);
+                    } else {
+                        cardPetAdapter.setItems(petResponse);
+                        firstSet = false;
+                    }
                 }
             }
         });
@@ -148,13 +161,20 @@ public class SearchFragment extends Fragment {
 
     private void setPetMockViewModelPetsObserver(PetMockViewModel petMockViewModel) {
         petMockViewModel.getPets().observe(getViewLifecycleOwner(), petMocks -> {
-            if (!firstSet) {
-                cardPetMockAdapter.clearItems();
-                cardPetMockAdapter.setItems(petMocks);
-                cardPetRecycleView.scrollToPosition(0);
-            } else {
-                cardPetMockAdapter.setItems(petMocks);
-                firstSet = false;
+            if (petMocks != null) {
+                if (petMocks.size() == 0) {
+                    showNothingFound();
+                } else {
+                    showRecyclerView();
+                    if (!firstSet) {
+                        cardPetMockAdapter.clearItems();
+                        cardPetMockAdapter.setItems(petMocks);
+                        cardPetRecycleView.scrollToPosition(0);
+                    } else {
+                        cardPetMockAdapter.setItems(petMocks);
+                        firstSet = false;
+                    }
+                }
             }
         });
     }
@@ -164,10 +184,33 @@ public class SearchFragment extends Fragment {
     }
 
     private void loadPets() {
+        String typeFilter = filterView.getTypeFilter();
+        String shelterFilter = filterView.getShelterFilter();
+        Log.d(TAG, "Type: " + typeFilter + ". Shelter: " + shelterFilter);
+
+        showCircularProgressIndicator();
         if (SERVER_ENABLED) {
-            petViewModel.loadAllPets(null, null);
+            petViewModel.loadAllPets(typeFilter, shelterFilter);
         } else {
-            petMockViewModel.loadAllPets();
+            petMockViewModel.loadAllPets(typeFilter, shelterFilter);
         }
+    }
+
+    private void showRecyclerView() {
+        cardPetRecycleView.setVisibility(View.VISIBLE);
+        nothingFoundTextView.setVisibility(View.GONE);
+        circularProgressIndicator.setVisibility(View.GONE);
+    }
+
+    private void showCircularProgressIndicator() {
+        cardPetRecycleView.setVisibility(View.INVISIBLE);
+        nothingFoundTextView.setVisibility(View.GONE);
+        circularProgressIndicator.setVisibility(View.VISIBLE);
+    }
+
+    private void showNothingFound() {
+        cardPetRecycleView.setVisibility(View.INVISIBLE);
+        nothingFoundTextView.setVisibility(View.VISIBLE);
+        circularProgressIndicator.setVisibility(View.GONE);
     }
 }
