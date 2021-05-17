@@ -35,11 +35,11 @@ public class PetViewModel extends ViewModel {
         }
     }
 
-    public void loadAllPets() {
+    public void loadAllPets(String typeArray, String shelterArray) {
         if (petRepository == null) {
             petRepository = new PetRepository();
         }
-        petRepository.getAllPets(petResponse);
+        petRepository.getAllPets(petResponse, typeArray, shelterArray);
     }
 
     public void clearPets() {

@@ -47,7 +47,7 @@ public class FavouriteFragment extends Fragment {
         cardPetRecycleView = view.findViewById(R.id.favourite_fragment_recycle_view);
         cardPetRecycleView.addItemDecoration(new LinearHorizontalSpacingDecoration(32));
         cardPetRecycleView.setItemTransformer(new ScaleTransformer.Builder()
-                .setMaxScale(1.2f)
+                .setMaxScale(1.0f)
                 .setMinScale(0.8f)
                 .setPivotX(Pivot.X.CENTER) // CENTER is a default one
                 .setPivotY(Pivot.Y.CENTER) // CENTER is a default one

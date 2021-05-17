@@ -6,9 +6,12 @@ import java.util.List;
 
 public class SearchFragmentViewModel extends ViewModel {
     private Integer recycleViewItemPosition;
-    private List<Integer> checkedIds;
-    private boolean filterParentCheckBox;
-    private List<Boolean> filterChildrenCheckBoxes;
+
+    private boolean shelterFilterParentCheckBox;
+    private List<Boolean> shelterFilterChildrenCheckBoxes;
+    private boolean typeFilterParentCheckBox;
+    private List<Boolean> typeFilterChildrenCheckBoxes;
+
 
     public Integer getRecycleViewItemPosition() {
         return recycleViewItemPosition;
@@ -18,27 +21,35 @@ public class SearchFragmentViewModel extends ViewModel {
         this.recycleViewItemPosition = recycleViewItemPosition;
     }
 
-    public List<Integer> getCheckedIds() {
-        return checkedIds;
+    public boolean getShelterFilterParentCheckBox() {
+        return shelterFilterParentCheckBox;
     }
 
-    public void setCheckedIds(List<Integer> checkedIds) {
-        this.checkedIds = checkedIds;
+    public void setShelterFilterParentCheckBox(boolean shelterFilterParentCheckBox) {
+        this.shelterFilterParentCheckBox = shelterFilterParentCheckBox;
     }
 
-    public boolean getFilterParentCheckBox() {
-        return filterParentCheckBox;
+    public List<Boolean> getShelterFilterChildrenCheckBoxes() {
+        return shelterFilterChildrenCheckBoxes;
     }
 
-    public void setFilterParentCheckBox(boolean filterParentCheckBox) {
-        this.filterParentCheckBox = filterParentCheckBox;
+    public void setShelterFilterChildrenCheckBoxes(List<Boolean> shelterFilterChildrenCheckBoxes) {
+        this.shelterFilterChildrenCheckBoxes = shelterFilterChildrenCheckBoxes;
     }
 
-    public List<Boolean> getFilterChildrenCheckBoxes() {
-        return filterChildrenCheckBoxes;
+    public boolean getTypeFilterParentCheckBox() {
+        return typeFilterParentCheckBox;
     }
 
-    public void setFilterChildrenCheckBoxes(List<Boolean> filterChildrenCheckBoxes) {
-        this.filterChildrenCheckBoxes = filterChildrenCheckBoxes;
+    public void setTypeFilterParentCheckBox(boolean typeFilterParentCheckBox) {
+        this.typeFilterParentCheckBox = typeFilterParentCheckBox;
+    }
+
+    public List<Boolean> getTypeFilterChildrenCheckBoxes() {
+        return typeFilterChildrenCheckBoxes;
+    }
+
+    public void setTypeFilterChildrenCheckBoxes(List<Boolean> typeFilterChildrenCheckBoxes) {
+        this.typeFilterChildrenCheckBoxes = typeFilterChildrenCheckBoxes;
     }
 }

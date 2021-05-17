@@ -9,8 +9,10 @@ import androidx.lifecycle.ViewModel;
 import com.fyp.R;
 import com.fyp.pojo.PetMock;
 import com.fyp.response.Shelter;
+import com.fyp.response.Type;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PetMockViewModel extends ViewModel {
@@ -36,50 +38,29 @@ public class PetMockViewModel extends ViewModel {
         }
     }
 
-    public void loadAllPets() {
+    public void loadAllPets(String typeFilter, String shelterFilter) {
         Log.d(TAG,"Create NEW list with pets");
         List<PetMock> petsList = new ArrayList<>();
-        Shelter shelter = new Shelter();
-        shelter.setId(1);
-        shelter.setTitle("Тестовый приют");
-        shelter.setVk_link("https://vk.com/habr");
-        shelter.setSite_link("https://yandex.ru/");
-        petsList.add(new PetMock("1", "First cat", R.drawable.pet_mock_image, shelter));
-        petsList.add(new PetMock("2", "Second cat", R.drawable.pet_mock_image, shelter));
-        petsList.add(new PetMock("3", "Third cat", R.drawable.pet_mock_image, shelter));
-        petsList.add(new PetMock("4", "First dog", R.drawable.pet_mock_image, shelter));
-        petsList.add(new PetMock("5", "Second dog", R.drawable.pet_mock_image, shelter));
-        petsList.add(new PetMock("6", "Third dog", R.drawable.pet_mock_image, shelter));
+        Shelter shelter = new Shelter(1, "Тестовый приют", "https://vk.com/habr", "https://yandex.ru/");
+        Type cat = new Type(1, "Котик");
+        Type dog = new Type(2, "Собака");
 
-        pets.setValue(petsList);
-    }
+        petsList.add(new PetMock("1", "First cat", R.drawable.cat_mock_image, cat, shelter));
+        petsList.add(new PetMock("2", "Second cat", R.drawable.cat_mock_image, cat, shelter));
+        petsList.add(new PetMock("3", "Third cat", R.drawable.cat_mock_image, cat, shelter));
+        petsList.add(new PetMock("4", "First dog", R.drawable.dog_mock_image, dog, shelter));
+        petsList.add(new PetMock("5", "Second dog", R.drawable.dog_mock_image, dog, shelter));
+        petsList.add(new PetMock("6", "Third dog", R.drawable.dog_mock_image, dog, shelter));
 
-    public void loadCats() {
-        Log.d(TAG, "Create NEW list with cats");
-        List<PetMock> petsList = new ArrayList<>();
-        Shelter shelter = new Shelter();
-        shelter.setId(1);
-        shelter.setTitle("Тестовый приют");
-        shelter.setVk_link("https://vk.com/habr");
-        shelter.setSite_link("https://yandex.ru/");
-        petsList.add(new PetMock("1", "First cat", R.drawable.pet_mock_image, shelter));
-        petsList.add(new PetMock("2", "Second cat", R.drawable.pet_mock_image, shelter));
-        petsList.add(new PetMock("3", "Third cat", R.drawable.pet_mock_image, shelter));
+        if (typeFilter != null) {
+            List<String> typeFilterArray = Arrays.asList(typeFilter.split(","));
+            petsList.removeIf(p -> !typeFilterArray.contains(Integer.toString(p.getType().getId())));
+        }
+        if (shelterFilter != null) {
+            List<String> shelterFilterArray = Arrays.asList(shelterFilter.split(","));
+            petsList.removeIf(p -> !shelterFilterArray.contains(Integer.toString(p.getShelter().getId())));
+        }
 
-        pets.setValue(petsList);
-    }
-
-    public void loadDogs() {
-        Log.d(TAG,"Create NEW list with dogs");
-        List<PetMock> petsList = new ArrayList<>();
-        Shelter shelter = new Shelter();
-        shelter.setId(1);
-        shelter.setTitle("Тестовый приют");
-        shelter.setVk_link("https://vk.com/habr");
-        shelter.setSite_link("https://yandex.ru/");
-        petsList.add(new PetMock("4", "First dog", R.drawable.pet_mock_image, shelter));
-        petsList.add(new PetMock("5", "Second dog", R.drawable.pet_mock_image, shelter));
-        petsList.add(new PetMock("6", "Third dog", R.drawable.pet_mock_image, shelter));
         pets.setValue(petsList);
     }
 

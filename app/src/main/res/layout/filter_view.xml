@@ -10,15 +10,43 @@
     android:background="@color/colorWhite"
     android:id="@+id/filter_view_parent_linear_layout">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Типы питомцев"
+        android:textSize="18sp"/>
+
     <CheckBox
-        android:id="@+id/filter_view_parent_check_box"
+        android:id="@+id/filter_view_parent_check_box_types"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Все типы"
+        android:checked="true" />
+
+    <LinearLayout
+        android:id="@+id/filter_view_children_checkbox_linear_layout_types"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="20dp" >
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Приюты"
+        android:textSize="18sp"/>
+
+    <CheckBox
+        android:id="@+id/filter_view_parent_check_box_shelters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Все приюты"
         android:checked="true" />
 
     <LinearLayout
-        android:id="@+id/filter_view_children_checkbox_linear_layout"
+        android:id="@+id/filter_view_children_checkbox_linear_layout_shelters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

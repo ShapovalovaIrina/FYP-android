@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,14 +22,12 @@ import com.fyp.viewmodel.FavouriteViewModel;
 import com.fyp.viewmodel.PetMockViewModel;
 import com.fyp.viewmodel.PetViewModel;
 import com.fyp.viewmodel.SearchFragmentViewModel;
-import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.Pivot;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
-
-import java.util.List;
 
 import static com.fyp.constant.Constants.SERVER_ENABLED;
 
@@ -43,9 +42,9 @@ public class SearchFragment extends Fragment {
     private PetMockViewModel petMockViewModel;
     private PetViewModel petViewModel;
 
-    private MaterialButtonToggleGroup buttonToggleGroup;
-
-    private TextView startSearch;
+    private Button startSearch;
+    private TextView nothingFoundTextView;
+    private CircularProgressIndicator circularProgressIndicator;
 
     private FilterView filterView;
     private SearchFragmentViewModel searchFragmentViewModel;
@@ -55,9 +54,12 @@ public class SearchFragment extends Fragment {
     public void onPause() {
         super.onPause();
         searchFragmentViewModel.setRecycleViewItemPosition(cardPetRecycleView.getCurrentItem());
-        searchFragmentViewModel.setCheckedIds(buttonToggleGroup.getCheckedButtonIds());
-        searchFragmentViewModel.setFilterParentCheckBox(filterView.getParentCheckBoxState());
-        searchFragmentViewModel.setFilterChildrenCheckBoxes(filterView.getChildrenCheckBoxesState());
+
+        searchFragmentViewModel.setShelterFilterParentCheckBox(filterView.getShelterParentCheckBoxState());
+        searchFragmentViewModel.setShelterFilterChildrenCheckBoxes(filterView.getShelterChildrenCheckBoxesState());
+
+        searchFragmentViewModel.setTypeFilterParentCheckBox(filterView.getTypeParentCheckBoxState());
+        searchFragmentViewModel.setTypeFilterChildrenCheckBoxes(filterView.getTypeChildrenCheckBoxesState());
     }
 
     @Override
@@ -68,35 +70,30 @@ public class SearchFragment extends Fragment {
 
         cardPetRecycleView = view.findViewById(R.id.search_fragment_recycle_view);
         startSearch = view.findViewById(R.id.search_fragment_start_search);
-        buttonToggleGroup = view.findViewById(R.id.search_fragment_button_group);
+        nothingFoundTextView = view.findViewById(R.id.search_fragment_nothing_found);
+        circularProgressIndicator = view.findViewById(R.id.search_fragment_circular_progress_indicator);
 
-        /* Get searchFragmentViewModel
-        * Restore button state. IMPORTANT must be after buttonToggleGroup = view.findViewById */
+        showRecyclerView();
+
+        startSearch.setOnClickListener(startSearchButtonOnClickListener());
+
         searchFragmentViewModel = new ViewModelProvider(requireActivity()).get(SearchFragmentViewModel.class);
-        if (searchFragmentViewModel.getCheckedIds() != null && searchFragmentViewModel.getCheckedIds().size() != 0) {
-            startSearch.setVisibility(View.GONE);
-            cardPetRecycleView.setVisibility(View.VISIBLE);
-            for (int id : searchFragmentViewModel.getCheckedIds()) buttonToggleGroup.check(id);
-        } else {
-            startSearch.setVisibility(View.VISIBLE);
-            cardPetRecycleView.setVisibility(View.GONE);
-        }
 
-        /* Init views for filtering */
+        /* Create views for filtering */
         filterView = new FilterView(
                 view,
                 requireActivity(),
                 getViewLifecycleOwner(),
-                searchFragmentViewModel.getFilterParentCheckBox(),
-                searchFragmentViewModel.getFilterChildrenCheckBoxes()
+                searchFragmentViewModel.getShelterFilterParentCheckBox(),
+                searchFragmentViewModel.getTypeFilterParentCheckBox(),
+                searchFragmentViewModel.getShelterFilterChildrenCheckBoxes(),
+                searchFragmentViewModel.getTypeFilterChildrenCheckBoxes()
         );
-
-        buttonToggleGroup.addOnButtonCheckedListener(petTypeButtonToggleGroupListener());
 
         /* set up recycle view */
         cardPetRecycleView.addItemDecoration(new LinearHorizontalSpacingDecoration(32));
         cardPetRecycleView.setItemTransformer(new ScaleTransformer.Builder()
-                .setMaxScale(1.2f)
+                .setMaxScale(1.0f)
                 .setMinScale(0.8f)
                 .setPivotX(Pivot.X.CENTER) // CENTER is a default one
                 .setPivotY(Pivot.Y.CENTER) // CENTER is a default one
@@ -145,13 +142,18 @@ public class SearchFragment extends Fragment {
     private void setPetViewModelPetsObserver(PetViewModel petViewModel) {
         petViewModel.getPets().observe(getViewLifecycleOwner(), petResponse -> {
             if (petResponse != null) {
-                if (!firstSet) {
-                    cardPetAdapter.clearItems();
-                    cardPetAdapter.setItems(petResponse);
-                    cardPetRecycleView.scrollToPosition(0);
+                if (petResponse.size() == 0) {
+                    showNothingFound();
                 } else {
-                    cardPetAdapter.setItems(petResponse);
-                    firstSet = false;
+                    showRecyclerView();
+                    if (!firstSet) {
+                        cardPetAdapter.clearItems();
+                        cardPetAdapter.setItems(petResponse);
+                        cardPetRecycleView.scrollToPosition(0);
+                    } else {
+                        cardPetAdapter.setItems(petResponse);
+                        firstSet = false;
+                    }
                 }
             }
         });
@@ -159,65 +161,56 @@ public class SearchFragment extends Fragment {
 
     private void setPetMockViewModelPetsObserver(PetMockViewModel petMockViewModel) {
         petMockViewModel.getPets().observe(getViewLifecycleOwner(), petMocks -> {
-            if (!firstSet) {
-                cardPetMockAdapter.clearItems();
-                cardPetMockAdapter.setItems(petMocks);
-                cardPetRecycleView.scrollToPosition(0);
-            } else {
-                cardPetMockAdapter.setItems(petMocks);
-                firstSet = false;
+            if (petMocks != null) {
+                if (petMocks.size() == 0) {
+                    showNothingFound();
+                } else {
+                    showRecyclerView();
+                    if (!firstSet) {
+                        cardPetMockAdapter.clearItems();
+                        cardPetMockAdapter.setItems(petMocks);
+                        cardPetRecycleView.scrollToPosition(0);
+                    } else {
+                        cardPetMockAdapter.setItems(petMocks);
+                        firstSet = false;
+                    }
+                }
             }
         });
     }
 
-    MaterialButtonToggleGroup.OnButtonCheckedListener petTypeButtonToggleGroupListener() {
-        return (group, checkedId, isChecked) -> {
-            List<Integer> checkedIds = group.getCheckedButtonIds();
-            switch (checkedIds.size()) {
-                case 2:
-                    twoButtonsPressed();
-                    break;
-                case 1:
-                    oneButtonPressed(checkedIds.get(0));
-                    break;
-                case 0:
-                    zeroButtonPressed();
-                    break;
-            }
-        };
+    View.OnClickListener startSearchButtonOnClickListener() {
+        return view -> loadPets();
     }
 
-    private void twoButtonsPressed() {
+    private void loadPets() {
+        String typeFilter = filterView.getTypeFilter();
+        String shelterFilter = filterView.getShelterFilter();
+        Log.d(TAG, "Type: " + typeFilter + ". Shelter: " + shelterFilter);
+
+        showCircularProgressIndicator();
         if (SERVER_ENABLED) {
-            petViewModel.loadAllPets();
+            petViewModel.loadAllPets(typeFilter, shelterFilter);
         } else {
-            petMockViewModel.loadAllPets();
+            petMockViewModel.loadAllPets(typeFilter, shelterFilter);
         }
     }
 
-    private void oneButtonPressed(int checkedId) {
-        startSearch.setVisibility(View.GONE);
+    private void showRecyclerView() {
         cardPetRecycleView.setVisibility(View.VISIBLE);
-
-        if (SERVER_ENABLED) {
-            petViewModel.loadAllPets();
-        } else {
-            if (checkedId == R.id.search_fragment_cat_button) {
-                petMockViewModel.loadCats();
-            } else if (checkedId == R.id.search_fragment_dog_button) {
-                petMockViewModel.loadDogs();
-            }
-        }
+        nothingFoundTextView.setVisibility(View.GONE);
+        circularProgressIndicator.setVisibility(View.GONE);
     }
 
-    private void zeroButtonPressed() {
-        startSearch.setVisibility(View.VISIBLE);
-        cardPetRecycleView.setVisibility(View.GONE);
+    private void showCircularProgressIndicator() {
+        cardPetRecycleView.setVisibility(View.INVISIBLE);
+        nothingFoundTextView.setVisibility(View.GONE);
+        circularProgressIndicator.setVisibility(View.VISIBLE);
+    }
 
-        if (SERVER_ENABLED) {
-            petViewModel.clearPets();
-        } else {
-            petMockViewModel.clearPets();
-        }
+    private void showNothingFound() {
+        cardPetRecycleView.setVisibility(View.INVISIBLE);
+        nothingFoundTextView.setVisibility(View.VISIBLE);
+        circularProgressIndicator.setVisibility(View.GONE);
     }
 }
