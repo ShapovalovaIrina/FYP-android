@@ -133,7 +133,7 @@ public class SearchFragment extends Fragment {
                             getViewLifecycleOwner(),
                             idToken);
                     cardPetRecycleView.setAdapter(pagedCardPetAdapter);
-                    if (searchFragmentViewModel.getRecycleViewItemPosition() != null) cardPetRecycleView.scrollToPosition(searchFragmentViewModel.getRecycleViewItemPosition());
+                    setPreviousPetData(searchFragmentViewModel.getRecycleViewItemPosition());
                 } else {
                     Toast.makeText(getContext(), "Ошибка во время получения токена", Toast.LENGTH_SHORT).show();
                 }
@@ -154,6 +154,29 @@ public class SearchFragment extends Fragment {
         return view;
     }
 
+    private void setPreviousPetData(Integer position) {
+        LiveData<PagedList<Pet>> pagedListLiveData = pagedPetViewModel.getPetPagedList();
+        if (pagedListLiveData != null) {
+            pagedListLiveData.observe(getViewLifecycleOwner(), new Observer<PagedList<Pet>>() {
+                @Override
+                public void onChanged(PagedList<Pet> pets) {
+                    if (pets != null && pets.size() != 0) {
+                        showRecyclerView();
+                        pagedCardPetAdapter.submitList(pets);
+                        Log.d(TAG, "Show previous data");
+                        if (position != null) {
+                            Log.d(TAG, "Position " + position);
+                            cardPetRecycleView.scrollToPosition(position);
+                        } else {
+                            Log.d(TAG, "New position 0");
+                            cardPetRecycleView.scrollToPosition(0);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
     private void setPagedPetViewModelPetsObserver(String typeFilter, String shelterFilter) {
         LiveData<PagedList<Pet>> pagedListLiveData = pagedPetViewModel.getPetPagedList();
         if (pagedListLiveData != null) pagedListLiveData.removeObservers(getViewLifecycleOwner());
@@ -164,11 +187,7 @@ public class SearchFragment extends Fragment {
                 if (pets != null) {
                     showRecyclerView();
                     pagedCardPetAdapter.submitList(pets);
-                    if (!firstSet) {
-                        cardPetRecycleView.scrollToPosition(0);
-                    } else {
-                        firstSet = false;
-                    }
+                    cardPetRecycleView.scrollToPosition(0);
                 }
             }
         });
