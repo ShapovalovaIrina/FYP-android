@@ -16,30 +16,31 @@ import retrofit2.Response;
 
 public class PetDataSource extends PageKeyedDataSource<String, Pet> {
     private static final String TAG = PetDataSource.class.getSimpleName();
-    //the size of a page that we want
     public static final int LIMIT_SIZE = 5;
-
-    private static String CURSOR_AFTER = null;
-    private static String CURSOR_BEFORE = null;
 
     private static final String DIRECTION_AFTER = "after";
     private static final String DIRECTION_BEFORE = "before";
 
+    private String typeFilter;
+    private String shelterFilter;
+
     private ServerAPI serverAPI;
 
-    public PetDataSource() {
+    public PetDataSource(String typeFilter, String shelterFilter) {
         super();
         serverAPI = RetrofitClient.getRetrofitInstance().create(ServerAPI.class);
+        this.typeFilter = typeFilter;
+        this.shelterFilter = shelterFilter;
     }
 
     @Override
     public void loadInitial(@NonNull LoadInitialParams<String> params, @NonNull LoadInitialCallback<String, Pet> callback) {
-        serverAPI.getPetsChunks(null, null, LIMIT_SIZE, CURSOR_AFTER, DIRECTION_AFTER)
+        Log.d(TAG, "PetDataSource loadInitial. Type filter: " + typeFilter + ". Shelter filter: " + shelterFilter);
+        serverAPI.getPetsChunks(typeFilter, shelterFilter, LIMIT_SIZE, null, DIRECTION_AFTER)
                 .enqueue(new Callback<PetsWithMetadata>() {
                     @Override
                     public void onResponse(Call<PetsWithMetadata> call, Response<PetsWithMetadata> response) {
                         if (response.body() != null) {
-                            Log.d(TAG, "loadInitial. Response metadata : " + response.body().getMetadata().toString());
                             Log.d(TAG, "loadInitial. Response body size: " + response.body().getEntries().size());
                             for (Pet pet : response.body().getEntries()) {
                                 Log.d(TAG, pet.getName());
@@ -60,15 +61,12 @@ public class PetDataSource extends PageKeyedDataSource<String, Pet> {
 
     @Override
     public void loadBefore(@NonNull LoadParams<String> params, @NonNull LoadCallback<String, Pet> callback) {
-        serverAPI.getPetsChunks(null, null, LIMIT_SIZE, params.key, DIRECTION_BEFORE)
+        Log.d(TAG, "PetDataSource loadBefore. Type filter: " + typeFilter + ". Shelter filter: " + shelterFilter);
+        serverAPI.getPetsChunks(typeFilter, shelterFilter, LIMIT_SIZE, params.key, DIRECTION_BEFORE)
                 .enqueue(new Callback<PetsWithMetadata>() {
                     @Override
                     public void onResponse(Call<PetsWithMetadata> call, Response<PetsWithMetadata> response) {
                         if (response.body() != null) {
-                            Log.d(TAG, "loadBefore. Response body size: " + response.body().getEntries().size());
-                            for (Pet pet : response.body().getEntries()) {
-                                Log.d(TAG, pet.getName());
-                            }
                             callback.onResult(
                                     response.body().getEntries(),
                                     response.body().getMetadata().getBefore());
@@ -84,13 +82,12 @@ public class PetDataSource extends PageKeyedDataSource<String, Pet> {
 
     @Override
     public void loadAfter(@NonNull LoadParams<String> params, @NonNull LoadCallback<String, Pet> callback) {
-        Log.d(TAG, "loadAfter. Key value : " + params.key);
-        serverAPI.getPetsChunks(null, null, LIMIT_SIZE, params.key, DIRECTION_AFTER)
+        Log.d(TAG, "PetDataSource loadAfter. Type filter: " + typeFilter + ". Shelter filter: " + shelterFilter);
+        serverAPI.getPetsChunks(typeFilter, shelterFilter, LIMIT_SIZE, params.key, DIRECTION_AFTER)
                 .enqueue(new Callback<PetsWithMetadata>() {
                     @Override
                     public void onResponse(Call<PetsWithMetadata> call, Response<PetsWithMetadata> response) {
                         if (response.body() != null) {
-                            Log.d(TAG, "loadAfter. Response metadata : " + response.body().getMetadata().toString());
                             Log.d(TAG, "loadAfter. Response body size: " + response.body().getEntries().size());
                             for (Pet pet : response.body().getEntries()) {
                                 Log.d(TAG, pet.getName());

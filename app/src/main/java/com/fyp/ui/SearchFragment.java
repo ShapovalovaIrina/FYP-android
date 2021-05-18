@@ -10,12 +10,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.paging.PagedList;
 
 import com.fyp.R;
-import com.fyp.adapter.CardPetAdapter;
 import com.fyp.adapter.CardPetMockAdapter;
 import com.fyp.adapter.NavigationDirection;
 import com.fyp.adapter.PagedCardPetAdapter;
@@ -25,7 +25,6 @@ import com.fyp.viewmodel.FavouriteMockViewModel;
 import com.fyp.viewmodel.FavouriteViewModel;
 import com.fyp.viewmodel.PagedPetViewModel;
 import com.fyp.viewmodel.PetMockViewModel;
-import com.fyp.viewmodel.PetViewModel;
 import com.fyp.viewmodel.SearchFragmentViewModel;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,10 +41,10 @@ public class SearchFragment extends Fragment {
     private DiscreteScrollView cardPetRecycleView;
 
     private CardPetMockAdapter cardPetMockAdapter;
-//    private CardPetAdapter cardPetAdapter;
+    private PagedCardPetAdapter pagedCardPetAdapter;
 
     private PetMockViewModel petMockViewModel;
-//    private PetViewModel petViewModel;
+    private PagedPetViewModel pagedPetViewModel;
 
     private Button startSearch;
     private TextView nothingFoundTextView;
@@ -107,11 +106,20 @@ public class SearchFragment extends Fragment {
         /* set up card adapter and set it for recycler view,
            Pet view model, favourite view model */
         if (SERVER_ENABLED) {
-//            petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
-//            setPetViewModelPetsObserver(petViewModel);
-
-            PagedPetViewModel pagedPetViewModel = new ViewModelProvider(requireActivity()).get(PagedPetViewModel.class);
+            pagedPetViewModel = new ViewModelProvider(requireActivity()).get(PagedPetViewModel.class);
             FavouriteViewModel favouriteViewModel = new ViewModelProvider(requireActivity()).get(FavouriteViewModel.class);
+
+            pagedPetViewModel.getZeroItemsLiveData().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+                @Override
+                public void onChanged(Boolean isZero) {
+                    if (isZero) {
+                        Toast.makeText(getContext(), "Nothing found", Toast.LENGTH_SHORT).show();
+                        showNothingFound();
+                    } else {
+                        showRecyclerView();
+                    }
+                }
+            });
 
             /* Init adapter with Firebase id token */
             FirebaseUser firebaseCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -119,25 +127,13 @@ public class SearchFragment extends Fragment {
                 if (task.isSuccessful()) {
                     String idToken = task.getResult().getToken();
 
-                    PagedCardPetAdapter pagedCardPetAdapter = new PagedCardPetAdapter(
+                    pagedCardPetAdapter = new PagedCardPetAdapter(
                             NavigationDirection.FROM_SEARCH_TO_PET,
                             favouriteViewModel,
                             getViewLifecycleOwner(),
                             idToken);
-                    pagedPetViewModel.getPetPagedList().observe(getViewLifecycleOwner(), new Observer<PagedList<Pet>>() {
-                        @Override
-                        public void onChanged(PagedList<Pet> pets) {
-                            pagedCardPetAdapter.submitList(pets);
-                        }
-                    });
                     cardPetRecycleView.setAdapter(pagedCardPetAdapter);
-//                    cardPetAdapter = new CardPetAdapter(
-//                            NavigationDirection.FROM_SEARCH_TO_PET,
-//                            favouriteViewModel,
-//                            getViewLifecycleOwner(),
-//                            idToken);
-//                    cardPetRecycleView.setAdapter(cardPetAdapter);
-//                    if (searchFragmentViewModel.getRecycleViewItemPosition() != null) cardPetRecycleView.scrollToPosition(searchFragmentViewModel.getRecycleViewItemPosition());
+                    if (searchFragmentViewModel.getRecycleViewItemPosition() != null) cardPetRecycleView.scrollToPosition(searchFragmentViewModel.getRecycleViewItemPosition());
                 } else {
                     Toast.makeText(getContext(), "Ошибка во время получения токена", Toast.LENGTH_SHORT).show();
                 }
@@ -158,25 +154,25 @@ public class SearchFragment extends Fragment {
         return view;
     }
 
-//    private void setPetViewModelPetsObserver(PetViewModel petViewModel) {
-//        petViewModel.getPets().observe(getViewLifecycleOwner(), petResponse -> {
-//            if (petResponse != null) {
-//                if (petResponse.size() == 0) {
-//                    showNothingFound();
-//                } else {
-//                    showRecyclerView();
-//                    if (!firstSet) {
-//                        cardPetAdapter.clearItems();
-//                        cardPetAdapter.setItems(petResponse);
-//                        cardPetRecycleView.scrollToPosition(0);
-//                    } else {
-//                        cardPetAdapter.setItems(petResponse);
-//                        firstSet = false;
-//                    }
-//                }
-//            }
-//        });
-//    }
+    private void setPagedPetViewModelPetsObserver(String typeFilter, String shelterFilter) {
+        LiveData<PagedList<Pet>> pagedListLiveData = pagedPetViewModel.getPetPagedList();
+        if (pagedListLiveData != null) pagedListLiveData.removeObservers(getViewLifecycleOwner());
+
+        pagedPetViewModel.getPetPagedList(typeFilter, shelterFilter).observe(getViewLifecycleOwner(), new Observer<PagedList<Pet>>() {
+            @Override
+            public void onChanged(PagedList<Pet> pets) {
+                if (pets != null) {
+                    showRecyclerView();
+                    pagedCardPetAdapter.submitList(pets);
+                    if (!firstSet) {
+                        cardPetRecycleView.scrollToPosition(0);
+                    } else {
+                        firstSet = false;
+                    }
+                }
+            }
+        });
+    }
 
     private void setPetMockViewModelPetsObserver(PetMockViewModel petMockViewModel) {
         petMockViewModel.getPets().observe(getViewLifecycleOwner(), petMocks -> {
@@ -209,8 +205,7 @@ public class SearchFragment extends Fragment {
 
         showCircularProgressIndicator();
         if (SERVER_ENABLED) {
-            Log.d(TAG, "loadPets, SERVER_ENABLED data commented");
-//            petViewModel.loadAllPets(typeFilter, shelterFilter);
+            setPagedPetViewModelPetsObserver(typeFilter, shelterFilter);
         } else {
             petMockViewModel.loadAllPets(typeFilter, shelterFilter);
         }
