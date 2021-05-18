@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Pet {
     @SerializedName("birth")
@@ -131,5 +132,26 @@ public class Pet {
                 ", photos=" + photos +
                 ", shelter=" + shelter +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pet pet = (Pet) o;
+        return Objects.equals(birth, pet.birth) &&
+                Objects.equals(breed, pet.breed) &&
+                Objects.equals(description, pet.description) &&
+                Objects.equals(gender, pet.gender) &&
+                Objects.equals(height, pet.height) &&
+                id.equals(pet.id) &&
+                name.equals(pet.name) &&
+                Objects.equals(photos, pet.photos) &&
+                Objects.equals(shelter, pet.shelter);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(birth, breed, description, gender, height, id, name, photos, shelter);
     }
 }
