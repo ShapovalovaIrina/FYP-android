@@ -33,6 +33,8 @@ import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.Pivot;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
+import java.util.ArrayList;
+
 import static com.fyp.constant.Constants.SERVER_ENABLED;
 
 public class SearchFragment extends Fragment {
@@ -113,10 +115,7 @@ public class SearchFragment extends Fragment {
                 @Override
                 public void onChanged(Boolean isZero) {
                     if (isZero) {
-                        Toast.makeText(getContext(), "Nothing found", Toast.LENGTH_SHORT).show();
                         showNothingFound();
-                    } else {
-                        showRecyclerView();
                     }
                 }
             });
@@ -147,6 +146,7 @@ public class SearchFragment extends Fragment {
                     NavigationDirection.FROM_SEARCH_TO_PET,
                     favouriteMockViewModel,
                     getViewLifecycleOwner());
+            cardPetMockAdapter.setItems(new ArrayList<>());
             cardPetRecycleView.setAdapter(cardPetMockAdapter);
             if (searchFragmentViewModel.getRecycleViewItemPosition() != null) cardPetRecycleView.scrollToPosition(searchFragmentViewModel.getRecycleViewItemPosition());
         }
@@ -161,7 +161,6 @@ public class SearchFragment extends Fragment {
                 @Override
                 public void onChanged(PagedList<Pet> pets) {
                     if (pets != null && pets.size() != 0) {
-                        showRecyclerView();
                         pagedCardPetAdapter.submitList(pets);
                         Log.d(TAG, "Show previous data");
                         if (position != null) {
@@ -197,6 +196,7 @@ public class SearchFragment extends Fragment {
         petMockViewModel.getPets().observe(getViewLifecycleOwner(), petMocks -> {
             if (petMocks != null) {
                 if (petMocks.size() == 0) {
+                    cardPetMockAdapter.clearItems();
                     showNothingFound();
                 } else {
                     showRecyclerView();
@@ -233,7 +233,7 @@ public class SearchFragment extends Fragment {
     private void showRecyclerView() {
         cardPetRecycleView.setVisibility(View.VISIBLE);
         nothingFoundTextView.setVisibility(View.GONE);
-        circularProgressIndicator.setVisibility(View.GONE);
+         circularProgressIndicator.setVisibility(View.GONE);
     }
 
     private void showCircularProgressIndicator() {
@@ -245,6 +245,6 @@ public class SearchFragment extends Fragment {
     private void showNothingFound() {
         cardPetRecycleView.setVisibility(View.INVISIBLE);
         nothingFoundTextView.setVisibility(View.VISIBLE);
-        circularProgressIndicator.setVisibility(View.GONE);
+         circularProgressIndicator.setVisibility(View.GONE);
     }
 }
