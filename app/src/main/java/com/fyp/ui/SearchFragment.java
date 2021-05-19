@@ -146,7 +146,6 @@ public class SearchFragment extends Fragment {
                     NavigationDirection.FROM_SEARCH_TO_PET,
                     favouriteMockViewModel,
                     getViewLifecycleOwner());
-            cardPetMockAdapter.setItems(new ArrayList<>());
             cardPetRecycleView.setAdapter(cardPetMockAdapter);
             if (searchFragmentViewModel.getRecycleViewItemPosition() != null) cardPetRecycleView.scrollToPosition(searchFragmentViewModel.getRecycleViewItemPosition());
         }
@@ -233,7 +232,7 @@ public class SearchFragment extends Fragment {
     private void showRecyclerView() {
         cardPetRecycleView.setVisibility(View.VISIBLE);
         nothingFoundTextView.setVisibility(View.GONE);
-         circularProgressIndicator.setVisibility(View.GONE);
+        circularProgressIndicator.setVisibility(View.GONE);
     }
 
     private void showCircularProgressIndicator() {
@@ -245,6 +244,6 @@ public class SearchFragment extends Fragment {
     private void showNothingFound() {
         cardPetRecycleView.setVisibility(View.INVISIBLE);
         nothingFoundTextView.setVisibility(View.VISIBLE);
-         circularProgressIndicator.setVisibility(View.GONE);
+        circularProgressIndicator.setVisibility(View.GONE);
     }
 }

@@ -129,14 +129,6 @@ public class PagedCardPetAdapter extends PagedListAdapter<Pet, PagedCardPetAdapt
         }
     }
 
-    @NonNull
-    @Override
-    public PagedCardPetAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_pet, parent, false);
-        return new PagedCardPetAdapter.ViewHolder(view);
-    }
-
     public PagedCardPetAdapter(
             NavigationDirection navigationDirection,
             FavouriteViewModel favouriteViewModel,
@@ -147,6 +139,14 @@ public class PagedCardPetAdapter extends PagedListAdapter<Pet, PagedCardPetAdapt
         this.favouriteViewModel = favouriteViewModel;
         this.idToken = idToken;
         favouriteViewModel.getFavouritePetsIds(idToken).observe(lifecycleOwner, strings -> favouritePetsIds = strings);
+    }
+
+    @NonNull
+    @Override
+    public PagedCardPetAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.card_pet, parent, false);
+        return new PagedCardPetAdapter.ViewHolder(view);
     }
 
     @Override
