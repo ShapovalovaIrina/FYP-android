@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.paging.PagedList;
 
 import com.bumptech.glide.Glide;
 import com.fyp.R;
@@ -29,8 +30,8 @@ import com.fyp.response.Pet;
 import com.fyp.response.Shelter;
 import com.fyp.viewmodel.FavouriteMockViewModel;
 import com.fyp.viewmodel.FavouriteViewModel;
+import com.fyp.viewmodel.PagedPetViewModel;
 import com.fyp.viewmodel.PetMockViewModel;
-import com.fyp.viewmodel.PetViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -103,9 +104,12 @@ public class PetFragment extends Fragment {
 
     private void initSearchViewModel(int absoluteAdapterPosition) {
         // set up pet info from search adapter position
-        PetViewModel petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
-        pet = petViewModel.getPet(absoluteAdapterPosition);
-        setPetInformation(pet);
+        PagedPetViewModel pagedPetViewModel = new ViewModelProvider(requireActivity()).get(PagedPetViewModel.class);
+        PagedList<Pet> pagedList = pagedPetViewModel.getPetPagedList().getValue();
+        if (pagedList != null) {
+            pet = pagedList.get(absoluteAdapterPosition);
+            setPetInformation(pet);
+        }
 
         // set up favourite view model for add/remove favourite pet
         favouriteViewModel = new ViewModelProvider(requireActivity()).get(FavouriteViewModel.class);

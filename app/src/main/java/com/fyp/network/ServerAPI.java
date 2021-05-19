@@ -1,6 +1,7 @@
 package com.fyp.network;
 
 import com.fyp.response.Pet;
+import com.fyp.response.PetsWithMetadata;
 import com.fyp.response.Shelter;
 import com.fyp.response.Status;
 import com.fyp.response.Type;
@@ -21,6 +22,15 @@ public interface ServerAPI {
     Call<List<Pet>> getAllPets(
             @Query("type_id") String typeArray,
             @Query("shelter_id") String shelterArray
+    );
+
+    @GET("/pets/chunks")
+    Call<PetsWithMetadata> getPetsChunks(
+            @Query("type_id") String typeArray,
+            @Query("shelter_id") String shelterArray,
+            @Query("limit") int limit,
+            @Query("cursor") String cursor,
+            @Query("direction") String direction
     );
 
     /* Favourites */
