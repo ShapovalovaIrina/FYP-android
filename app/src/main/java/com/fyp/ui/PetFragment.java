@@ -25,21 +25,16 @@ import androidx.paging.PagedList;
 import com.bumptech.glide.Glide;
 import com.fyp.R;
 import com.fyp.adapter.NavigationDirection;
-import com.fyp.pojo.PetMock;
 import com.fyp.response.Pet;
 import com.fyp.response.Shelter;
-import com.fyp.viewmodel.FavouriteMockViewModel;
 import com.fyp.viewmodel.FavouriteViewModel;
 import com.fyp.viewmodel.PagedPetViewModel;
-import com.fyp.viewmodel.PetMockViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
-
-import static com.fyp.constant.Constants.SERVER_ENABLED;
 
 public class PetFragment extends Fragment {
     private final String TAG = PetFragment.class.getSimpleName();
@@ -49,9 +44,7 @@ public class PetFragment extends Fragment {
     private CheckBox favouriteCheckBox;
 
     private Pet pet;
-    private PetMock mockPet;
     private FavouriteViewModel favouriteViewModel;
-    private FavouriteMockViewModel favouriteMockViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,19 +69,11 @@ public class PetFragment extends Fragment {
         favouriteCheckBox.setChecked(isFavourite);
         switch (navigationDirection) {
             case FROM_SEARCH_TO_PET:
-                if (SERVER_ENABLED) {
-                    initSearchViewModel(absoluteAdapterPosition);
-                } else {
-                    initSearchMockViewModel(absoluteAdapterPosition);
-                }
+                initSearchViewModel(absoluteAdapterPosition);
                 break;
             case FROM_FAVOURITE_TO_PET:
                 favouriteCheckBox.setChecked(true);
-                if (SERVER_ENABLED) {
-                    initFavouriteViewModel(absoluteAdapterPosition);
-                } else {
-                    initFavouriteMockViewModel(absoluteAdapterPosition);
-                }
+                initFavouriteViewModel(absoluteAdapterPosition);
                 break;
             case NONE:
                 Toast.makeText(getContext(), "NONE navigationDirection", Toast.LENGTH_SHORT).show();
@@ -122,17 +107,6 @@ public class PetFragment extends Fragment {
         favouriteCheckBox.setOnCheckedChangeListener(favouriteButtonOnCheckedChangeListener());
     }
 
-    private void initSearchMockViewModel(int absoluteAdapterPosition) {
-        // set up pet info from search adapter position
-        PetMockViewModel petMockViewModel = new ViewModelProvider(requireActivity()).get(PetMockViewModel.class);
-        mockPet = petMockViewModel.getPet(absoluteAdapterPosition);
-        setPetMockInformation(mockPet);
-
-        // set up favourite view model for add/remove favourite pet
-        favouriteMockViewModel = new ViewModelProvider(requireActivity()).get(FavouriteMockViewModel.class);
-        favouriteCheckBox.setOnCheckedChangeListener(favouriteButtonMockOnCheckedChangeListener());
-    }
-
     private void initFavouriteViewModel(int absoluteAdapterPosition) {
         favouriteViewModel = new ViewModelProvider(requireActivity()).get(FavouriteViewModel.class);
         pet = favouriteViewModel.getPet(absoluteAdapterPosition);
@@ -141,71 +115,29 @@ public class PetFragment extends Fragment {
         favouriteCheckBox.setOnCheckedChangeListener(favouriteButtonOnCheckedChangeListener());
     }
 
-    private void initFavouriteMockViewModel(int absoluteAdapterPosition) {
-        favouriteMockViewModel = new ViewModelProvider(requireActivity()).get(FavouriteMockViewModel.class);
-        mockPet = favouriteMockViewModel.getPet(absoluteAdapterPosition);
-        setPetMockInformation(mockPet);
-
-        favouriteCheckBox.setOnCheckedChangeListener(favouriteButtonMockOnCheckedChangeListener());
-    }
-
     CompoundButton.OnCheckedChangeListener favouriteButtonOnCheckedChangeListener() {
-        return new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (favouriteViewModel != null) {
-                    FirebaseUser firebaseCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
-                    firebaseCurrentUser.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                            if (task.isSuccessful()) {
-                                String token = task.getResult().getToken();
-                                if (isChecked) {
-                                    favouriteViewModel.addFavourite(token, pet);
-                                    favouriteViewModel.addFavouriteId(pet.getId());
-                                } else {
-                                    favouriteViewModel.removeFavourite(token, pet);
-                                    favouriteViewModel.removeFavouriteId(pet.getId());
-                                }
+        return (compoundButton, isChecked) -> {
+            if (favouriteViewModel != null) {
+                FirebaseUser firebaseCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+                firebaseCurrentUser.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                        if (task.isSuccessful()) {
+                            String token = task.getResult().getToken();
+                            if (isChecked) {
+                                favouriteViewModel.addFavourite(token, pet);
+                                favouriteViewModel.addFavouriteId(pet.getId());
                             } else {
-                                Log.d(TAG, "Error in firebaseCurrentUser.getIdToken. task.isSuccessful false");
+                                favouriteViewModel.removeFavourite(token, pet);
+                                favouriteViewModel.removeFavouriteId(pet.getId());
                             }
+                        } else {
+                            Log.d(TAG, "Error in firebaseCurrentUser.getIdToken. task.isSuccessful false");
                         }
-                    });
-                }
-            }
-        };
-    }
-
-    CompoundButton.OnCheckedChangeListener favouriteButtonMockOnCheckedChangeListener() {
-        return new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                Log.d(TAG, "favouriteButton state changed to " + isChecked);
-                if (favouriteMockViewModel != null)
-                    if (isChecked) {
-                        Log.d(TAG, "favouriteMockViewModel.addFavourite");
-                        favouriteMockViewModel.addFavourite(mockPet);
-                        favouriteMockViewModel.addFavouriteId(mockPet.getId());
-                    } else {
-                        Log.d(TAG, "favouriteMockViewModel.removeFavourite");
-                        favouriteMockViewModel.removeFavourite(mockPet);
-                        favouriteMockViewModel.removeFavouriteId(mockPet.getId());
                     }
+                });
             }
         };
-    }
-
-    private void setPetMockInformation(PetMock petMock) {
-        if (petMock != null) {
-            setName(petMock.getName());
-            setImage(petMock.getResourceId());
-            setBreed(null);
-            setBirth(null);
-            setGender(null);
-            setDescription(null);
-            setShelter(petMock.getShelter());
-        }
     }
 
     private void setPetInformation(Pet pet) {
@@ -222,10 +154,6 @@ public class PetFragment extends Fragment {
 
     private void setName(@NonNull String name) {
         ((TextView) rootView.findViewById(R.id.fragment_pet_information_name)).setText(name);
-    }
-
-    private void setImage(@NonNull Integer resourceId) {
-        ((ImageView) rootView.findViewById(R.id.fragment_pet_image)).setImageResource(resourceId);
     }
 
     private void setImage(@NonNull String imageURL) {

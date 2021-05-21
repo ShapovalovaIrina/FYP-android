@@ -12,13 +12,21 @@ import com.fyp.response.Pet;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.fyp.constant.Constants.SERVER_ENABLED;
+
 public class FavouriteViewModel extends ViewModel {
     private FavouriteRepository favouriteRepository;
+
     private MutableLiveData<List<Pet>> favouritePets;
     private MutableLiveData<HashSet<String>> favouritePetsIds;
+
     private MutableLiveData<Integer> codeResponse;
 
     private final static String TAG = FavouriteViewModel.class.getSimpleName();
+
+    public FavouriteViewModel() {
+        favouriteRepository = new FavouriteRepository();
+    }
 
     public LiveData<List<Pet>> getFavouritePets(String JWTToken) {
         Log.d(TAG, "FavouriteViewModel getFavouritePets");
@@ -48,12 +56,15 @@ public class FavouriteViewModel extends ViewModel {
     }
 
     public void loadAllFavourite(String JWTToken) {
-        if (favouriteRepository == null) favouriteRepository = new FavouriteRepository();
         if (favouritePets == null) favouritePets = new MutableLiveData<>();
         if (favouritePetsIds == null) favouritePetsIds = new MutableLiveData<>();
-        if (codeResponse == null) codeResponse = new MutableLiveData<>();
 
-        favouriteRepository.getAllFavouritePets(favouritePets, favouritePetsIds, codeResponse, JWTToken);
+        if (SERVER_ENABLED) {
+            if (codeResponse == null) codeResponse = new MutableLiveData<>();
+            favouriteRepository.getAllFavouritePets(favouritePets, favouritePetsIds, codeResponse, JWTToken);
+        } else {
+            favouritePetsIds.setValue(new HashSet<>());
+        }
     }
 
     public Pet getPet(int position) {
@@ -66,11 +77,14 @@ public class FavouriteViewModel extends ViewModel {
     }
 
     public void addFavourite(String JWTToken, Pet pet) {
-        if (favouriteRepository == null) favouriteRepository = new FavouriteRepository();
         if (favouritePets == null) favouritePets = new MutableLiveData<>();
-        if (codeResponse == null) codeResponse = new MutableLiveData<>();
 
-        favouriteRepository.addFavourite(favouritePets, codeResponse, JWTToken, pet);
+        if (SERVER_ENABLED) {
+            if (codeResponse == null) codeResponse = new MutableLiveData<>();
+            favouriteRepository.addFavourite(favouritePets, codeResponse, JWTToken, pet);
+        } else {
+            favouriteRepository.addFavourite(favouritePets, pet);
+        }
     }
 
     public void addFavouriteId(String petId) {
@@ -84,11 +98,14 @@ public class FavouriteViewModel extends ViewModel {
     }
 
     public void removeFavourite(String JWTToken, Pet pet) {
-        if (favouriteRepository == null) favouriteRepository = new FavouriteRepository();
         if (favouritePets == null) favouritePets = new MutableLiveData<>();
-        if (codeResponse == null) codeResponse = new MutableLiveData<>();
 
-        favouriteRepository.removeFavourite(favouritePets, codeResponse, JWTToken, pet);
+        if (SERVER_ENABLED) {
+            if (codeResponse == null) codeResponse = new MutableLiveData<>();
+            favouriteRepository.removeFavourite(favouritePets, codeResponse, JWTToken, pet);
+        } else {
+            favouriteRepository.removeFavourite(favouritePets, pet);
+        }
     }
 
     public void removeFavouriteId(String petId) {
