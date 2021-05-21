@@ -16,7 +16,8 @@ public class PagedPetViewModel extends ViewModel {
     }
 
     public LiveData<PagedList<Pet>> getPetPagedList(String typeFilter, String shelterFilter) {
-        return pagedPetRepository.getPagedPetList(typeFilter, shelterFilter);
+        petPagedList = pagedPetRepository.getPagedPetList(typeFilter, shelterFilter);
+        return petPagedList;
     }
 
     public LiveData<PagedList<Pet>> getPetPagedList() {
