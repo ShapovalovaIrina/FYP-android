@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.fyp.network.RetrofitClient;
 import com.fyp.network.ServerAPI;
-import com.fyp.pojo.PetMock;
 import com.fyp.response.Pet;
 import com.fyp.response.Status;
 

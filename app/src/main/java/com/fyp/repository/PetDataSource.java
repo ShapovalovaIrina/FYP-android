@@ -5,10 +5,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.paging.PageKeyedDataSource;
 
-import com.fyp.R;
 import com.fyp.network.RetrofitClient;
 import com.fyp.network.ServerAPI;
-import com.fyp.pojo.PetMock;
 import com.fyp.response.Pet;
 import com.fyp.response.PetsWithMetadata;
 import com.fyp.response.Shelter;
@@ -29,7 +27,6 @@ public class PetDataSource extends PageKeyedDataSource<String, Pet> {
     public static final int LIMIT_SIZE = 5;
 
     private static final String DIRECTION_AFTER = "after";
-    private static final String DIRECTION_BEFORE = "before";
 
     private String typeFilter;
     private String shelterFilter;

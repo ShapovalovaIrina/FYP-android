@@ -18,12 +18,6 @@ import retrofit2.http.Query;
 
 public interface ServerAPI {
     /* Pets */
-    @GET("/pets")
-    Call<List<Pet>> getAllPets(
-            @Query("type_id") String typeArray,
-            @Query("shelter_id") String shelterArray
-    );
-
     @GET("/pets/chunks")
     Call<PetsWithMetadata> getPetsChunks(
             @Query("type_id") String typeArray,

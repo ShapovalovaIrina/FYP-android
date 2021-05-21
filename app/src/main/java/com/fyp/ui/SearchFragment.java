@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.paging.PagedList;
 
@@ -99,7 +98,6 @@ public class SearchFragment extends Fragment {
         /* set up card adapter and set it for recycler view,
            Pet view model, favourite view model */
         pagedPetViewModel.getZeroItemsLiveData().observe(getViewLifecycleOwner(), isZero -> {
-            Toast.makeText(getContext(), "Zero items loaded " + isZero, Toast.LENGTH_SHORT).show();
             if (isZero) {
                 haveZeroItems = true;
                 showNothingFound();
@@ -130,19 +128,15 @@ public class SearchFragment extends Fragment {
     private void setPreviousPetData(Integer position) {
         LiveData<PagedList<Pet>> pagedListLiveData = pagedPetViewModel.getPetPagedList();
         if (pagedListLiveData != null) {
-            pagedListLiveData.observe(getViewLifecycleOwner(), new Observer<PagedList<Pet>>() {
-                @Override
-                public void onChanged(PagedList<Pet> pets) {
-                    if (pets != null && pets.size() != 0) {
-                        pagedCardPetAdapter.submitList(pets);
-                        Log.d(TAG, "Show previous data");
-                        if (position != null) {
-                            Log.d(TAG, "Position " + position);
-                            cardPetRecycleView.scrollToPosition(position);
-                        } else {
-                            Log.d(TAG, "New position 0");
-                            cardPetRecycleView.scrollToPosition(0);
-                        }
+            pagedListLiveData.observe(getViewLifecycleOwner(), pets -> {
+                if (pets != null && pets.size() != 0) {
+                    pagedCardPetAdapter.submitList(pets);
+                    if (position != null) {
+                        Log.d(TAG, "Show previous data. Position " + position);
+                        cardPetRecycleView.scrollToPosition(position);
+                    } else {
+                        Log.d(TAG, "Show previous data. New position 0");
+                        cardPetRecycleView.scrollToPosition(0);
                     }
                 }
             });
@@ -154,14 +148,11 @@ public class SearchFragment extends Fragment {
         if (pagedListLiveData != null) pagedListLiveData.removeObservers(getViewLifecycleOwner());
 
         haveZeroItems = false;
-        pagedPetViewModel.getPetPagedList(typeFilter, shelterFilter).observe(getViewLifecycleOwner(), new Observer<PagedList<Pet>>() {
-            @Override
-            public void onChanged(PagedList<Pet> pets) {
-                if (pets != null && !haveZeroItems) {
-                    showRecyclerView();
-                    pagedCardPetAdapter.submitList(pets);
-                    cardPetRecycleView.scrollToPosition(0);
-                }
+        pagedPetViewModel.getPetPagedList(typeFilter, shelterFilter).observe(getViewLifecycleOwner(), pets -> {
+            if (pets != null && !haveZeroItems) {
+                showRecyclerView();
+                pagedCardPetAdapter.submitList(pets);
+                cardPetRecycleView.scrollToPosition(0);
             }
         });
     }

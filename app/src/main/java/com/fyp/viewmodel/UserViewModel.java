@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.fyp.pojo.UserMock;
+import com.fyp.response.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,13 +18,13 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 public class UserViewModel extends ViewModel {
     private static final String TAG = "EmailPassword";
 
-    private MutableLiveData<UserMock> userLiveData;
+    private MutableLiveData<User> userLiveData;
     private FirebaseAuth mAuth;
 
-    public LiveData<UserMock> getUser() {
+    public LiveData<User> getUser() {
         System.out.println("View model get user");
         if (userLiveData == null) {
-            userLiveData = new MutableLiveData<UserMock>();
+            userLiveData = new MutableLiveData<>();
             Log.d(TAG, "userLiveData = NULL. Get current user info");
             getCurrentUser();
         }
@@ -36,8 +36,8 @@ public class UserViewModel extends ViewModel {
         if (mAuth == null) mAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseCurrentUser = mAuth.getCurrentUser();
         if (firebaseCurrentUser != null) {
-            UserMock userMock = new UserMock(firebaseCurrentUser.getDisplayName(), firebaseCurrentUser.getEmail());
-            userLiveData.setValue(userMock);
+            User user = new User(firebaseCurrentUser.getDisplayName(), firebaseCurrentUser.getEmail());
+            userLiveData.setValue(user);
         }
     }
 
@@ -55,8 +55,8 @@ public class UserViewModel extends ViewModel {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "User profile name updated to " + newName);
-                            UserMock newUserMock = new UserMock(newName, firebaseCurrentUser.getEmail());
-                            userLiveData.setValue(newUserMock);
+                            User newUser = new User(newName, firebaseCurrentUser.getEmail());
+                            userLiveData.setValue(newUser);
                         }
                     }
                 });
