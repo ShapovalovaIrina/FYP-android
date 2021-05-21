@@ -156,10 +156,6 @@ public class PetFragment extends Fragment {
         ((TextView) rootView.findViewById(R.id.fragment_pet_information_name)).setText(name);
     }
 
-//    private void setImage(@NonNull Integer resourceId) {
-//        ((ImageView) rootView.findViewById(R.id.fragment_pet_image)).setImageResource(resourceId);
-//    }
-
     private void setImage(@NonNull String imageURL) {
         ImageView imageView = rootView.findViewById(R.id.fragment_pet_image);
         Glide.with(imageView)
