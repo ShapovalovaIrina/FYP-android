@@ -10,6 +10,8 @@ import com.fyp.network.ServerAPI;
 import com.fyp.response.Pet;
 import com.fyp.response.PetsWithMetadata;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,30 +56,13 @@ public class PetDataSource extends PageKeyedDataSource<String, Pet> {
 
                     @Override
                     public void onFailure(Call<PetsWithMetadata> call, Throwable t) {
-
+                        callback.onResult(new ArrayList<>(), null, null);
                     }
                 });
     }
 
     @Override
     public void loadBefore(@NonNull LoadParams<String> params, @NonNull LoadCallback<String, Pet> callback) {
-        Log.d(TAG, "PetDataSource loadBefore. Type filter: " + typeFilter + ". Shelter filter: " + shelterFilter);
-        serverAPI.getPetsChunks(typeFilter, shelterFilter, LIMIT_SIZE, params.key, DIRECTION_BEFORE)
-                .enqueue(new Callback<PetsWithMetadata>() {
-                    @Override
-                    public void onResponse(Call<PetsWithMetadata> call, Response<PetsWithMetadata> response) {
-                        if (response.body() != null) {
-                            callback.onResult(
-                                    response.body().getEntries(),
-                                    response.body().getMetadata().getBefore());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<PetsWithMetadata> call, Throwable t) {
-
-                    }
-                });
     }
 
     @Override
@@ -100,7 +85,7 @@ public class PetDataSource extends PageKeyedDataSource<String, Pet> {
 
                     @Override
                     public void onFailure(Call<PetsWithMetadata> call, Throwable t) {
-
+                        callback.onResult(new ArrayList<>(), params.key);
                     }
                 });
     }

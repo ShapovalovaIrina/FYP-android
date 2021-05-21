@@ -8,15 +8,14 @@ import androidx.paging.PageKeyedDataSource;
 import com.fyp.response.Pet;
 
 public class PetDataSourceFactory extends DataSource.Factory<String, Pet> {
-    private final String TAG = PetDataSourceFactory.class.getSimpleName();
     private MutableLiveData<PageKeyedDataSource<String, Pet>> petLiveDataSource = new MutableLiveData<>();
 
     private String typeFilter;
     private String shelterFilter;
 
-    public PetDataSourceFactory(String typeFilter, String shelterFilter) {
-        this.typeFilter = typeFilter;
-        this.shelterFilter = shelterFilter;
+    public PetDataSourceFactory() {
+        this.typeFilter = null;
+        this.shelterFilter = null;
     }
 
     @NonNull
@@ -29,5 +28,13 @@ public class PetDataSourceFactory extends DataSource.Factory<String, Pet> {
 
     public MutableLiveData<PageKeyedDataSource<String, Pet>> getPetLiveDataSource() {
         return petLiveDataSource;
+    }
+
+    public void setTypeFilter(String typeFilter) {
+        this.typeFilter = typeFilter;
+    }
+
+    public void setShelterFilter(String shelterFilter) {
+        this.shelterFilter = shelterFilter;
     }
 }
