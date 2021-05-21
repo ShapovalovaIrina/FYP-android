@@ -1,5 +1,7 @@
 package com.fyp.repository;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -9,6 +11,8 @@ import androidx.paging.PagedList;
 import com.fyp.response.Pet;
 
 public class PagedPetRepository {
+    private final String TAG = PagedPetRepository.class.getSimpleName();
+
     private final PetDataSourceFactory petDataSourceFactory;
 
     MutableLiveData<Boolean> zeroItemsLiveData = new MutableLiveData<>(false);
@@ -32,12 +36,14 @@ public class PagedPetRepository {
                     @Override
                     public void onZeroItemsLoaded() {
                         super.onZeroItemsLoaded();
+                        Log.d(TAG, "onZeroItemsLoaded()");
                         zeroItemsLiveData.setValue(true);
                     }
 
                     @Override
                     public void onItemAtFrontLoaded(@NonNull Pet itemAtFront) {
                         super.onItemAtFrontLoaded(itemAtFront);
+                        Log.d(TAG, "onItemAtFrontLoaded()");
                         zeroItemsLiveData.setValue(false);
                     }
                 })

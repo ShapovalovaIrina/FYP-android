@@ -5,16 +5,24 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.paging.PageKeyedDataSource;
 
+import com.fyp.R;
 import com.fyp.network.RetrofitClient;
 import com.fyp.network.ServerAPI;
+import com.fyp.pojo.PetMock;
 import com.fyp.response.Pet;
 import com.fyp.response.PetsWithMetadata;
+import com.fyp.response.Shelter;
+import com.fyp.response.Type;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.fyp.constant.Constants.SERVER_ENABLED;
 
 public class PetDataSource extends PageKeyedDataSource<String, Pet> {
     private static final String TAG = PetDataSource.class.getSimpleName();
@@ -38,6 +46,10 @@ public class PetDataSource extends PageKeyedDataSource<String, Pet> {
     @Override
     public void loadInitial(@NonNull LoadInitialParams<String> params, @NonNull LoadInitialCallback<String, Pet> callback) {
         Log.d(TAG, "PetDataSource loadInitial. Type filter: " + typeFilter + ". Shelter filter: " + shelterFilter);
+        if (!SERVER_ENABLED) {
+            callback.onResult(loadFakeData(typeFilter, shelterFilter), null, null);
+            return;
+        }
         serverAPI.getPetsChunks(typeFilter, shelterFilter, LIMIT_SIZE, null, DIRECTION_AFTER)
                 .enqueue(new Callback<PetsWithMetadata>() {
                     @Override
@@ -88,5 +100,34 @@ public class PetDataSource extends PageKeyedDataSource<String, Pet> {
                         callback.onResult(new ArrayList<>(), params.key);
                     }
                 });
+    }
+
+    private List<Pet> loadFakeData(String typeFilter, String shelterFilter) {
+        List<Pet> petsList = new ArrayList<>();
+        Shelter shelter = new Shelter(1, "Тестовый приют", "https://vk.com/habr", "https://yandex.ru/");
+        Type cat = new Type(1, "Котик");
+        Type dog = new Type(2, "Собака");
+        List<String> catPhotos = new ArrayList<>();
+        catPhotos.add("https://ololo.tv/wp-content/uploads/2021/01/248484_197.jpg");
+        List<String> dogPhotos = new ArrayList<>();
+        dogPhotos.add("https://i.pinimg.com/564x/ea/c1/0f/eac10f494d4f11ea9e27f8139a048571.jpg");
+
+        petsList.add(new Pet("1", "First cat", catPhotos, cat, shelter));
+        petsList.add(new Pet("2", "Second cat", catPhotos, cat, shelter));
+        petsList.add(new Pet("3", "Third cat", catPhotos, cat, shelter));
+        petsList.add(new Pet("4", "First dog", dogPhotos, dog, shelter));
+        petsList.add(new Pet("5", "Second dog", dogPhotos, dog, shelter));
+        petsList.add(new Pet("6", "Third dog", dogPhotos, dog, shelter));
+
+        if (typeFilter != null) {
+            List<String> typeFilterArray = Arrays.asList(typeFilter.split(","));
+            petsList.removeIf(p -> !typeFilterArray.contains(Integer.toString(p.getType().getId())));
+        }
+        if (shelterFilter != null) {
+            List<String> shelterFilterArray = Arrays.asList(shelterFilter.split(","));
+            petsList.removeIf(p -> !shelterFilterArray.contains(Integer.toString(p.getShelter().getId())));
+        }
+
+        return petsList;
     }
 }

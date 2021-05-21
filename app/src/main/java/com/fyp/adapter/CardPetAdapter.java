@@ -70,29 +70,21 @@ public class CardPetAdapter extends RecyclerView.Adapter<CardPetAdapter.ViewHold
         }
 
         View.OnClickListener onImageClickListener() {
-            return new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    navigateToPetFragment(view);
-                }
-            };
+            return view -> navigateToPetFragment(view);
         }
 
         View.OnClickListener onFavouriteButtonClickListener() {
-            return new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (view instanceof CheckBox) {
-                        CheckBox favouriteCheckBox = (CheckBox) view;
-                        if (favouriteCheckBox.isChecked()) {
-                            Log.d(TAG, "Add favourite pet with id " + pet.getId());
-                            favouriteViewModel.addFavourite(idToken, pet);
-                            favouriteViewModel.addFavouriteId(pet.getId());
-                        } else {
-                            Log.d(TAG, "Remove favourite pet with id " + pet.getId());
-                            favouriteViewModel.removeFavourite(idToken, pet);
-                            favouriteViewModel.removeFavouriteId(pet.getId());
-                        }
+            return view -> {
+                if (view instanceof CheckBox) {
+                    CheckBox favouriteCheckBox = (CheckBox) view;
+                    if (favouriteCheckBox.isChecked()) {
+                        Log.d(TAG, "Add favourite pet with id " + pet.getId());
+                        favouriteViewModel.addFavourite(idToken, pet);
+                        favouriteViewModel.addFavouriteId(pet.getId());
+                    } else {
+                        Log.d(TAG, "Remove favourite pet with id " + pet.getId());
+                        favouriteViewModel.removeFavourite(idToken, pet);
+                        favouriteViewModel.removeFavouriteId(pet.getId());
                     }
                 }
             };
@@ -131,19 +123,6 @@ public class CardPetAdapter extends RecyclerView.Adapter<CardPetAdapter.ViewHold
             FavouriteViewModel favouriteViewModel,
             LifecycleOwner lifecycleOwner,
             String idToken) {
-        this.navigationDirection = navigationDirection;
-        this.favouriteViewModel = favouriteViewModel;
-        this.idToken = idToken;
-        favouriteViewModel.getFavouritePetsIds(idToken).observe(lifecycleOwner, strings -> favouritePetsIds = strings);
-    }
-
-    public CardPetAdapter(
-            List<Pet> petsList,
-            NavigationDirection navigationDirection,
-            FavouriteViewModel favouriteViewModel,
-            LifecycleOwner lifecycleOwner,
-            String idToken) {
-        this.petsList = petsList;
         this.navigationDirection = navigationDirection;
         this.favouriteViewModel = favouriteViewModel;
         this.idToken = idToken;

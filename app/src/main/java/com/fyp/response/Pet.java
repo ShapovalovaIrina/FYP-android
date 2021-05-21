@@ -43,6 +43,18 @@ public class Pet {
     @Expose
     private Shelter shelter;
 
+    @SerializedName("type")
+    @Expose
+    private Type type;
+
+    public Pet(String id, String name, List<String> photos, Type type, Shelter shelter) {
+        this.id = id;
+        this.name = name;
+        this.photos = photos;
+        this.shelter = shelter;
+        this.type = type;
+    }
+
     public String getBirth() {
         return birth;
     }
@@ -119,6 +131,14 @@ public class Pet {
         this.shelter = shelter;
     }
 
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "Pet{" +
@@ -131,6 +151,7 @@ public class Pet {
                 ", name='" + name + '\'' +
                 ", photos=" + photos +
                 ", shelter=" + shelter +
+                ", type=" + type +
                 '}';
     }
 
@@ -147,11 +168,12 @@ public class Pet {
                 id.equals(pet.id) &&
                 name.equals(pet.name) &&
                 Objects.equals(photos, pet.photos) &&
-                Objects.equals(shelter, pet.shelter);
+                Objects.equals(shelter, pet.shelter) &&
+                Objects.equals(type, pet.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(birth, breed, description, gender, height, id, name, photos, shelter);
+        return Objects.hash(birth, breed, description, gender, height, id, name, photos, shelter, type);
     }
 }

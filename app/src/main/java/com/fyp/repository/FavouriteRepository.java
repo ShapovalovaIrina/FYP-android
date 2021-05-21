@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.fyp.network.RetrofitClient;
 import com.fyp.network.ServerAPI;
+import com.fyp.pojo.PetMock;
 import com.fyp.response.Pet;
 import com.fyp.response.Status;
 
@@ -168,5 +169,34 @@ public class FavouriteRepository {
                 Log.d(TAG, "removeFavourite onFailure response: " + t.getMessage());
             }
         });
+    }
+
+    public void addFavourite(@NonNull final MutableLiveData<List<Pet>> data, final Pet petToAdd) {
+        List<Pet> list = data.getValue();
+        if (list == null) list = new ArrayList<>();
+
+        Log.d(TAG, "Add pet, before");
+        for (Pet pet : list) Log.d(TAG, pet.toString());
+
+        list.add(petToAdd);
+
+        Log.d(TAG, "Add pet, after");
+        for (Pet pet : list) Log.d(TAG, pet.toString());
+        data.setValue(list);
+    }
+
+    public void removeFavourite(@NonNull final MutableLiveData<List<Pet>> data, final Pet petToDelete) {
+        List<Pet> list = data.getValue();
+        if (list == null) list = new ArrayList<>();
+
+        Log.d(TAG, "Remove pet, before");
+        for (Pet pet : list) Log.d(TAG, pet.toString());
+
+        list.removeIf(pet -> pet.getId().equals(petToDelete.getId()));
+
+        Log.d(TAG, "Remove pet, after");
+        for (Pet pet : list) Log.d(TAG, pet.toString());
+
+        data.setValue(list);
     }
 }
