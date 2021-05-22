@@ -63,6 +63,11 @@ public class SignInFragment extends Fragment {
         navController = Navigation.findNavController(view);
 
         view.findViewById(R.id.sign_in_fragment_button).setOnClickListener(loginButtonOnClickListener());
+        view.findViewById(R.id.sign_in_fragment_reset_password).setOnClickListener(resetPasswordButtonOnClickListener());
+    }
+
+    View.OnClickListener resetPasswordButtonOnClickListener() {
+        return view -> navigateToResetPasswordFragment();
     }
 
     View.OnClickListener loginButtonOnClickListener() {
@@ -124,5 +129,9 @@ public class SignInFragment extends Fragment {
 
     private void navigateToSearchFragment() {
         navController.navigate(R.id.action_signInFragment_to_bottomNavFragment);
+    }
+
+    private void navigateToResetPasswordFragment() {
+        navController.navigate(R.id.action_signInFragment_to_resetPasswordFragment);
     }
 }
