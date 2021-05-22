@@ -1,20 +1,16 @@
 package com.fyp.ui;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fyp.R;
 import com.fyp.adapter.CardShelterAdapter;
-import com.fyp.response.Shelter;
 import com.fyp.viewmodel.TypeShelterViewModel;
 
 public class ShelterRecyclerView {
