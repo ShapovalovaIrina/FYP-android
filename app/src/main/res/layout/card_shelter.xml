@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="#FFFFFF"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:id="@+id/card_shelter_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Shelter title"
+            android:gravity="bottom"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"/>
+
+        <CheckBox
+            android:id="@+id/card_shelter_contacts_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
+            android:text="Посмотреть контакты   "
+            android:textColor="@android:color/darker_gray"
+            android:button="@drawable/ic_expand_collapse_arrow"
+            app:buttonTint="@android:color/darker_gray"
+            android:checked="false" />
+
+        <LinearLayout
+            android:id="@+id/card_shelter_contacts_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/card_shelter_vk_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_logo_vk_24"
+                app:iconSize="32dp"
+                android:text="Вконтакте"/>
+
+            <Button
+                android:id="@+id/card_shelter_site_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_baseline_open_in_browser_24"
+                android:text="Веб-сайт"
+                app:iconSize="32dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
