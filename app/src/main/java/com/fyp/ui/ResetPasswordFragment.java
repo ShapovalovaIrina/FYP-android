@@ -1,17 +1,18 @@
 package com.fyp.ui;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.fyp.R;
 import com.google.android.material.textfield.TextInputEditText;
@@ -25,7 +26,6 @@ public class ResetPasswordFragment extends Fragment {
 
     private TextInputLayout emailInputLayout;
     private TextInputEditText emailInputEditText;
-    private Button resetPasswordButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,9 +43,8 @@ public class ResetPasswordFragment extends Fragment {
 
         emailInputLayout = view.findViewById(R.id.reset_password_fragment_email_input_layout);
         emailInputEditText = view.findViewById(R.id.reset_password_fragment_email_input_edit_text);
-        resetPasswordButton = view.findViewById(R.id.reset_password_fragment_button);
 
-        resetPasswordButton.setOnClickListener(resetPasswordButtonOnClickListener());
+        view.findViewById(R.id.reset_password_fragment_button).setOnClickListener(resetPasswordButtonOnClickListener());
     }
 
     View.OnClickListener resetPasswordButtonOnClickListener() {
@@ -69,14 +68,20 @@ public class ResetPasswordFragment extends Fragment {
         mAuth.sendPasswordResetEmail(emailAddress)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        resetPasswordButton.setVisibility(View.GONE);
-                        Toast.makeText(getContext(), "Письмо успешно отправлено", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Письмо успешно отправлено", Toast.LENGTH_LONG).show();
                         Log.d(TAG, "Email sent.");
+
+                        navigateBack();
                     } else {
                         Toast.makeText(getContext(), "Ошибка во время отправки письма. Попробуйте снова", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "Email sent error.");
                     }
                 });
+    }
+
+    private void navigateBack() {
+        NavController navController = Navigation.findNavController(getView());
+        navController.popBackStack();
     }
 
     private boolean validateEmailInput() {
