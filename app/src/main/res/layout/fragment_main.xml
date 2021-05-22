@@ -40,6 +40,14 @@
             android:layout_gravity="center"
             android:layout_marginTop="150dp" />
 
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_sing_in_button"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            app:cornerRadius="5dp" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/no_account_button"
             android:layout_width="300dp"
@@ -50,7 +58,7 @@
             android:layout_gravity="center" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/google_sing_in_button"
+            android:id="@+id/without_registration"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:text="Продолжить без входа"
