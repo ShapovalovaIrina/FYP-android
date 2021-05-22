@@ -36,6 +36,9 @@
             app:destination="@id/bottomNavFragment"
             app:popUpTo="@id/signInFragment"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_signInFragment_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -59,4 +62,9 @@
         app:destination="@id/mainFragment"
         app:popUpTo="@id/mainFragment"
         app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="com.fyp.ui.ResetPasswordFragment"
+        android:label="fragment_reset_password"
+        tools:layout="@layout/fragment_reset_password" />
 </navigation>
