@@ -13,14 +13,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.fyp.R;
-import com.fyp.response.User;
 import com.fyp.viewmodel.UserViewModel;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,12 +67,9 @@ public class ProfileFragment extends Fragment {
 
         // set up pet view model
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-        userViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
-            @Override
-            public void onChanged(User user) {
-                name.setText(user.getName());
-            }
-        });
+        userViewModel.getUser().observe(getViewLifecycleOwner(), user -> name.setText(user.getName()));
+
+        ShelterRecyclerView shelterRecyclerView = new ShelterRecyclerView(view, requireActivity(), getViewLifecycleOwner());
     }
 
     View.OnClickListener editNameButtonOnClickListener() {
@@ -114,7 +112,15 @@ public class ProfileFragment extends Fragment {
     View.OnClickListener signOutButtonOnClickListener() {
         return view -> {
             FirebaseAuth.getInstance().signOut();
-            navigateToMainFragment();
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .build();
+            GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
+            mGoogleSignInClient.signOut().addOnCompleteListener(getActivity(), task -> {
+                if (task.isSuccessful()) {
+                    navigateToMainFragment();
+                }
+            });
         };
     }
 
