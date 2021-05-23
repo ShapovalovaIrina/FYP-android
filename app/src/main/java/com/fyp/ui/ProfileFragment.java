@@ -24,7 +24,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -57,6 +60,7 @@ public class ProfileFragment extends Fragment {
         editButton = view.findViewById(R.id.profile_fragment_edit_name);
         Button signOutButton = view.findViewById(R.id.profile_fragment_sign_out);
         Button sendFeedBack = view.findViewById(R.id.profile_fragment_send_feedback);
+        Button updatePassword = view.findViewById(R.id.profile_fragment_update_password);
 
         hideEditName();
 
@@ -64,6 +68,15 @@ public class ProfileFragment extends Fragment {
         saveButton.setOnClickListener(saveNameButtonOnClickListener());
         signOutButton.setOnClickListener(signOutButtonOnClickListener());
         sendFeedBack.setOnClickListener(sendFeedBackButtonOnClickListener());
+        updatePassword.setVisibility(GONE);
+
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        for (UserInfo userInfo : firebaseUser.getProviderData()) {
+            if (userInfo.getProviderId().equals(EmailAuthProvider.PROVIDER_ID)) {
+                updatePassword.setVisibility(VISIBLE);
+                updatePassword.setOnClickListener(updatePasswordButtonOnClickListener());
+            }
+        }
 
         // set up pet view model
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
@@ -83,6 +96,10 @@ public class ProfileFragment extends Fragment {
                 userViewModel.updateFirebaseUserName(nameInputEditText.getText().toString());
             }
         };
+    }
+
+    View.OnClickListener updatePasswordButtonOnClickListener() {
+        return view -> navigateToUpdatePasswordFragment();
     }
 
     private boolean validateName() {
@@ -142,5 +159,10 @@ public class ProfileFragment extends Fragment {
     private void navigateToMainFragment() {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.navigation_host_fragment);
         navController.navigate(R.id.action_global_mainFragment);
+    }
+
+    private void navigateToUpdatePasswordFragment() {
+        NavController navController = Navigation.findNavController(getView());
+        navController.navigate(R.id.action_profileFragment_to_updatePasswordFragment);
     }
 }

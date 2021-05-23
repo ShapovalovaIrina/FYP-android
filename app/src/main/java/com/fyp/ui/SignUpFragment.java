@@ -20,8 +20,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
@@ -149,19 +150,21 @@ public class SignUpFragment extends Fragment {
 
     private void createFirebasePasswordAccount(String email, String password)  {
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateFirebaseUserName(user, nameInputEdit.getText().toString());
+                .addOnCompleteListener(getActivity(), task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "createUserWithEmail:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        updateFirebaseUserName(user, nameInputEdit.getText().toString());
+                    } else {
+                        circularProgressIndicator.setVisibility(View.GONE);
+                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                        Exception exception = task.getException();
+                        if (exception instanceof FirebaseAuthInvalidCredentialsException) {
+                            emailInput.setError("Некорректный формат почты");
+                        } else if (exception instanceof FirebaseAuthUserCollisionException) {
+                            emailInput.setError("Пользователь с указанной почтой уже существует");
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(getContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
-                            circularProgressIndicator.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -194,20 +197,17 @@ public class SignUpFragment extends Fragment {
 
     private void sendVerificationEmail(@NonNull FirebaseUser user) {
         user.sendEmailVerification()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        circularProgressIndicator.setVisibility(View.GONE);
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "Email sent.");
-                            Toast.makeText(getContext(), "Для завершения регистрации подтвердите, пожалуйста, почту", Toast.LENGTH_SHORT).show();
-                            signUpButton.setVisibility(View.GONE);
-                            notReceiveMail.setVisibility(View.VISIBLE);
-                            signInButton.setVisibility(View.VISIBLE);
-                        } else {
-                            Log.w(TAG, "sendEmailVerification:failure", task.getException());
-                            Toast.makeText(getContext(), "Не получилось отправить письмо для подтверждения аккаунта", Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(task -> {
+                    circularProgressIndicator.setVisibility(View.GONE);
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Email sent.");
+                        Toast.makeText(getContext(), "Для завершения регистрации подтвердите, пожалуйста, почту", Toast.LENGTH_SHORT).show();
+                        signUpButton.setVisibility(View.GONE);
+                        notReceiveMail.setVisibility(View.VISIBLE);
+                        signInButton.setVisibility(View.VISIBLE);
+                    } else {
+                        Log.w(TAG, "sendEmailVerification:failure", task.getException());
+                        Toast.makeText(getContext(), "Не получилось отправить письмо для подтверждения аккаунта", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
