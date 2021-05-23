@@ -22,6 +22,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
 public class SignInFragment extends Fragment {
@@ -100,27 +102,30 @@ public class SignInFragment extends Fragment {
 
     private void signInWithPassword(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            if (user.isEmailVerified()) {
-                                circularProgressIndicator.setVisibility(View.GONE);
-                                Toast.makeText(getContext(), "Sign in user " + user.getDisplayName() + ", email " + user.getEmail(), Toast.LENGTH_SHORT).show();
-                                navigateToSearchFragment();
-                            } else {
-                                formLinearLayout.setVisibility(View.VISIBLE);
-                                circularProgressIndicator.setVisibility(View.GONE);
-                                Toast.makeText(getContext(), "Для того, чтобы продолжить, подтвердите, пожалуйста, аккаунт", Toast.LENGTH_SHORT).show();
-                            }
+                .addOnCompleteListener(getActivity(), task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "signInWithEmail:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user.isEmailVerified()) {
+                            circularProgressIndicator.setVisibility(View.GONE);
+                            Toast.makeText(getContext(), "Sign in user " + user.getDisplayName() + ", email " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                            navigateToSearchFragment();
                         } else {
-                            // If sign in fails, display a message to the user.
                             formLinearLayout.setVisibility(View.VISIBLE);
                             circularProgressIndicator.setVisibility(View.GONE);
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(getContext(), "Для того, чтобы продолжить, подтвердите, пожалуйста, аккаунт", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        formLinearLayout.setVisibility(View.VISIBLE);
+                        circularProgressIndicator.setVisibility(View.GONE);
+                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        Exception exception = task.getException();
+                        if (exception instanceof FirebaseAuthInvalidUserException) {
+                            emailInputLayout.setError("Пользователь с данной почтой не существует");
+                        } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
+                            passwordInputLayout.setError("Неверный пароль");
+                        } else {
                             Toast.makeText(getContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
