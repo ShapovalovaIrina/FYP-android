@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_profileFragment_to_updatePasswordFragment"
             app:destination="@id/updatePasswordFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_createPetFragment"
+            app:destination="@id/createPetFragment" />
     </fragment>
 
     <fragment
@@ -62,4 +65,9 @@
         android:name="com.fyp.ui.UpdatePasswordFragment"
         android:label="fragment_update_password"
         tools:layout="@layout/fragment_update_password" />
+    <fragment
+        android:id="@+id/createPetFragment"
+        android:name="com.fyp.ui.CreatePetFragment"
+        android:label="fragment_create_pet"
+        tools:layout="@layout/fragment_create_pet" />
 </navigation>

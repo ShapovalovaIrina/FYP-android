@@ -61,6 +61,7 @@ public class ProfileFragment extends Fragment {
         Button signOutButton = view.findViewById(R.id.profile_fragment_sign_out);
         Button sendFeedBack = view.findViewById(R.id.profile_fragment_send_feedback);
         Button updatePassword = view.findViewById(R.id.profile_fragment_update_password);
+        Button createPet = view.findViewById(R.id.profile_fragment_create_pet);
 
         hideEditName();
 
@@ -68,6 +69,7 @@ public class ProfileFragment extends Fragment {
         saveButton.setOnClickListener(saveNameButtonOnClickListener());
         signOutButton.setOnClickListener(signOutButtonOnClickListener());
         sendFeedBack.setOnClickListener(sendFeedBackButtonOnClickListener());
+        createPet.setOnClickListener(createPetButtonOnClickListener());
         updatePassword.setVisibility(GONE);
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -102,28 +104,8 @@ public class ProfileFragment extends Fragment {
         return view -> navigateToUpdatePasswordFragment();
     }
 
-    private boolean validateName() {
-        if (nameInputEditText.getText().toString().equals("")) {
-            nameInputLayout.setError("Имя не может быть пустым");
-            return false;
-        }
-        return true;
-    }
-
-    private void hideEditName() {
-        name.setVisibility(VISIBLE);
-        editButton.setVisibility(VISIBLE);
-
-        nameInputLayout.setVisibility(GONE);
-        saveButton.setVisibility(GONE);
-    }
-
-    private void showEditName() {
-        name.setVisibility(GONE);
-        editButton.setVisibility(GONE);
-
-        nameInputLayout.setVisibility(VISIBLE);
-        saveButton.setVisibility(VISIBLE);
+    View.OnClickListener createPetButtonOnClickListener() {
+        return view -> navigateToCreatePetFragment();
     }
 
     View.OnClickListener signOutButtonOnClickListener() {
@@ -156,6 +138,30 @@ public class ProfileFragment extends Fragment {
         };
     }
 
+    private boolean validateName() {
+        if (nameInputEditText.getText().toString().equals("")) {
+            nameInputLayout.setError("Имя не может быть пустым");
+            return false;
+        }
+        return true;
+    }
+
+    private void hideEditName() {
+        name.setVisibility(VISIBLE);
+        editButton.setVisibility(VISIBLE);
+
+        nameInputLayout.setVisibility(GONE);
+        saveButton.setVisibility(GONE);
+    }
+
+    private void showEditName() {
+        name.setVisibility(GONE);
+        editButton.setVisibility(GONE);
+
+        nameInputLayout.setVisibility(VISIBLE);
+        saveButton.setVisibility(VISIBLE);
+    }
+
     private void navigateToMainFragment() {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.navigation_host_fragment);
         navController.navigate(R.id.action_global_mainFragment);
@@ -164,5 +170,10 @@ public class ProfileFragment extends Fragment {
     private void navigateToUpdatePasswordFragment() {
         NavController navController = Navigation.findNavController(getView());
         navController.navigate(R.id.action_profileFragment_to_updatePasswordFragment);
+    }
+
+    private void navigateToCreatePetFragment() {
+        NavController navController = Navigation.findNavController(getView());
+        navController.navigate(R.id.action_profileFragment_to_createPetFragment);
     }
 }
