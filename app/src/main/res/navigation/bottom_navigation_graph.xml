@@ -30,6 +30,9 @@
         android:name="com.fyp.ui.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_updatePasswordFragment"
+            app:destination="@id/updatePasswordFragment" />
     </fragment>
 
     <fragment
@@ -50,4 +53,9 @@
             app:argType="boolean"
             android:defaultValue="false" />
     </fragment>
+    <fragment
+        android:id="@+id/updatePasswordFragment"
+        android:name="com.fyp.ui.UpdatePasswordFragment"
+        android:label="fragment_update_password"
+        tools:layout="@layout/fragment_update_password" />
 </navigation>

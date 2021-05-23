@@ -57,6 +57,7 @@ public class ProfileFragment extends Fragment {
         editButton = view.findViewById(R.id.profile_fragment_edit_name);
         Button signOutButton = view.findViewById(R.id.profile_fragment_sign_out);
         Button sendFeedBack = view.findViewById(R.id.profile_fragment_send_feedback);
+        Button updatePassword = view.findViewById(R.id.profile_fragment_update_password);
 
         hideEditName();
 
@@ -64,6 +65,7 @@ public class ProfileFragment extends Fragment {
         saveButton.setOnClickListener(saveNameButtonOnClickListener());
         signOutButton.setOnClickListener(signOutButtonOnClickListener());
         sendFeedBack.setOnClickListener(sendFeedBackButtonOnClickListener());
+        updatePassword.setOnClickListener(updatePasswordButtonOnClickListener());
 
         // set up pet view model
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
@@ -83,6 +85,10 @@ public class ProfileFragment extends Fragment {
                 userViewModel.updateFirebaseUserName(nameInputEditText.getText().toString());
             }
         };
+    }
+
+    View.OnClickListener updatePasswordButtonOnClickListener() {
+        return view -> navigateToUpdatePasswordFragment();
     }
 
     private boolean validateName() {
@@ -142,5 +148,10 @@ public class ProfileFragment extends Fragment {
     private void navigateToMainFragment() {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.navigation_host_fragment);
         navController.navigate(R.id.action_global_mainFragment);
+    }
+
+    private void navigateToUpdatePasswordFragment() {
+        NavController navController = Navigation.findNavController(getView());
+        navController.navigate(R.id.action_profileFragment_to_updatePasswordFragment);
     }
 }
