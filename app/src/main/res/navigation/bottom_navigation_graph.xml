@@ -52,6 +52,10 @@
             android:name="IsFavourite"
             app:argType="boolean"
             android:defaultValue="false" />
+        <argument
+            android:name="IsAuthenticated"
+            app:argType="boolean"
+            android:defaultValue="true" />
     </fragment>
     <fragment
         android:id="@+id/updatePasswordFragment"

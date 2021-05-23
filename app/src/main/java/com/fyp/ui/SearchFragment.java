@@ -106,21 +106,27 @@ public class SearchFragment extends Fragment {
 
         /* Init adapter with Firebase id token */
         FirebaseUser firebaseCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
-        firebaseCurrentUser.getIdToken(true).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                String idToken = task.getResult().getToken();
+        if (firebaseCurrentUser != null) {
+            firebaseCurrentUser.getIdToken(true).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    String idToken = task.getResult().getToken();
 
-                pagedCardPetAdapter = new PagedCardPetAdapter(
-                        NavigationDirection.FROM_SEARCH_TO_PET,
-                        favouriteViewModel,
-                        getViewLifecycleOwner(),
-                        idToken);
-                cardPetRecycleView.setAdapter(pagedCardPetAdapter);
-                setPreviousPetData(searchFragmentViewModel.getRecycleViewItemPosition());
-            } else {
-                Toast.makeText(getContext(), "Ошибка во время получения токена", Toast.LENGTH_SHORT).show();
-            }
-        });
+                    pagedCardPetAdapter = new PagedCardPetAdapter(
+                            NavigationDirection.FROM_SEARCH_TO_PET,
+                            favouriteViewModel,
+                            getViewLifecycleOwner(),
+                            idToken);
+                    cardPetRecycleView.setAdapter(pagedCardPetAdapter);
+                    setPreviousPetData(searchFragmentViewModel.getRecycleViewItemPosition());
+                } else {
+                    Toast.makeText(getContext(), "Ошибка во время получения токена", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            pagedCardPetAdapter = new PagedCardPetAdapter(NavigationDirection.FROM_SEARCH_TO_PET);
+            cardPetRecycleView.setAdapter(pagedCardPetAdapter);
+            setPreviousPetData(searchFragmentViewModel.getRecycleViewItemPosition());
+        }
 
         return view;
     }

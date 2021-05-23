@@ -31,6 +31,7 @@ public class PagedCardPetAdapter extends PagedListAdapter<Pet, PagedCardPetAdapt
     private NavigationDirection navigationDirection;
     private FavouriteViewModel favouriteViewModel;
     private String idToken;
+    private boolean isAuthenticated;
 
     private static DiffUtil.ItemCallback<Pet> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<Pet>() {
@@ -60,7 +61,11 @@ public class PagedCardPetAdapter extends PagedListAdapter<Pet, PagedCardPetAdapt
             isFavourite = itemView.findViewById(R.id.card_pet_favourite);
 
             image.setOnClickListener(onImageClickListener());
-            isFavourite.setOnClickListener(onFavouriteButtonClickListener());
+            if (isAuthenticated) {
+                isFavourite.setOnClickListener(onFavouriteButtonClickListener());
+            } else {
+                isFavourite.setVisibility(View.GONE);
+            }
         }
 
         public void bind(Pet pet) {
@@ -73,37 +78,31 @@ public class PagedCardPetAdapter extends PagedListAdapter<Pet, PagedCardPetAdapt
                     .centerCrop()
                     .error(R.drawable.ic_baseline_image_24)
                     .into(image);
-            if (navigationDirection == NavigationDirection.FROM_SEARCH_TO_PET) {
-                isFavourite.setChecked(favouritePetsIds.contains(pet.getId()));
-            } else {
-                isFavourite.setChecked(true);
+            if (isAuthenticated) {
+                if (navigationDirection == NavigationDirection.FROM_SEARCH_TO_PET) {
+                    isFavourite.setChecked(favouritePetsIds.contains(pet.getId()));
+                } else {
+                    isFavourite.setChecked(true);
+                }
             }
         }
 
         View.OnClickListener onImageClickListener() {
-            return new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    navigateToPetFragment(view);
-                }
-            };
+            return this::navigateToPetFragment;
         }
 
         View.OnClickListener onFavouriteButtonClickListener() {
-            return new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (view instanceof CheckBox) {
-                        CheckBox favouriteCheckBox = (CheckBox) view;
-                        if (favouriteCheckBox.isChecked()) {
-                            Log.d(TAG, "Add favourite pet with id " + pet.getId());
-                            favouriteViewModel.addFavourite(idToken, pet);
-                            favouriteViewModel.addFavouriteId(pet.getId());
-                        } else {
-                            Log.d(TAG, "Remove favourite pet with id " + pet.getId());
-                            favouriteViewModel.removeFavourite(idToken, pet);
-                            favouriteViewModel.removeFavouriteId(pet.getId());
-                        }
+            return view -> {
+                if (view instanceof CheckBox) {
+                    CheckBox favouriteCheckBox = (CheckBox) view;
+                    if (favouriteCheckBox.isChecked()) {
+                        Log.d(TAG, "Add favourite pet with id " + pet.getId());
+                        favouriteViewModel.addFavourite(idToken, pet);
+                        favouriteViewModel.addFavouriteId(pet.getId());
+                    } else {
+                        Log.d(TAG, "Remove favourite pet with id " + pet.getId());
+                        favouriteViewModel.removeFavourite(idToken, pet);
+                        favouriteViewModel.removeFavouriteId(pet.getId());
                     }
                 }
             };
@@ -114,6 +113,7 @@ public class PagedCardPetAdapter extends PagedListAdapter<Pet, PagedCardPetAdapt
             bundle.putInt("AbsoluteAdapterPosition", getAbsoluteAdapterPosition());
             bundle.putSerializable("NavigationDirection", navigationDirection);
             bundle.putBoolean("IsFavourite", isFavourite.isChecked());
+            bundle.putBoolean("IsAuthenticated", isAuthenticated);
 
             NavController navController = Navigation.findNavController(view);
             switch (navigationDirection) {
@@ -139,6 +139,13 @@ public class PagedCardPetAdapter extends PagedListAdapter<Pet, PagedCardPetAdapt
         this.favouriteViewModel = favouriteViewModel;
         this.idToken = idToken;
         favouriteViewModel.getFavouritePetsIds(idToken).observe(lifecycleOwner, strings -> favouritePetsIds = strings);
+        isAuthenticated = true;
+    }
+
+    public PagedCardPetAdapter(NavigationDirection navigationDirection) {
+        super(DIFF_CALLBACK);
+        this.navigationDirection = navigationDirection;
+        isAuthenticated = false;
     }
 
     @NonNull

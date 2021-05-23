@@ -76,6 +76,7 @@ public class MainFragment extends Fragment {
         view.findViewById(R.id.google_sing_in_button).setOnClickListener(googleSignInOnClickListener());
         view.findViewById(R.id.email_sing_in_button).setOnClickListener(emailSignInOnClickListener());
         view.findViewById(R.id.no_account_button).setOnClickListener(noAccountOnClickListener());
+        view.findViewById(R.id.without_registration).setOnClickListener(withoutRegistrationOnClickListener());
     }
 
     View.OnClickListener googleSignInOnClickListener() {
@@ -90,8 +91,20 @@ public class MainFragment extends Fragment {
         return view -> navigateToSignUpFragment();
     }
 
+    View.OnClickListener withoutRegistrationOnClickListener() {
+        return view -> {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("isAuthenticated", false);
+            navigateToSearchFragment(bundle);
+        };
+    }
+
     private void navigateToSearchFragment() {
         navController.navigate(R.id.action_mainFragment_to_bottomNavFragment);
+    }
+
+    private void navigateToSearchFragment(Bundle bundle) {
+        navController.navigate(R.id.action_mainFragment_to_bottomNavFragment, bundle);
     }
 
     private void navigateToSignInFragment() {
@@ -103,7 +116,7 @@ public class MainFragment extends Fragment {
     }
 
     private void authenticationFailedMessage() {
-        Toast.makeText(getContext(), "Аутентифика", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Ошибка во время аутентификации", Toast.LENGTH_SHORT).show();
     }
 
     private void signIn() {
@@ -114,8 +127,6 @@ public class MainFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
@@ -124,7 +135,6 @@ public class MainFragment extends Fragment {
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
             }
         }
