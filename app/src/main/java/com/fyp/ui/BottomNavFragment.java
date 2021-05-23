@@ -27,6 +27,14 @@ public class BottomNavFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottom_navigation);
+        Boolean isAuthenticated = getArguments().getBoolean("isAuthenticated");
+        if (!isAuthenticated) {
+            bottomNavigationView.getMenu().findItem(R.id.favouriteFragment).setVisible(false);
+            bottomNavigationView.getMenu().findItem(R.id.profileFragment).setVisible(false);
+        } else {
+            bottomNavigationView.getMenu().findItem(R.id.favouriteFragment).setVisible(true);
+            bottomNavigationView.getMenu().findItem(R.id.profileFragment).setVisible(true);
+        }
         NavController navController = Navigation.findNavController(getActivity(), R.id.bottom_fragment);
 
         NavigationUI.setupWithNavController(bottomNavigationView, navController);

@@ -63,17 +63,18 @@ public class PetFragment extends Fragment {
         bottomNavigationView.setVisibility(View.GONE);
 
         Boolean isFavourite = getArguments().getBoolean("IsFavourite");
+        Boolean isAuthenticated = getArguments().getBoolean("IsAuthenticated");
         NavigationDirection navigationDirection = (NavigationDirection) getArguments().getSerializable("NavigationDirection");
         int absoluteAdapterPosition = getArguments().getInt("AbsoluteAdapterPosition");
 
         favouriteCheckBox.setChecked(isFavourite);
         switch (navigationDirection) {
             case FROM_SEARCH_TO_PET:
-                initSearchViewModel(absoluteAdapterPosition);
+                initSearchViewModel(absoluteAdapterPosition, isAuthenticated);
                 break;
             case FROM_FAVOURITE_TO_PET:
                 favouriteCheckBox.setChecked(true);
-                initFavouriteViewModel(absoluteAdapterPosition);
+                initFavouriteViewModel(absoluteAdapterPosition, isAuthenticated);
                 break;
             case NONE:
                 Toast.makeText(getContext(), "NONE navigationDirection", Toast.LENGTH_SHORT).show();
@@ -87,7 +88,7 @@ public class PetFragment extends Fragment {
         bottomNavigationView.setVisibility(View.VISIBLE);
     }
 
-    private void initSearchViewModel(int absoluteAdapterPosition) {
+    private void initSearchViewModel(int absoluteAdapterPosition, boolean isAuthenticated) {
         // set up pet info from search adapter position
         PagedPetViewModel pagedPetViewModel = new ViewModelProvider(requireActivity()).get(PagedPetViewModel.class);
         PagedList<Pet> pagedList = pagedPetViewModel.getPetPagedList().getValue();
@@ -97,22 +98,30 @@ public class PetFragment extends Fragment {
         }
 
         // set up favourite view model for add/remove favourite pet
-        favouriteViewModel = new ViewModelProvider(requireActivity()).get(FavouriteViewModel.class);
-        favouriteViewModel.getCodeResponse().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                Toast.makeText(getContext(), "Favourite code response " + integer, Toast.LENGTH_SHORT).show();
-            }
-        });
-        favouriteCheckBox.setOnCheckedChangeListener(favouriteButtonOnCheckedChangeListener());
+        if (isAuthenticated) {
+            favouriteViewModel = new ViewModelProvider(requireActivity()).get(FavouriteViewModel.class);
+            favouriteViewModel.getCodeResponse().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer integer) {
+                    Toast.makeText(getContext(), "Favourite code response " + integer, Toast.LENGTH_SHORT).show();
+                }
+            });
+            favouriteCheckBox.setOnCheckedChangeListener(favouriteButtonOnCheckedChangeListener());
+        } else {
+            favouriteCheckBox.setVisibility(View.GONE);
+        }
     }
 
-    private void initFavouriteViewModel(int absoluteAdapterPosition) {
+    private void initFavouriteViewModel(int absoluteAdapterPosition, boolean isAuthenticated) {
         favouriteViewModel = new ViewModelProvider(requireActivity()).get(FavouriteViewModel.class);
         pet = favouriteViewModel.getPet(absoluteAdapterPosition);
         setPetInformation(pet);
 
-        favouriteCheckBox.setOnCheckedChangeListener(favouriteButtonOnCheckedChangeListener());
+        if (isAuthenticated) {
+            favouriteCheckBox.setOnCheckedChangeListener(favouriteButtonOnCheckedChangeListener());
+        } else {
+            favouriteCheckBox.setVisibility(View.GONE);
+        }
     }
 
     CompoundButton.OnCheckedChangeListener favouriteButtonOnCheckedChangeListener() {
