@@ -100,7 +100,7 @@ public class UpdatePasswordFragment extends Fragment {
                 updateFirebaseAccountPassword(passwordInputEdit.getText().toString());
             } else {
                 if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                    currentPasswordInput.setError("Текущий пароль введен не верно");
+                    currentPasswordInput.setError("Неверный пароль");
                 } else {
                     Toast.makeText(getContext(), "Не удалось провести аутентификацию", Toast.LENGTH_SHORT).show();
                 }

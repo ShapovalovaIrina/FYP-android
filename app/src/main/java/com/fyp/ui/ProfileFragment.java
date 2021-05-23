@@ -24,7 +24,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -65,7 +68,15 @@ public class ProfileFragment extends Fragment {
         saveButton.setOnClickListener(saveNameButtonOnClickListener());
         signOutButton.setOnClickListener(signOutButtonOnClickListener());
         sendFeedBack.setOnClickListener(sendFeedBackButtonOnClickListener());
-        updatePassword.setOnClickListener(updatePasswordButtonOnClickListener());
+        updatePassword.setVisibility(GONE);
+
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        for (UserInfo userInfo : firebaseUser.getProviderData()) {
+            if (userInfo.getProviderId().equals(EmailAuthProvider.PROVIDER_ID)) {
+                updatePassword.setVisibility(VISIBLE);
+                updatePassword.setOnClickListener(updatePasswordButtonOnClickListener());
+            }
+        }
 
         // set up pet view model
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
