@@ -61,6 +61,8 @@ public class CreateShelterFragment extends Fragment {
         siteInputEditText = view.findViewById(R.id.create_shelter_fragment_site_text_input_edit_text);
 
         createShelter.setOnClickListener(onCreateShelterClickListener());
+
+        bottomNavigationView.setVisibility(View.GONE);
     }
 
     View.OnClickListener onCreateShelterClickListener() {
