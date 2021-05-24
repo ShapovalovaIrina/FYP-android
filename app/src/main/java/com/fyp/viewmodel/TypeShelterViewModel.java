@@ -21,6 +21,7 @@ public class TypeShelterViewModel extends ViewModel {
     private TypeShelterRepository typeShelterRepository;
     private MutableLiveData<List<Shelter>> shelterLiveData;
     private MutableLiveData<List<Type>> typeLiveData;
+    private MutableLiveData<Integer> codeResponse;
 
     public LiveData<List<Shelter>> getShelters() {
         Log.d(TAG, "Get shelters");
@@ -51,6 +52,17 @@ public class TypeShelterViewModel extends ViewModel {
         }
     }
 
+    public LiveData<Integer> createShelter(String JWTToken, Shelter newShelter) {
+        if (typeShelterRepository == null) typeShelterRepository = new TypeShelterRepository();
+        if (codeResponse == null) codeResponse = new MutableLiveData<>();
+        if (SERVER_ENABLED) {
+            typeShelterRepository.createShelter(JWTToken, newShelter, shelterLiveData, codeResponse);
+        } else {
+            addFakeShelterData(newShelter);
+        }
+        return codeResponse;
+    }
+
     private void loadTypes() {
         if (typeShelterRepository == null) typeShelterRepository = new TypeShelterRepository();
         if (SERVER_ENABLED) {
@@ -67,6 +79,14 @@ public class TypeShelterViewModel extends ViewModel {
         list.add(new Shelter(3, "Test shelter 3", "", ""));
         list.add(new Shelter(4, "Test shelter 4", "", ""));
         data.setValue(list);
+    }
+
+    private void addFakeShelterData(Shelter newShelter) {
+        List<Shelter> shelters = shelterLiveData.getValue();
+        if (shelters == null) shelters = new ArrayList<>();
+        shelters.add(newShelter);
+        shelterLiveData.setValue(shelters);
+        codeResponse.setValue(201);
     }
 
     public void loadFakeDataTypes(MutableLiveData<List<Type>> data) {

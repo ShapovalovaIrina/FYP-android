@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_profileFragment_to_createPetFragment"
             app:destination="@id/createPetFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_createShelterFragment"
+            app:destination="@id/createShelterFragment" />
     </fragment>
 
     <fragment
@@ -70,4 +73,9 @@
         android:name="com.fyp.ui.CreatePetFragment"
         android:label="fragment_create_pet"
         tools:layout="@layout/fragment_create_pet" />
+    <fragment
+        android:id="@+id/createShelterFragment"
+        android:name="com.fyp.ui.CreateShelterFragment"
+        android:label="fragment_create_shelter"
+        tools:layout="@layout/fragment_create_shelter" />
 </navigation>

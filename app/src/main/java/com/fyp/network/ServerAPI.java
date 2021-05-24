@@ -57,6 +57,12 @@ public interface ServerAPI {
     @GET("/shelters")
     Call<List<Shelter>> getAllShelters();
 
+    @POST("/shelters")
+    Call<Status> createShelter(
+            @Header("Authorization") String token,
+            @Body Shelter shelter
+    );
+
 
     /* Types */
     @GET("/types")
