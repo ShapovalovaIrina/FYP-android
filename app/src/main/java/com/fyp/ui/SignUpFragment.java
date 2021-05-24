@@ -138,10 +138,8 @@ public class SignUpFragment extends Fragment {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "createUserWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
-
                         Toast.makeText(getContext(), "Create user with email " + user.getEmail(), Toast.LENGTH_SHORT).show();
                         sendVerificationEmail(user);
-                        //updateFirebaseUserName(user, nameInputEdit.getText().toString());
                     } else {
                         circularProgressIndicator.setVisibility(View.GONE);
                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
