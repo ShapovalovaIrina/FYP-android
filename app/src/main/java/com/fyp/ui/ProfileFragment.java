@@ -62,6 +62,7 @@ public class ProfileFragment extends Fragment {
         Button sendFeedBack = view.findViewById(R.id.profile_fragment_send_feedback);
         Button updatePassword = view.findViewById(R.id.profile_fragment_update_password);
         Button createPet = view.findViewById(R.id.profile_fragment_create_pet);
+        Button createShelter = view.findViewById(R.id.profile_fragment_create_shelter);
 
         hideEditName();
 
@@ -70,6 +71,7 @@ public class ProfileFragment extends Fragment {
         signOutButton.setOnClickListener(signOutButtonOnClickListener());
         sendFeedBack.setOnClickListener(sendFeedBackButtonOnClickListener());
         createPet.setOnClickListener(createPetButtonOnClickListener());
+        createShelter.setOnClickListener(createShelterButtonOnClickListener());
         updatePassword.setVisibility(GONE);
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -106,6 +108,10 @@ public class ProfileFragment extends Fragment {
 
     View.OnClickListener createPetButtonOnClickListener() {
         return view -> navigateToCreatePetFragment();
+    }
+
+    View.OnClickListener createShelterButtonOnClickListener() {
+        return view -> navigateToCreateShelterFragment();
     }
 
     View.OnClickListener signOutButtonOnClickListener() {
@@ -175,5 +181,10 @@ public class ProfileFragment extends Fragment {
     private void navigateToCreatePetFragment() {
         NavController navController = Navigation.findNavController(getView());
         navController.navigate(R.id.action_profileFragment_to_createPetFragment);
+    }
+
+    private void navigateToCreateShelterFragment() {
+        NavController navController = Navigation.findNavController(getView());
+        navController.navigate(R.id.action_profileFragment_to_createShelterFragment);
     }
 }
