@@ -187,20 +187,26 @@ public class CreatePetFragment extends Fragment {
     }
 
     private void validateInputOptional() {
-        StringBuilder stringBuilder = new StringBuilder("Следующие поля не были заполнены\n\n");
-        if (breedInputEditText.getText().toString().equals("")) stringBuilder.append("- Порода\n");
-        if (birthInputEditText.getText().toString().equals("")) stringBuilder.append("- Возраст / дата рождения\n");
-        if (descriptionInputEditText.getText().toString().equals("")) stringBuilder.append("- Описание\n");
-        if (heightInputEditText.getText().toString().equals("")) stringBuilder.append("- Высота в хохолке\n\n");
-        stringBuilder.append("Уверены, что хотите создать питомца без этих данных?");
+        String startString = "Следующие поля не были заполнены:\n\n";
+        String endString = "Уверены, что хотите создать питомца без этих данных?";
+        StringBuilder stringBuilder = new StringBuilder(startString);
+        if (breedInputEditText.getText().toString().equals("")) stringBuilder.append("Порода\n");
+        if (birthInputEditText.getText().toString().equals("")) stringBuilder.append("Возраст / дата рождения\n");
+        if (descriptionInputEditText.getText().toString().equals("")) stringBuilder.append("Описание\n");
+        if (heightInputEditText.getText().toString().equals("")) stringBuilder.append("Высота в хохолке\n\n");
+        stringBuilder.append(endString);
         // gender
 
-        new MaterialAlertDialogBuilder(getContext())
-                .setTitle("Создание питомца")
-                .setMessage(stringBuilder.toString())
-                .setNegativeButton("Да", (dialogInterface, i) -> createPet())
-                .setPositiveButton("Нет", (dialogInterface, i) -> dialogInterface.dismiss())
-                .show();
+        if (!stringBuilder.toString().equals(startString + endString)) {
+            new MaterialAlertDialogBuilder(getContext())
+                    .setTitle("Создание питомца")
+                    .setMessage(stringBuilder.toString())
+                    .setNegativeButton("Да", (dialogInterface, i) -> createPet())
+                    .setPositiveButton("Нет", (dialogInterface, i) -> dialogInterface.dismiss())
+                    .show();
+        } else {
+            createPet();
+        }
     }
 
     private PetBody createPetFromInputData() {

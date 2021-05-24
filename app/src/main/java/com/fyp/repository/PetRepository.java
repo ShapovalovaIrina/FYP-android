@@ -14,6 +14,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.fyp.constant.Constants.SERVER_ENABLED;
+
 public class PetRepository {
     private final String TAG = PetRepository.class.getSimpleName();
     private ServerAPI serverAPI;
@@ -26,6 +28,9 @@ public class PetRepository {
             String JWTToken,
             PetBody pet,
             @NonNull final MutableLiveData<Integer> codeResponse) {
+        if (!SERVER_ENABLED) {
+            return;
+        }
         serverAPI.addPet(JWTToken, pet).enqueue(new Callback<Status>() {
             @Override
             public void onResponse(Call<Status> call, Response<Status> response) {
