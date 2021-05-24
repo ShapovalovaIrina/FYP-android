@@ -1,6 +1,7 @@
 package com.fyp.network;
 
 import com.fyp.response.Pet;
+import com.fyp.response.PetBody;
 import com.fyp.response.PetsWithMetadata;
 import com.fyp.response.Shelter;
 import com.fyp.response.Status;
@@ -9,6 +10,7 @@ import com.fyp.response.Type;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -25,6 +27,12 @@ public interface ServerAPI {
             @Query("limit") int limit,
             @Query("cursor") String cursor,
             @Query("direction") String direction
+    );
+
+    @POST("/pets")
+    Call<Status> addPet(
+            @Header("Authorization") String token,
+            @Body PetBody pet
     );
 
     /* Favourites */
