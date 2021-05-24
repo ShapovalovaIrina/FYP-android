@@ -56,24 +56,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/sign_up_fragment_name_input_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20sp"
-                app:startIconDrawable="@drawable/ic_baseline_person_outline_24"
-                android:hint="Ваше имя"
-                app:errorEnabled="true"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/sign_up_fragment_name_input_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/sign_up_fragment_password_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

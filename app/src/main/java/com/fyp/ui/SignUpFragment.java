@@ -15,8 +15,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.fyp.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -24,19 +22,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class SignUpFragment extends Fragment {
     private static final String TAG = SignUpFragment.class.getSimpleName();
 
     private NavController navController;
     private TextInputLayout emailInput;
-    private TextInputLayout nameInput;
     private TextInputLayout passwordInput;
     private TextInputLayout passwordRepeatInput;
 
     private TextInputEditText emailInputEdit;
-    private TextInputEditText nameInputEdit;
     private TextInputEditText passwordInputEdit;
     private TextInputEditText passwordRepeatInputEdit;
 
@@ -63,12 +58,10 @@ public class SignUpFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         emailInput = view.findViewById(R.id.sign_up_fragment_email_input_layout);
-        nameInput = view.findViewById(R.id.sign_up_fragment_name_input_layout);
         passwordInput = view.findViewById(R.id.sign_up_fragment_password_input_layout);
         passwordRepeatInput = view.findViewById(R.id.sign_up_fragment_repeat_password_input_layout);
 
         emailInputEdit = view.findViewById(R.id.sign_up_fragment_email_input_edit_text);
-        nameInputEdit = view.findViewById(R.id.sign_up_fragment_name_input_edit_text);
         passwordInputEdit = view.findViewById(R.id.sign_up_fragment_password_input_edit_text);
         passwordRepeatInputEdit = view.findViewById(R.id.sign_up_fragment_repeat_password_input_edit_text);
 
@@ -93,9 +86,8 @@ public class SignUpFragment extends Fragment {
     View.OnClickListener signUpButtonOnClickListener() {
         return view -> {
             emailInput.setError(null);
-            nameInput.setError(null);
             passwordInput.setError(null);
-            if (validateEmailInput() && validateNameInput() && validatePasswordInput()) {
+            if (validateEmailInput() & validatePasswordInput()) {
                 circularProgressIndicator.setVisibility(View.VISIBLE);
                 createFirebasePasswordAccount(emailInputEdit.getText().toString(), passwordInputEdit.getText().toString());
             }
@@ -124,14 +116,6 @@ public class SignUpFragment extends Fragment {
         return true;
     }
 
-    private boolean validateNameInput() {
-        if (nameInputEdit.getText().toString().equals("")) {
-            nameInput.setError("Для регистрации необходимо указать Ваше имя");
-            return false;
-        }
-        return true;
-    }
-
     private boolean validatePasswordInput() {
         if (passwordInputEdit.getText().toString().equals("") || passwordRepeatInputEdit.getText().toString().equals("")) {
             passwordInput.setError("Для регистрации необходимо указать пароль и повторить его");
@@ -154,7 +138,10 @@ public class SignUpFragment extends Fragment {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "createUserWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
-                        updateFirebaseUserName(user, nameInputEdit.getText().toString());
+
+                        Toast.makeText(getContext(), "Create user with email " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                        sendVerificationEmail(user);
+                        //updateFirebaseUserName(user, nameInputEdit.getText().toString());
                     } else {
                         circularProgressIndicator.setVisibility(View.GONE);
                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -165,31 +152,6 @@ public class SignUpFragment extends Fragment {
                             emailInput.setError("Пользователь с указанной почтой уже существует");
                         } else {
                             Toast.makeText(getContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    private void updateFirebaseUserName(@NonNull final FirebaseUser user, final String name) {
-        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                .setDisplayName(name)
-                .build();
-
-        final String userEmail = user.getEmail();
-
-        user.updateProfile(profileUpdates)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "User profile updated.");
-                            Toast.makeText(getContext(), "Create user " + name + ", email " + userEmail, Toast.LENGTH_SHORT).show();
-                            sendVerificationEmail(user);
-                        } else {
-                            // If update name fails, display a message to the user.
-                            Log.w(TAG, "updateProfile:failure", task.getException());
-                            Toast.makeText(getContext(), "Не получилось сохранить имя", Toast.LENGTH_SHORT).show();
-                            circularProgressIndicator.setVisibility(View.GONE);
                         }
                     }
                 });

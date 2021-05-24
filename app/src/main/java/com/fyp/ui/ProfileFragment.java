@@ -8,22 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.fyp.R;
-import com.fyp.viewmodel.UserViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,13 +29,6 @@ import static android.view.View.VISIBLE;
 
 public class ProfileFragment extends Fragment {
     private final String TAG = ProfileFragment.class.getSimpleName();
-    private TextView name;
-    private TextInputLayout nameInputLayout;
-    private TextInputEditText nameInputEditText;
-    private Button saveButton;
-    private Button editButton;
-
-    private UserViewModel userViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,21 +41,12 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        name = view.findViewById(R.id.profile_fragment_name);
-        nameInputLayout = view.findViewById(R.id.profile_fragment_name_input_layout);
-        nameInputEditText = view.findViewById(R.id.profile_fragment_name_input_edit_text);
-        saveButton = view.findViewById(R.id.profile_fragment_save_changes);
-        editButton = view.findViewById(R.id.profile_fragment_edit_name);
         Button signOutButton = view.findViewById(R.id.profile_fragment_sign_out);
         Button sendFeedBack = view.findViewById(R.id.profile_fragment_send_feedback);
         Button updatePassword = view.findViewById(R.id.profile_fragment_update_password);
         Button createPet = view.findViewById(R.id.profile_fragment_create_pet);
         Button createShelter = view.findViewById(R.id.profile_fragment_create_shelter);
 
-        hideEditName();
-
-        editButton.setOnClickListener(editNameButtonOnClickListener());
-        saveButton.setOnClickListener(saveNameButtonOnClickListener());
         signOutButton.setOnClickListener(signOutButtonOnClickListener());
         sendFeedBack.setOnClickListener(sendFeedBackButtonOnClickListener());
         createPet.setOnClickListener(createPetButtonOnClickListener());
@@ -82,24 +61,7 @@ public class ProfileFragment extends Fragment {
             }
         }
 
-        // set up pet view model
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-        userViewModel.getUser().observe(getViewLifecycleOwner(), user -> name.setText(user.getName()));
-
         ShelterRecyclerView shelterRecyclerView = new ShelterRecyclerView(view, requireActivity(), getViewLifecycleOwner());
-    }
-
-    View.OnClickListener editNameButtonOnClickListener() {
-        return view -> showEditName();
-    }
-
-    View.OnClickListener saveNameButtonOnClickListener() {
-        return view -> {
-            if (validateName()) {
-                hideEditName();
-                userViewModel.updateFirebaseUserName(nameInputEditText.getText().toString());
-            }
-        };
     }
 
     View.OnClickListener updatePasswordButtonOnClickListener() {
@@ -142,30 +104,6 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         };
-    }
-
-    private boolean validateName() {
-        if (nameInputEditText.getText().toString().equals("")) {
-            nameInputLayout.setError("Имя не может быть пустым");
-            return false;
-        }
-        return true;
-    }
-
-    private void hideEditName() {
-        name.setVisibility(VISIBLE);
-        editButton.setVisibility(VISIBLE);
-
-        nameInputLayout.setVisibility(GONE);
-        saveButton.setVisibility(GONE);
-    }
-
-    private void showEditName() {
-        name.setVisibility(GONE);
-        editButton.setVisibility(GONE);
-
-        nameInputLayout.setVisibility(VISIBLE);
-        saveButton.setVisibility(VISIBLE);
     }
 
     private void navigateToMainFragment() {
