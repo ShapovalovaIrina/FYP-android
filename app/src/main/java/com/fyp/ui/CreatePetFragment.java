@@ -201,12 +201,32 @@ public class CreatePetFragment extends Fragment {
             new MaterialAlertDialogBuilder(getContext())
                     .setTitle("Создание питомца")
                     .setMessage(stringBuilder.toString())
-                    .setNegativeButton("Да", (dialogInterface, i) -> createPet())
+                    .setNegativeButton("Да", (dialogInterface, i) -> createPetAPI())
                     .setPositiveButton("Нет", (dialogInterface, i) -> dialogInterface.dismiss())
                     .show();
         } else {
-            createPet();
+            createPetAPI();
         }
+    }
+
+    private void createPetAPI() {
+        PetBody pet = createPetFromInputData();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUser.getIdToken(true).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                String idToken = task.getResult().getToken();
+                PetViewModel petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
+                petViewModel.createPet(idToken, pet).observe(getViewLifecycleOwner(), integer -> {
+                    if (integer != null) {
+                        if (integer == 201) {
+                            Toast.makeText(getContext(), "Питомец успешно добавлен", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Ошибка во время добавления питомца. Код " + integer, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private PetBody createPetFromInputData() {
@@ -241,25 +261,5 @@ public class CreatePetFragment extends Fragment {
                 height,
                 photos,
                 shelterId);
-    }
-
-    private void createPet() {
-        PetBody pet = createPetFromInputData();
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        firebaseUser.getIdToken(true).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                String idToken = task.getResult().getToken();
-                PetViewModel petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
-                petViewModel.createPet(idToken, pet).observe(getViewLifecycleOwner(), integer -> {
-                    if (integer != null) {
-                        if (integer == 201) {
-                            Toast.makeText(getContext(), "Питомец успешно добавлен", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getContext(), "Ошибка во время добавления питомца. Код " + integer, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        });
     }
 }
