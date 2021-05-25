@@ -64,6 +64,12 @@ public class CreatePetFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        bottomNavigationView.setVisibility(View.GONE);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_create_pet, container, false);

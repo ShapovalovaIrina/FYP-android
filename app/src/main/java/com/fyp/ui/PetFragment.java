@@ -88,6 +88,12 @@ public class PetFragment extends Fragment {
         bottomNavigationView.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        bottomNavigationView.setVisibility(View.GONE);
+    }
+
     private void initSearchViewModel(int absoluteAdapterPosition, boolean isAuthenticated) {
         // set up pet info from search adapter position
         PagedPetViewModel pagedPetViewModel = new ViewModelProvider(requireActivity()).get(PagedPetViewModel.class);

@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.fyp.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
@@ -23,6 +24,8 @@ import com.google.firebase.auth.FirebaseUser;
 public class UpdatePasswordFragment extends Fragment {
     private final String TAG = UpdatePasswordFragment.class.getSimpleName();
 
+    private BottomNavigationView bottomNavigationView;
+
     private TextInputLayout currentPasswordInput;
     private TextInputEditText currentPasswordInputEdit;
 
@@ -31,6 +34,19 @@ public class UpdatePasswordFragment extends Fragment {
 
     private TextInputLayout passwordRepeatInput;
     private TextInputEditText passwordRepeatInputEdit;
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        bottomNavigationView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bottomNavigationView.setVisibility(View.GONE);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,6 +59,7 @@ public class UpdatePasswordFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        bottomNavigationView = view.getRootView().findViewById(R.id.bottom_navigation);
         currentPasswordInput = view.findViewById(R.id.update_password_fragment_current_password_input_layout);
         currentPasswordInputEdit = view.findViewById(R.id.update_password_fragment_current_password_input_edit_text);
         passwordInput = view.findViewById(R.id.update_password_fragment_new_password_input_layout);
@@ -51,6 +68,8 @@ public class UpdatePasswordFragment extends Fragment {
         passwordRepeatInputEdit = view.findViewById(R.id.update_password_fragment_repeat_new_password_input_edit_text);
 
         view.findViewById(R.id.update_password_fragment_update_password).setOnClickListener(updatePasswordButtonOnClickListener());
+
+        bottomNavigationView.setVisibility(View.GONE);
     }
 
     View.OnClickListener updatePasswordButtonOnClickListener() {

@@ -1,5 +1,7 @@
 package com.fyp.adapter;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,8 +45,16 @@ public class CardShelterAdapter extends RecyclerView.Adapter<CardShelterAdapter.
 
         public void bind(Shelter shelter) {
             title.setText(shelter.getTitle());
-            vkLink.setOnClickListener(onLinkClickListener(shelter.getVk_link()));
-            siteLink.setOnClickListener(onLinkClickListener(shelter.getSite_link()));
+            if (shelter.getVk_link() != null) {
+                vkLink.setOnClickListener(onLinkClickListener(shelter.getVk_link()));
+            } else {
+                vkLink.setVisibility(View.GONE);
+            }
+            if (shelter.getSite_link() != null) {
+                siteLink.setOnClickListener(onLinkClickListener(shelter.getSite_link()));
+            } else {
+                siteLink.setVisibility(View.GONE);
+            }
         }
 
         CompoundButton.OnCheckedChangeListener showContactsOnCheckedChangeListener() {
@@ -65,8 +75,14 @@ public class CardShelterAdapter extends RecyclerView.Adapter<CardShelterAdapter.
             contactsLayout.setVisibility(View.GONE);
         }
 
-        View.OnClickListener onLinkClickListener(String link) {
-            return view -> {};
+        View.OnClickListener onLinkClickListener(String uri) {
+            return view -> {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(uri));
+                if (view.getContext() != null && intent.resolveActivity(view.getContext().getPackageManager()) != null) {
+                    view.getContext().startActivity(intent);
+                }
+            };
         }
     }
 

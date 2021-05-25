@@ -3,10 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:paddingTop="20dp"
-    android:paddingBottom="20dp"
+    android:padding="20dp"
     android:background="@color/colorWhite"
     android:id="@+id/filter_view_parent_linear_layout">
 
@@ -52,11 +49,4 @@
         android:orientation="vertical"
         android:paddingLeft="20dp" >
     </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/filter_view_save_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Сохранить"
-        style="?attr/materialButtonOutlinedStyle" />
 </LinearLayout>
