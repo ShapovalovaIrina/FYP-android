@@ -73,28 +73,20 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/sign_in_fragment_button"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center">
+                android:layout_marginTop="20dp"
+                android:text="Войти" />
 
-                <Button
-                    android:id="@+id/sign_in_fragment_button"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Войти" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/sign_in_fragment_reset_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_marginTop="20dp"
-                    android:text="Забыли пароль?" />
-            </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sign_in_fragment_reset_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_marginTop="10dp"
+                android:text="Забыли пароль?" />
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>

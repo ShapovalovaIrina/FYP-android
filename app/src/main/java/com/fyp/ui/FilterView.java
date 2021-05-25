@@ -38,7 +38,6 @@ public class FilterView {
     private List<Integer> childCheckBoxesSheltersID = new ArrayList<>();
 
     private CheckBox showMoreButton;
-    private Button saveButton;
 
     /* Функции, которые вызываются извне */
     /* Сохранение состояния check boxes */
@@ -101,8 +100,6 @@ public class FilterView {
         childrenCheckBoxLinearLayoutTypes = view.findViewById(R.id.filter_view_children_checkbox_linear_layout_types);
         childrenCheckBoxLinearLayoutShelters = view.findViewById(R.id.filter_view_children_checkbox_linear_layout_shelters);
 
-        saveButton = view.findViewById(R.id.filter_view_save_button);
-
         onCollapseFilterView();
 
         TypeShelterViewModel typeShelterViewModel = new ViewModelProvider(requiredActivity).get(TypeShelterViewModel.class);
@@ -127,17 +124,9 @@ public class FilterView {
             }
         });
 
-        saveButton.setOnClickListener(saveButtonOnClickListener());
         showMoreButton.setOnCheckedChangeListener(showMoreButtonOnCheckedChangeListener());
         parentCheckBoxShelters.setOnCheckedChangeListener(parentCheckBoxOnCheckedChangeListener(childCheckBoxesShelters));
         parentCheckBoxTypes.setOnCheckedChangeListener(parentCheckBoxOnCheckedChangeListener(childCheckBoxesTypes));
-    }
-
-    View.OnClickListener saveButtonOnClickListener() {
-        return view -> {
-            Toast.makeText(rootView.getContext(), "Параметры успешно сохранены", Toast.LENGTH_SHORT).show();
-            showMoreButton.setChecked(false);
-        };
     }
 
     CompoundButton.OnCheckedChangeListener showMoreButtonOnCheckedChangeListener() {
