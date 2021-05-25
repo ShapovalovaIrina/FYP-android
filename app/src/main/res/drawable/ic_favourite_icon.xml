@@ -5,7 +5,7 @@
         android:state_checked="false"
         />
     <item
-        android:drawable="@drawable/ic_baseline_favorite_24"
+        android:drawable="@drawable/ic_baseline_favorite_36"
         android:state_checked="true"
         />
     <item android:drawable="@drawable/ic_baseline_favorite_border_36" />

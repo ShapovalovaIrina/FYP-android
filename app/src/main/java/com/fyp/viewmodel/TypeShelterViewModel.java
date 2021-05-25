@@ -74,10 +74,10 @@ public class TypeShelterViewModel extends ViewModel {
 
     public void loadFakeDataShelter(MutableLiveData<List<Shelter>> data) {
         List<Shelter> list = new ArrayList<>();
-        list.add(new Shelter(1, "Test shelter 1", "", ""));
-        list.add(new Shelter(2, "Test shelter 2", "", ""));
-        list.add(new Shelter(3, "Test shelter 3", "", ""));
-        list.add(new Shelter(4, "Test shelter 4", "", ""));
+        list.add(new Shelter(1, "Test shelter 1", "https://paperpaper.ru/", "https://vk.com/paperpaper_ru"));
+        list.add(new Shelter(2, "Test shelter 2", null, "https://vk.com/paperpaper_ru"));
+        list.add(new Shelter(3, "Test shelter 3", "https://paperpaper.ru/", null));
+        list.add(new Shelter(4, "Test shelter 4", "https://paperpaper.ru/", "https://vk.com/paperpaper_ru"));
         data.setValue(list);
     }
 

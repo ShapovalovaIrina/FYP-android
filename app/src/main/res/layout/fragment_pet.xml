@@ -46,7 +46,7 @@
                     android:layout_marginLeft="20dp"
                     android:gravity="center"
                     android:button="@drawable/ic_favourite_icon"
-                    app:buttonTint="@android:color/darker_gray"
+                    app:buttonTint="@drawable/ic_favourite_icon_color"
                     android:checked="false" />
             </LinearLayout>
 

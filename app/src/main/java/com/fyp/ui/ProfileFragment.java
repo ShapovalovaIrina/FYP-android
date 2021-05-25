@@ -46,11 +46,13 @@ public class ProfileFragment extends Fragment {
         Button updatePassword = view.findViewById(R.id.profile_fragment_update_password);
         Button createPet = view.findViewById(R.id.profile_fragment_create_pet);
         Button createShelter = view.findViewById(R.id.profile_fragment_create_shelter);
+        Button showShelters = view.findViewById(R.id.profile_fragment_show_shelters);
 
         signOutButton.setOnClickListener(signOutButtonOnClickListener());
         sendFeedBack.setOnClickListener(sendFeedBackButtonOnClickListener());
         createPet.setOnClickListener(createPetButtonOnClickListener());
         createShelter.setOnClickListener(createShelterButtonOnClickListener());
+        showShelters.setOnClickListener(showSheltersButtonOnClickListener());
         updatePassword.setVisibility(GONE);
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -60,8 +62,6 @@ public class ProfileFragment extends Fragment {
                 updatePassword.setOnClickListener(updatePasswordButtonOnClickListener());
             }
         }
-
-        ShelterRecyclerView shelterRecyclerView = new ShelterRecyclerView(view, requireActivity(), getViewLifecycleOwner());
     }
 
     View.OnClickListener updatePasswordButtonOnClickListener() {
@@ -74,6 +74,10 @@ public class ProfileFragment extends Fragment {
 
     View.OnClickListener createShelterButtonOnClickListener() {
         return view -> navigateToCreateShelterFragment();
+    }
+
+    View.OnClickListener showSheltersButtonOnClickListener() {
+        return view -> navigateToSupportedSheltersFragment();
     }
 
     View.OnClickListener signOutButtonOnClickListener() {
@@ -125,4 +129,10 @@ public class ProfileFragment extends Fragment {
         NavController navController = Navigation.findNavController(getView());
         navController.navigate(R.id.action_profileFragment_to_createShelterFragment);
     }
+
+    private void navigateToSupportedSheltersFragment() {
+        NavController navController = Navigation.findNavController(getView());
+        navController.navigate(R.id.action_profileFragment_to_supportedSheltersFragment);
+    }
+
 }
