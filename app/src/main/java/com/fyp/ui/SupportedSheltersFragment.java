@@ -14,8 +14,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fyp.R;
 import com.fyp.adapter.CardShelterAdapter;
 import com.fyp.viewmodel.TypeShelterViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SupportedSheltersFragment extends Fragment {
+    private BottomNavigationView bottomNavigationView;
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        bottomNavigationView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bottomNavigationView.setVisibility(View.GONE);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -26,6 +41,7 @@ public class SupportedSheltersFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        bottomNavigationView = view.getRootView().findViewById(R.id.bottom_navigation);
         RecyclerView shelterRecyclerView = view.findViewById(R.id.supported_shelters_fragment_shelter_recycler_view);
 
         CardShelterAdapter cardShelterAdapter = new CardShelterAdapter();
@@ -36,5 +52,7 @@ public class SupportedSheltersFragment extends Fragment {
                 cardShelterAdapter.setItems(shelters);
             }
         });
+
+        bottomNavigationView.setVisibility(View.GONE);
     }
 }
