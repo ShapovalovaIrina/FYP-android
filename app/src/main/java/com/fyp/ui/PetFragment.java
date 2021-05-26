@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,10 +19,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.PagerSnapHelper;
 
-import com.bumptech.glide.Glide;
 import com.fyp.R;
 import com.fyp.adapter.NavigationDirection;
 import com.fyp.adapter.ProfilePhotoAdapter;
@@ -31,6 +31,7 @@ import com.fyp.response.Pet;
 import com.fyp.response.Shelter;
 import com.fyp.viewmodel.FavouriteViewModel;
 import com.fyp.viewmodel.PagedPetViewModel;
+import com.fyp.viewmodel.PetViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -56,6 +57,18 @@ public class PetFragment extends Fragment {
     private FavouriteViewModel favouriteViewModel;
 
     @Override
+    public void onPause() {
+        super.onPause();
+        bottomNavigationView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        bottomNavigationView.setVisibility(View.GONE);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_pet, container, false);
@@ -68,6 +81,9 @@ public class PetFragment extends Fragment {
         rootView = view;
         bottomNavigationView = view.getRootView().findViewById(R.id.bottom_navigation);
         favouriteCheckBox = view.findViewById(R.id.fragment_pet_information_favourite);
+        Button deletePet = view.findViewById(R.id.fragment_pet_information_delete_pet);
+
+        deletePet.setOnClickListener(onDeletePetButtonClickListener());
 
         bottomNavigationView.setVisibility(View.GONE);
 
@@ -89,18 +105,6 @@ public class PetFragment extends Fragment {
                 Toast.makeText(getContext(), "NONE navigationDirection", Toast.LENGTH_SHORT).show();
                 break;
         }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        bottomNavigationView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        bottomNavigationView.setVisibility(View.GONE);
     }
 
     private void initSearchViewModel(int absoluteAdapterPosition, boolean isAuthenticated) {
@@ -137,6 +141,29 @@ public class PetFragment extends Fragment {
         } else {
             favouriteCheckBox.setVisibility(View.GONE);
         }
+    }
+
+    View.OnClickListener onDeletePetButtonClickListener() {
+        return view -> {
+            if (pet == null) return;
+            FirebaseUser firebaseCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+            firebaseCurrentUser.getIdToken(true).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    String idToken = task.getResult().getToken();
+                    PetViewModel petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
+                    petViewModel.deletePet(idToken, pet.getId()).observe(getViewLifecycleOwner(), integer -> {
+                        if (integer != null) {
+                            if (integer == 200) {
+                                Toast.makeText(getContext(), "Питомец успешно удален", Toast.LENGTH_SHORT).show();
+                                navigateBack();
+                            } else {
+                                Toast.makeText(getContext(), "Во время удаления произошла ошибка", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            });
+        };
     }
 
     CompoundButton.OnCheckedChangeListener favouriteButtonOnCheckedChangeListener() {
@@ -271,5 +298,10 @@ public class PetFragment extends Fragment {
                 startActivity(intent);
             }
         };
+    }
+
+    private void navigateBack() {
+        NavController navController = Navigation.findNavController(getView());
+        navController.popBackStack();
     }
 }

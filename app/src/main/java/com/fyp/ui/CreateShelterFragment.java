@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.fyp.R;
 import com.fyp.response.Shelter;
@@ -110,6 +112,7 @@ public class CreateShelterFragment extends Fragment {
                     if (integer != null) {
                         if (integer == 201) {
                             Toast.makeText(getContext(), "Приют успешно добавлен", Toast.LENGTH_SHORT).show();
+                            navigateBack();
                         } else {
                             Toast.makeText(getContext(), "Ошибка во время добавления приюта. Код " + integer, Toast.LENGTH_SHORT).show();
                         }
@@ -124,5 +127,10 @@ public class CreateShelterFragment extends Fragment {
         String vk = vkInputEditText.getText().toString();
         String site = siteInputEditText.getText().toString();
         return new Shelter(0, title, site, vk);
+    }
+
+    private void navigateBack() {
+        NavController navController = Navigation.findNavController(getView());
+        navController.popBackStack();
     }
 }
