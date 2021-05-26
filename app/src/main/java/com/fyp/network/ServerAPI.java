@@ -35,6 +35,12 @@ public interface ServerAPI {
             @Body PetBody pet
     );
 
+    @DELETE("/pets/{pet_id}")
+    Call<Status> deletePet(
+            @Header("Authorization") String token,
+            @Path("pet_id") String petId
+    );
+
     /* Favourites */
     @GET("/users/favourite")
     Call<List<Pet>> getAllFavourite(

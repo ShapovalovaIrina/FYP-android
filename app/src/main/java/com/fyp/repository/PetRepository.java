@@ -65,4 +65,26 @@ public class PetRepository {
             }
         });
     }
+
+    public void deletePet(
+            String JWTToken,
+            String petId,
+            @NonNull final MutableLiveData<Integer> codeResponse) {
+        if (!SERVER_ENABLED) {
+            return;
+        }
+        serverAPI.deletePet(JWTToken, petId).enqueue(new Callback<Status>() {
+            @Override
+            public void onResponse(Call<Status> call, Response<Status> response) {
+                Log.d(TAG, "deletePet onResponse response code " + response.code());
+                codeResponse.setValue(response.code());
+            }
+
+            @Override
+            public void onFailure(Call<Status> call, Throwable t) {
+                Log.d(TAG, "deletePet onFailure response: " + t.getMessage());
+                codeResponse.setValue(500);
+            }
+        });
+    }
 }

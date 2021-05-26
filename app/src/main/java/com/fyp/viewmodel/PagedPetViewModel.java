@@ -8,7 +8,7 @@ import com.fyp.repository.PagedPetRepository;
 import com.fyp.response.Pet;
 
 public class PagedPetViewModel extends ViewModel {
-    LiveData<PagedList<Pet>> petPagedList;
+    private LiveData<PagedList<Pet>> petPagedList;
     private PagedPetRepository pagedPetRepository;
 
     public PagedPetViewModel() {

@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -226,6 +228,7 @@ public class CreatePetFragment extends Fragment {
                     if (integer != null) {
                         if (integer == 201) {
                             Toast.makeText(getContext(), "Питомец успешно добавлен", Toast.LENGTH_SHORT).show();
+                            navigateBack();
                         } else {
                             Toast.makeText(getContext(), "Ошибка во время добавления питомца. Код " + integer, Toast.LENGTH_SHORT).show();
                         }
@@ -267,5 +270,10 @@ public class CreatePetFragment extends Fragment {
                 height,
                 photos,
                 shelterId);
+    }
+
+    private void navigateBack() {
+        NavController navController = Navigation.findNavController(getView());
+        navController.popBackStack();
     }
 }
