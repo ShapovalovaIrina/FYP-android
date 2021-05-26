@@ -167,7 +167,6 @@ public class PetFragment extends Fragment {
     private void setPetInformation(Pet pet) {
         if (pet != null) {
             setName(pet.getName());
-//            setImage(pet.getFirstPhoto());
             setImages(pet.getPhotos());
             setBreed(pet.getBreed());
             setBirth(pet.getBirth());
@@ -179,15 +178,6 @@ public class PetFragment extends Fragment {
 
     private void setName(@NonNull String name) {
         ((TextView) rootView.findViewById(R.id.fragment_pet_information_name)).setText(name);
-    }
-
-    private void setImage(@NonNull String imageURL) {
-        ImageView imageView = rootView.findViewById(R.id.fragment_pet_image);
-        Glide.with(imageView)
-                .load(imageURL)
-                .centerCrop()
-                .error(R.drawable.ic_baseline_image_24)
-                .into(imageView);
     }
 
     private void setImages(@NonNull List<String> imageURLs) {
