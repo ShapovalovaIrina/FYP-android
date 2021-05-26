@@ -196,7 +196,7 @@
                     android:layout_height="wrap_content"
                     android:text="Удалить питомца"
                     android:textColor="@android:color/holo_red_dark"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_marginTop="20dp"/>
             </LinearLayout>
         </LinearLayout>
