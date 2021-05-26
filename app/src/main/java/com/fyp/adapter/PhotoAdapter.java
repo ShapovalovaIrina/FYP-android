@@ -55,7 +55,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     @Override
     public PhotoAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_photo, parent, false);
+                .inflate(R.layout.card_create_pet_photo, parent, false);
         return new PhotoAdapter.ViewHolder(view);
     }
 
