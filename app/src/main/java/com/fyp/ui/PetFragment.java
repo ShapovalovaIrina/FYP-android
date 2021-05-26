@@ -21,10 +21,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.paging.PagedList;
+import androidx.recyclerview.widget.PagerSnapHelper;
 
 import com.bumptech.glide.Glide;
 import com.fyp.R;
 import com.fyp.adapter.NavigationDirection;
+import com.fyp.adapter.ProfilePhotoAdapter;
 import com.fyp.response.Pet;
 import com.fyp.response.Shelter;
 import com.fyp.viewmodel.FavouriteViewModel;
@@ -35,6 +37,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
+import com.yarolegovich.discretescrollview.DiscreteScrollView;
+import com.yarolegovich.discretescrollview.transform.Pivot;
+import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
+
+import java.util.List;
+
+import me.relex.circleindicator.CircleIndicator2;
 
 public class PetFragment extends Fragment {
     private final String TAG = PetFragment.class.getSimpleName();
@@ -158,7 +167,7 @@ public class PetFragment extends Fragment {
     private void setPetInformation(Pet pet) {
         if (pet != null) {
             setName(pet.getName());
-            setImage(pet.getFirstPhoto());
+            setImages(pet.getPhotos());
             setBreed(pet.getBreed());
             setBirth(pet.getBirth());
             setGender(pet.getGender());
@@ -171,13 +180,24 @@ public class PetFragment extends Fragment {
         ((TextView) rootView.findViewById(R.id.fragment_pet_information_name)).setText(name);
     }
 
-    private void setImage(@NonNull String imageURL) {
-        ImageView imageView = rootView.findViewById(R.id.fragment_pet_image);
-        Glide.with(imageView)
-                .load(imageURL)
-                .centerCrop()
-                .error(R.drawable.ic_baseline_image_24)
-                .into(imageView);
+    private void setImages(@NonNull List<String> imageURLs) {
+        DiscreteScrollView imagesScrollView = rootView.findViewById(R.id.fragment_pet_image);
+        imagesScrollView.setItemTransformer(new ScaleTransformer.Builder()
+                .setMaxScale(1.0f)
+                .setMinScale(1.0f)
+                .setPivotX(Pivot.X.CENTER) // CENTER is a default one
+                .setPivotY(Pivot.Y.CENTER) // CENTER is a default one
+                .build());
+        imagesScrollView.setHasFixedSize(true);
+
+        ProfilePhotoAdapter profilePhotoAdapter = new ProfilePhotoAdapter(imageURLs);
+        imagesScrollView.setAdapter(profilePhotoAdapter);
+
+        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+        pagerSnapHelper.attachToRecyclerView(imagesScrollView);
+
+        CircleIndicator2 indicator = rootView.findViewById(R.id.indicator);
+        indicator.attachToRecyclerView(imagesScrollView, pagerSnapHelper);
     }
 
     private void setBreed(String breed) {
