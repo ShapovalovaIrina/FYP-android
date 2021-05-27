@@ -19,9 +19,8 @@
             android:layout_height="wrap_content"
             android:paddingTop="40sp"
             android:text="Добавление питомца"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="20sp" />
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            android:gravity="center" />
 
         <!--    Shelter    -->
         <com.google.android.material.textfield.TextInputLayout
@@ -105,8 +104,7 @@
             android:layout_marginTop="20sp"
             android:layout_marginBottom="20dp"
             android:text="Пол"
-            android:gravity="left"
-            android:textSize="20sp" />
+            style="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
         <RadioGroup
             android:id="@+id/create_pet_fragment_gender_radio_group"

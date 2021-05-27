@@ -34,8 +34,7 @@
                 android:paddingTop="40sp"
                 android:text="Регистрация"
                 android:textAlignment="center"
-                android:textColor="#000000"
-                android:textSize="20sp" />
+                style="@style/TextAppearance.MaterialComponents.Headline5" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/sign_up_fragment_email_input_layout"

@@ -51,8 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/pet_name"
-                    android:textSize="30sp"
-                    android:paddingBottom="15dp"/>
+                    style="@style/TextAppearance.MaterialComponents.Headline4" />
 
                 <CheckBox
                     android:id="@+id/fragment_pet_information_favourite"
@@ -70,21 +69,22 @@
                 android:id="@+id/fragment_pet_information_breed_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="10dp"
                 android:orientation="vertical" >
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/pet_breed"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
+                    style="@style/TextAppearance.MaterialComponents.Headline5" />
 
                 <TextView
                     android:id="@+id/fragment_pet_information_breed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
                     android:text="@string/pet_breed_husky"
-                    android:textSize="25sp" />
+                    style="@style/TextAppearance.MaterialComponents.Body1"/>
             </LinearLayout>
 
             <!--  Pet age  -->
@@ -92,6 +92,7 @@
                 android:id="@+id/fragment_pet_information_age_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="10dp"
                 android:orientation="vertical" >
 
                 <TextView
@@ -99,15 +100,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/pet_age"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
+                    style="@style/TextAppearance.MaterialComponents.Headline5" />
 
                 <TextView
                     android:id="@+id/fragment_pet_information_age"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/pet_age_1_year"
-                    android:textSize="25sp" />
+                    style="@style/TextAppearance.MaterialComponents.Body1" />
             </LinearLayout>
 
             <!--  Pet gender  -->
@@ -115,6 +115,7 @@
                 android:id="@+id/fragment_pet_information_gender_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="10dp"
                 android:orientation="vertical" >
 
                 <TextView
@@ -122,15 +123,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/pet_gender"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
+                    style="@style/TextAppearance.MaterialComponents.Headline5" />
 
                 <TextView
                     android:id="@+id/fragment_pet_information_gender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/pet_gender_girl"
-                    android:textSize="25sp" />
+                    style="@style/TextAppearance.MaterialComponents.Body1" />
             </LinearLayout>
 
             <TextView
@@ -138,7 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
-                android:paddingBottom="15dp"
+                style="@style/TextAppearance.MaterialComponents.Body1"
                 android:text="@string/pet_info_text" />
 
 
@@ -147,22 +147,22 @@
                 android:id="@+id/fragment_pet_information_shelter_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="20dp"
                 android:orientation="vertical" >
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="15dp"
-                    android:text="Контакты приюта"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/fragment_pet_information_shelter_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Приют друг"
-                    android:textSize="25sp" />
+                    style="@style/TextAppearance.MaterialComponents.Headline4"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:text="Контакты приюта"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
