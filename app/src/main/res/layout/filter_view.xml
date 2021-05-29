@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Типы питомцев"
-        android:textSize="18sp"/>
+        style="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
     <CheckBox
         android:id="@+id/filter_view_parent_check_box_types"
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="Приюты"
-        android:textSize="18sp"/>
+        style="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
     <CheckBox
         android:id="@+id/filter_view_parent_check_box_shelters"

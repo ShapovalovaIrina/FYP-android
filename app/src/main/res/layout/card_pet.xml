@@ -29,9 +29,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Pet name"
+                style="@style/TextAppearance.MaterialComponents.Body1"
                 android:gravity="center_vertical"
-                android:paddingLeft="20dp"
-                android:textSize="18sp" />
+                android:paddingLeft="20dp" />
 
             <CheckBox
                 android:id="@+id/card_pet_favourite"

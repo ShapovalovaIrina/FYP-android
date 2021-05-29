@@ -15,15 +15,12 @@
         android:orientation="vertical" >
 
         <TextView
+            style="@style/TextAppearance.MaterialComponents.Headline5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:includeFontPadding="false"
             android:paddingTop="40sp"
-            android:shadowColor="#0E0E0E"
             android:text="Профиль"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="20sp" />
+            android:gravity="center"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -35,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="40sp"
                 android:text="Приюты"
-                android:textSize="20sp" />
+                style="@style/TextAppearance.MaterialComponents.Headline6" />
 
             <!--    Create shelter    -->
             <Button
@@ -62,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="40sp"
                 android:text="Питомцы"
-                android:textSize="20sp" />
+                style="@style/TextAppearance.MaterialComponents.Headline6" />
 
             <!--    Create pet    -->
             <Button
@@ -79,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="40sp"
                 android:text="Аккаунт"
-                android:textSize="20sp" />
+                style="@style/TextAppearance.MaterialComponents.Headline6" />
 
             <!--    Update password    -->
             <Button
@@ -105,11 +102,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:includeFontPadding="false"
             android:paddingTop="50sp"
-            android:shadowColor="#0E0E0E"
             android:text="@string/profile_fragment_feedback"
-            android:textSize="15sp" />
+            style="@style/TextAppearance.MaterialComponents.Body1" />
 
         <Button
             android:id="@+id/profile_fragment_send_feedback"

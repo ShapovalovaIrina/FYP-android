@@ -35,6 +35,10 @@ public class Pet {
     @Expose
     private String name;
 
+    @SerializedName("source_link")
+    @Expose
+    private String sourceLink;
+
     @SerializedName("photos")
     @Expose
     private List<String> photos;
@@ -47,9 +51,10 @@ public class Pet {
     @Expose
     private Type type;
 
-    public Pet(String id, String name, List<String> photos, Type type, Shelter shelter) {
+    public Pet(String id, String name, String sourceLink, List<String> photos, Type type, Shelter shelter) {
         this.id = id;
         this.name = name;
+        this.sourceLink = sourceLink;
         this.photos = photos;
         this.shelter = shelter;
         this.type = type;
@@ -111,6 +116,14 @@ public class Pet {
         this.name = name;
     }
 
+    public String getSourceLink() {
+        return sourceLink;
+    }
+
+    public void setSourceLink(String sourceLink) {
+        this.sourceLink = sourceLink;
+    }
+
     public List<String> getPhotos() {
         return photos;
     }
@@ -149,6 +162,7 @@ public class Pet {
                 ", height='" + height + '\'' +
                 ", id='" + id + '\'' +
                 ", name='" + name + '\'' +
+                ", sourceLink='" + sourceLink + '\'' +
                 ", photos=" + photos +
                 ", shelter=" + shelter +
                 ", type=" + type +
@@ -167,6 +181,7 @@ public class Pet {
                 Objects.equals(height, pet.height) &&
                 id.equals(pet.id) &&
                 name.equals(pet.name) &&
+                sourceLink.equals(pet.sourceLink) &&
                 Objects.equals(photos, pet.photos) &&
                 Objects.equals(shelter, pet.shelter) &&
                 Objects.equals(type, pet.type);
@@ -174,6 +189,6 @@ public class Pet {
 
     @Override
     public int hashCode() {
-        return Objects.hash(birth, breed, description, gender, height, id, name, photos, shelter, type);
+        return Objects.hash(birth, breed, description, gender, height, id, name, sourceLink, photos, shelter, type);
     }
 }

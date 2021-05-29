@@ -9,8 +9,8 @@
 
     <style name="NoActionBarTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimaryCustom2</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkCustom2</item>
+        <item name="colorAccent">@color/colorAccentCustom2</item>
     </style>
 </resources>

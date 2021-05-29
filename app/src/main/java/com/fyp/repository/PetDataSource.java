@@ -109,12 +109,12 @@ public class PetDataSource extends PageKeyedDataSource<String, Pet> {
         List<String> dogPhotos = new ArrayList<>();
         dogPhotos.add("https://i.pinimg.com/564x/ea/c1/0f/eac10f494d4f11ea9e27f8139a048571.jpg");
 
-        petsList.add(new Pet("1", "First cat", catPhotos, cat, shelter));
-        petsList.add(new Pet("2", "Second cat", catPhotos, cat, shelter));
-        petsList.add(new Pet("3", "Third cat", catPhotos, cat, shelter));
-        petsList.add(new Pet("4", "First dog", dogPhotos, dog, shelter));
-        petsList.add(new Pet("5", "Second dog", dogPhotos, dog, shelter));
-        petsList.add(new Pet("6", "Third dog", dogPhotos, dog, shelter));
+        petsList.add(new Pet("1", "First cat", "https://vk.com/photo-190703_456258182", catPhotos, cat, shelter));
+        petsList.add(new Pet("2", "Second cat", "https://vk.com/photo-190703_456258182", catPhotos, cat, shelter));
+        petsList.add(new Pet("3", "Third cat", "https://vk.com/photo-190703_456258182", catPhotos, cat, shelter));
+        petsList.add(new Pet("4", "First dog", "https://vk.com/photo-190703_456258182", dogPhotos, dog, shelter));
+        petsList.add(new Pet("5", "Second dog", "https://vk.com/photo-190703_456258182", dogPhotos, dog, shelter));
+        petsList.add(new Pet("6", "Third dog", "https://vk.com/photo-190703_456258182", dogPhotos, dog, shelter));
 
         if (typeFilter != null) {
             List<String> typeFilterArray = Arrays.asList(typeFilter.split(","));

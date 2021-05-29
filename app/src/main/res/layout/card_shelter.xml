@@ -21,19 +21,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Shelter title"
-            android:gravity="bottom"
-            android:textColor="@color/colorBlack"
-            android:textSize="20sp"/>
+            style="@style/TextAppearance.MaterialComponents.Headline6" />
 
         <CheckBox
             android:id="@+id/card_shelter_contacts_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layoutDirection="rtl"
-            android:text="Посмотреть контакты   "
-            android:textColor="@android:color/darker_gray"
+            android:text="Посмотреть контакты"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
             android:button="@drawable/ic_expand_collapse_arrow"
-            app:buttonTint="@android:color/darker_gray"
             android:checked="false" />
 
         <LinearLayout

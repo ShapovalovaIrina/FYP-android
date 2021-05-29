@@ -14,10 +14,10 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/search_fragment_start_search"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_marginTop="30dp"
             android:layout_gravity="center"
             android:text="Начать поиск!" />
@@ -27,13 +27,12 @@
             android:id="@+id/search_fragment_show_more_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="10dp"
             android:layout_gravity="center"
             android:layoutDirection="rtl"
-            android:text="Дополнительные настройки   "
-            android:textSize="20sp"
-            android:textColor="@android:color/darker_gray"
+            android:text="Дополнительные настройки"
+            style="@style/TextAppearance.MaterialComponents.Body1"
             android:button="@drawable/ic_expand_collapse_arrow"
-            app:buttonTint="@android:color/darker_gray"
             android:checked="false" />
 
         <!--  Layout with scroll view and filter view  -->
@@ -49,6 +48,8 @@
                 android:layout_marginRight="50dp"
                 android:layout_marginTop="20dp"
                 android:text="К сожалению, подходящих питомцев не нашлось"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:gravity="center"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"/>
 
@@ -72,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 layout="@layout/search_fragment_discrete_scroll_view" />
         </RelativeLayout>
     </LinearLayout>

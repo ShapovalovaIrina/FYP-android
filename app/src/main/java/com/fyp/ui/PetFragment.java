@@ -199,6 +199,7 @@ public class PetFragment extends Fragment {
             setBirth(pet.getBirth());
             setGender(pet.getGender());
             setDescription(pet.getDescription());
+            setSourceLink(pet.getSourceLink());
             setShelter(pet.getShelter());
         }
     }
@@ -264,6 +265,11 @@ public class PetFragment extends Fragment {
         } else {
             descriptionTextView.setText(description);
         }
+    }
+
+    private void setSourceLink(String sourceLink) {
+        Button sourceLinkButton = rootView.findViewById(R.id.fragment_pet_information_pet_link);
+        sourceLinkButton.setOnClickListener(linkButtonOnClickListener(sourceLink));
     }
 
     private void setShelter(Shelter shelter) {
