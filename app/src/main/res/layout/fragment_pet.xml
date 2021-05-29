@@ -51,7 +51,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/pet_name"
-                    style="@style/TextAppearance.MaterialComponents.Headline4" />
+                    android:textColor="?android:textColorPrimary"
+                    style="@style/TextAppearance.MaterialComponents.Headline2" />
 
                 <CheckBox
                     android:id="@+id/fragment_pet_information_favourite"
@@ -69,7 +70,7 @@
                 android:id="@+id/fragment_pet_information_breed_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
+                android:paddingTop="20dp"
                 android:orientation="vertical" >
 
                 <TextView
@@ -137,17 +138,25 @@
                 android:id="@+id/fragment_pet_information_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
+                android:paddingTop="20dp"
                 style="@style/TextAppearance.MaterialComponents.Body1"
                 android:text="@string/pet_info_text" />
 
+            <Button
+                android:id="@+id/fragment_pet_information_pet_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Оригинальная анкета питомца"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:paddingLeft="0dp"
+                android:layout_marginTop="10dp"/>
 
             <!--   Shelter information     -->
             <LinearLayout
                 android:id="@+id/fragment_pet_information_shelter_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="20dp"
+                android:paddingTop="30dp"
                 android:orientation="vertical" >
 
                 <TextView
@@ -155,14 +164,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Приют друг"
+                    android:textColor="?android:textColorPrimary"
                     style="@style/TextAppearance.MaterialComponents.Headline4"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:text="Контакты приюта"
-                    style="@style/TextAppearance.MaterialComponents.Subtitle1" />
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:paddingTop="10dp"-->
+<!--                    android:text="Контакты приюта"-->
+<!--                    style="@style/TextAppearance.MaterialComponents.Subtitle1" />-->
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -176,7 +186,8 @@
                         app:icon="@drawable/ic_logo_vk_24"
                         app:iconSize="32dp"
                         android:text="Вконтакте"
-                        style="?attr/materialButtonOutlinedStyle"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:paddingLeft="0dp"
                         android:layout_marginTop="10dp"/>
 
                     <Button
@@ -184,9 +195,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:icon="@drawable/ic_baseline_open_in_browser_24"
+                        android:paddingLeft="0dp"
                         android:text="Веб-сайт"
                         app:iconSize="32dp"
-                        style="?attr/materialButtonOutlinedStyle"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_marginTop="10dp"/>
                 </LinearLayout>
 
