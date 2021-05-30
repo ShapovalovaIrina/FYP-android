@@ -49,8 +49,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
             android:hint="ВКонтакте"
+            app:endIconMode="clear_text"
             app:helperTextEnabled="true"
-            app:helperText="Ссылка на сообщество в социальной сети ВКонтакте"
+            app:helperText="Ссылка на сообщество в социальной сети ВКонтакте. Поле обязательно, если не указан веб-сайт"
             app:errorEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" >
 
@@ -69,7 +70,7 @@
             android:layout_marginTop="20sp"
             android:hint="Веб-сайт"
             app:helperTextEnabled="true"
-            app:helperText="Ссылка на веб-сайт"
+            app:helperText="Ссылка на веб-сайт. Поле обязательно, если не указано сообщество во ВКонтакте"
             app:errorEnabled="true"
             app:endIconMode="clear_text"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" >

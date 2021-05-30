@@ -22,23 +22,24 @@
             style="@style/TextAppearance.MaterialComponents.Headline5"
             android:gravity="center" />
 
-        <!--    Shelter    -->
+        <!--    Source    -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/create_pet_fragment_shelter_text_input_layout"
+            android:id="@+id/create_pet_fragment_source_text_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40sp"
-            android:hint="Приют"
+            android:layout_marginTop="20sp"
+            android:hint="Ссылка на источник"
             app:helperTextEnabled="true"
             app:helperText="Поле обязательно"
             app:errorEnabled="true"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+            app:endIconMode="clear_text"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" >
 
-            <AutoCompleteTextView
-                android:id="@+id/create_pet_fragment_shelter_auto_complete_text_view"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/create_pet_fragment_source_text_input_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:inputType="textUri"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!--    Name    -->
@@ -59,6 +60,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--    Shelter    -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/create_pet_fragment_shelter_text_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="Приют"
+            app:helperTextEnabled="true"
+            app:helperText="Поле обязательно"
+            app:errorEnabled="true"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+            <AutoCompleteTextView
+                android:id="@+id/create_pet_fragment_shelter_auto_complete_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!--    Type    -->
@@ -103,6 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
             android:layout_marginBottom="20dp"
+            android:layout_marginLeft="16dp"
             android:text="Пол"
             style="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
@@ -110,6 +131,8 @@
             android:id="@+id/create_pet_fragment_gender_radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:orientation="horizontal">
             <RadioButton
                 android:id="@+id/create_pet_fragment_female_gender"

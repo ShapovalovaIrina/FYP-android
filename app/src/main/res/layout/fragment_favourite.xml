@@ -19,14 +19,13 @@
             style="@style/TextAppearance.MaterialComponents.Headline5"
             android:gravity="center"
             android:textAlignment="center"
-            android:textColor="#000000"
-            android:text="Твои избранные питомцы" />
+            android:text="Избранные питомцы" />
 
         <com.yarolegovich.discretescrollview.DiscreteScrollView
             android:id="@+id/favourite_fragment_recycle_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="50dp"
             app:dsv_orientation="horizontal"
             tools:listitem="@layout/card_pet" />
     </LinearLayout>

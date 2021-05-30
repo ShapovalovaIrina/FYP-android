@@ -42,6 +42,7 @@ public class CreatePetFragment extends Fragment {
     private RecyclerView photoRecyclerView;
     private PhotoAdapter photoAdapter;
 
+    private TextInputLayout sourceInputLayout;
     private TextInputLayout shelterInputLayout;
     private TextInputLayout nameInputLayout;
     private TextInputLayout typeInputLayout;
@@ -49,6 +50,7 @@ public class CreatePetFragment extends Fragment {
 
     private AutoCompleteTextView shelterAutoCompleteTextView;
     private TextInputEditText nameInputEditText;
+    private TextInputEditText sourceInputEditText;
     private AutoCompleteTextView typeAutoCompleteTextView;
     private TextInputEditText breedInputEditText;
     private TextInputEditText birthInputEditText;
@@ -86,6 +88,9 @@ public class CreatePetFragment extends Fragment {
 
         shelterInputLayout = view.findViewById(R.id.create_pet_fragment_shelter_text_input_layout);
         shelterAutoCompleteTextView = view.findViewById(R.id.create_pet_fragment_shelter_auto_complete_text_view);
+
+        sourceInputLayout = view.findViewById(R.id.create_pet_fragment_source_text_input_layout);
+        sourceInputEditText = view.findViewById(R.id.create_pet_fragment_source_text_input_edit_text);
 
         nameInputLayout = view.findViewById(R.id.create_pet_fragment_name_text_input_layout);
         nameInputEditText = view.findViewById(R.id.create_pet_fragment_name_text_input_edit_text);
@@ -154,9 +159,10 @@ public class CreatePetFragment extends Fragment {
         return view -> {
             shelterInputLayout.setError(null);
             nameInputLayout.setError(null);
+            sourceInputLayout.setError(null);
             typeInputLayout.setError(null);
             photoInputLayout.setError(null);
-            if ((validateInputShelter() & validateInputName() & validateInputType() & validateInputPhoto())) {
+            if ((validateInputShelter() & validateInputName() & validateInputType() & validateInputPhoto() & validateInputSource())) {
                 validateInputOptional();
             }
         };
@@ -165,6 +171,14 @@ public class CreatePetFragment extends Fragment {
     private boolean validateInputShelter() {
         if (shelterAutoCompleteTextView.getText().toString().equals("")) {
             shelterInputLayout.setError("Необходимо указать приют");
+            return false;
+        }
+        return  true;
+    }
+
+    private boolean validateInputSource() {
+        if (sourceInputEditText.getText().toString().equals("")) {
+            sourceInputLayout.setError("Необходимо указать ссылку на источник с питомцем");
             return false;
         }
         return  true;
@@ -239,6 +253,7 @@ public class CreatePetFragment extends Fragment {
     }
 
     private PetBody createPetFromInputData() {
+        String sourceLink = sourceInputEditText.getText().toString();
         String name = nameInputEditText.getText().toString();
         String breed = breedInputEditText.getText().toString();
         String birth = birthInputEditText.getText().toString();
@@ -262,6 +277,7 @@ public class CreatePetFragment extends Fragment {
         }
         return new PetBody(
                 name,
+                sourceLink,
                 typeId,
                 breed,
                 birth,

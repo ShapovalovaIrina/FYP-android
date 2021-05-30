@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FYP</string>
+    <string name="app_name">Найди своего питомца</string>
 
     <string name="favourite_nav">Избранное</string>
     <string name="search_nav">Поиск</string>
