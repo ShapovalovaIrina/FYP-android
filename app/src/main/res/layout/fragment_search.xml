@@ -27,12 +27,14 @@
             android:id="@+id/search_fragment_show_more_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
+            android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:layoutDirection="rtl"
             android:text="Дополнительные настройки"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:button="@drawable/ic_expand_collapse_arrow"
+            android:buttonTint="?android:textColorPrimary"
+            android:gravity="top"
             android:checked="false" />
 
         <!--  Layout with scroll view and filter view  -->
@@ -42,10 +44,8 @@
 
             <TextView
                 android:id="@+id/search_fragment_nothing_found"
-                android:layout_width="wrap_content"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
                 android:layout_marginTop="20dp"
                 android:text="К сожалению, подходящих питомцев не нашлось"
                 style="@style/TextAppearance.MaterialComponents.Body1"

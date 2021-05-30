@@ -40,9 +40,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40sp"
-                app:startIconDrawable="@drawable/ic_baseline_email_24"
                 android:hint="Почта"
+                app:helperTextEnabled="true"
+                app:helperText="Поле обязательно"
                 app:errorEnabled="true"
+                app:endIconMode="clear_text"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -59,9 +61,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20sp"
                 android:hint="Пароль"
+                app:helperTextEnabled="true"
+                app:helperText="Поле обязательно"
                 app:errorEnabled="true"
                 app:endIconMode="password_toggle"
-                app:helperTextEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" >
 
                 <com.google.android.material.textfield.TextInputEditText
