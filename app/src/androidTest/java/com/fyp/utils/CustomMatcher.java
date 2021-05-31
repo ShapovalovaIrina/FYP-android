@@ -42,6 +42,31 @@ public class CustomMatcher {
         };
     }
 
+    public static Matcher<View> hasTextInputLayoutErrors(boolean errorPresent) {
+        return new TypeSafeMatcher<View>() {
+
+            @Override
+            public boolean matchesSafely(View view) {
+                if (!(view instanceof TextInputLayout)) {
+                    return false;
+                }
+
+                CharSequence error = ((TextInputLayout) view).getError();
+
+                if (errorPresent && error != null) {
+                    return true;
+                } else if (!errorPresent && error == null) {
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+            }
+        };
+    }
+
     public static String getText(final Matcher<View> matcher) {
         final String[] stringHolder = { null };
         onView(matcher).perform(new ViewAction() {

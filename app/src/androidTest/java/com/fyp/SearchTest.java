@@ -24,7 +24,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.fyp.utils.RecyclerViewItemCountAssertion.withItemCount;
 import static com.fyp.utils.RecyclerViewMatcher.withRecyclerView;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.not;
 
 public class SearchTest {
     @Rule
