@@ -4,6 +4,8 @@ import android.content.res.Resources;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.espresso.NoMatchingViewException;
+import androidx.test.espresso.ViewAssertion;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

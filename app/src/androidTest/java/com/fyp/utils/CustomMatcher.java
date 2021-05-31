@@ -3,6 +3,8 @@ package com.fyp.utils;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.IdRes;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 
@@ -13,7 +15,11 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.Matchers.allOf;
 
 public class CustomMatcher {
     public static Matcher<View> hasTextInputLayoutErrorText(final String expectedErrorText) {
@@ -87,5 +93,20 @@ public class CustomMatcher {
             }
         });
         return stringHolder[0];
+    }
+
+    public static int getCountFromRecyclerView(@IdRes int RecyclerViewId) {
+        final int[] COUNT = {0};
+        Matcher matcher = new TypeSafeMatcher<View>() {
+            @Override
+            protected boolean matchesSafely(View item) {
+                COUNT[0] = ((RecyclerView) item).getAdapter().getItemCount();
+                return true;
+            }
+            @Override
+            public void describeTo(Description description) {}
+        };
+        onView(allOf(withId(RecyclerViewId),isDisplayed())).check(matches(matcher));
+        return COUNT[0];
     }
 }

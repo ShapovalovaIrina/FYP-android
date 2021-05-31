@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:overScrollMode="never"
-    tools:context=".ui.PetFragment">
+    tools:context=".ui.PetFragment"
+    android:id="@+id/fragment_pet_nested_scroll_view">
 
     <LinearLayout
         android:layout_width="match_parent"
