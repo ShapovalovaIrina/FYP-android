@@ -18,15 +18,7 @@ public class PetsWithMetadata {
         return entries;
     }
 
-    public void setEntries(List<Pet> entries) {
-        this.entries = entries;
-    }
-
     public Metadata getMetadata() {
         return metadata;
-    }
-
-    public void setMetadata(Metadata metadata) {
-        this.metadata = metadata;
     }
 }

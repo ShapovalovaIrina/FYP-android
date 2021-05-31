@@ -4,7 +4,6 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.rule.ActivityTestRule;
 
 import com.fyp.ui.MainActivity;
-import com.fyp.utils.RecyclerViewMatcher;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.After;

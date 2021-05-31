@@ -20,7 +20,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static com.fyp.utils.CustomMatcher.hasTextInputLayoutErrorText;
 import static com.fyp.utils.CustomMatcher.hasTextInputLayoutErrors;
-import static org.hamcrest.Matchers.not;
 
 public class SignInTest {
     @Rule
