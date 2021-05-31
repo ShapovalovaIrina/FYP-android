@@ -64,72 +64,36 @@ public class Pet {
         return birth;
     }
 
-    public void setBirth(String birth) {
-        this.birth = birth;
-    }
-
     public String getBreed() {
         return breed;
-    }
-
-    public void setBreed(String breed) {
-        this.breed = breed;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getGender() {
         return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 
     public String getHeight() {
         return height;
     }
 
-    public void setHeight(String height) {
-        this.height = height;
-    }
-
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getSourceLink() {
         return sourceLink;
     }
 
-    public void setSourceLink(String sourceLink) {
-        this.sourceLink = sourceLink;
-    }
-
     public List<String> getPhotos() {
         return photos;
-    }
-
-    public void setPhotos(List<String> photos) {
-        this.photos = photos;
     }
 
     public String getFirstPhoto() {
@@ -140,33 +104,8 @@ public class Pet {
         return shelter;
     }
 
-    public void setShelter(Shelter shelter) {
-        this.shelter = shelter;
-    }
-
     public Type getType() {
         return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return "Pet{" +
-                "birth='" + birth + '\'' +
-                ", breed='" + breed + '\'' +
-                ", description='" + description + '\'' +
-                ", gender='" + gender + '\'' +
-                ", height='" + height + '\'' +
-                ", id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", sourceLink='" + sourceLink + '\'' +
-                ", photos=" + photos +
-                ", shelter=" + shelter +
-                ", type=" + type +
-                '}';
     }
 
     @Override

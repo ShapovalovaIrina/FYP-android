@@ -26,20 +26,4 @@ public class PetBody {
         this.photos = photos;
         this.shelter_id = shelter_id;
     }
-
-    @Override
-    public String toString() {
-        return "PetBody{" +
-                "name='" + name + '\'' +
-                ", source_link='" + source_link + '\'' +
-                ", type_id=" + type_id +
-                ", breed='" + breed + '\'' +
-                ", birth='" + birth + '\'' +
-                ", description='" + description + '\'' +
-                ", gender='" + gender + '\'' +
-                ", height='" + height + '\'' +
-                ", photos=" + photos +
-                ", shelter_id=" + shelter_id +
-                '}';
-    }
 }

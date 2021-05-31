@@ -1,10 +1,6 @@
 package com.fyp;
 
-import android.widget.ArrayAdapter;
-
 import androidx.test.espresso.NoMatchingViewException;
-import androidx.test.espresso.action.ViewActions;
-import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.rule.ActivityTestRule;
 
 import com.fyp.network.RetrofitClient;
@@ -24,15 +20,12 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static androidx.test.espresso.Espresso.closeSoftKeyboard;
-import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeDown;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
@@ -41,7 +34,6 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.fyp.utils.CustomMatcher.hasTextInputLayoutErrorText;
@@ -142,7 +134,7 @@ public class CreateAndDeletePetTest {
         // Go to bottom and fill photo
         onView(withId(R.id.create_pet_fragment_scroll_view)).perform(swipeUp());
         onView(withId(R.id.create_pet_fragment_photo_text_input_edit_text)).perform(clearText(), typeText(photo));
-        onView(withId(R.id.create_pet_fragment_photo_text_input_edit_text)).perform(clearText(), typeText(photo));
+        //onView(withId(R.id.create_pet_fragment_photo_text_input_edit_text)).perform(clearText(), typeText(photo));
         closeSoftKeyboard();
         onView(withId(R.id.create_pet_fragment_submit_photo)).perform(click());
 
@@ -163,7 +155,7 @@ public class CreateAndDeletePetTest {
 
 
         // DELETE PET
-        onView(withId(R.id.profileFragment)).perform(click());
+        onView(withId(R.id.searchFragment)).perform(click());
         Thread.sleep(1000);
         onView(withId(R.id.search_fragment_show_more_button)).perform(click());
         onView(withId(R.id.filter_view_parent_check_box_types)).perform(click());
