@@ -3,6 +3,7 @@ package com.fyp;
 import androidx.test.rule.ActivityTestRule;
 
 import com.fyp.ui.MainActivity;
+import com.fyp.utils.UIActions;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.After;
@@ -70,11 +71,7 @@ public class SignInTest {
         onView(withId(R.id.sign_in_fragment_password_input_layout)).check(matches(not(hasTextInputLayoutErrorText(incorrectPasswordError))));
 
         // Correct
-        onView(withId(R.id.sign_in_fragment_email_input_edit_text)).perform(clearText(), typeText(email));
-        onView(withId(R.id.sign_in_fragment_password_input_edit_text)).perform(clearText(), typeText(password));
-        closeSoftKeyboard();
-        onView(withId(R.id.sign_in_fragment_button)).perform(click());
-        Thread.sleep(500);
+        UIActions.signInWithEmail(email, password);
 
         // Navigated to search fragment
         onView(withId(R.id.search_fragment_show_more_button)).check(matches(isDisplayed()));
