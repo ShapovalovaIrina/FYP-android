@@ -1,6 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'jacoco'
 
+jacoco {
+    toolVersion = '0.8.1'
+}
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
@@ -32,6 +39,7 @@ android {
     }
 
     testOptions {
+        //execution 'ANDROID_TEST_ORCHESTRATOR'
         animationsDisabled true
 
         unitTests {
