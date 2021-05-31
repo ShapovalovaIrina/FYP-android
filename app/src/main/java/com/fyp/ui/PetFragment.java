@@ -29,6 +29,7 @@ import com.fyp.adapter.NavigationDirection;
 import com.fyp.adapter.ProfilePhotoAdapter;
 import com.fyp.response.Pet;
 import com.fyp.response.Shelter;
+import com.fyp.response.Type;
 import com.fyp.viewmodel.FavouriteViewModel;
 import com.fyp.viewmodel.PagedPetViewModel;
 import com.fyp.viewmodel.PetViewModel;
@@ -195,6 +196,7 @@ public class PetFragment extends Fragment {
         if (pet != null) {
             setName(pet.getName());
             setImages(pet.getPhotos());
+            setType(pet.getType());
             setBreed(pet.getBreed());
             setBirth(pet.getBirth());
             setGender(pet.getGender());
@@ -226,6 +228,11 @@ public class PetFragment extends Fragment {
 
         CircleIndicator2 indicator = rootView.findViewById(R.id.indicator);
         indicator.attachToRecyclerView(imagesScrollView, pagerSnapHelper);
+    }
+
+    private void setType(@NonNull Type type) {
+        TextView typeTextView = rootView.findViewById(R.id.fragment_pet_information_type);
+        typeTextView.setText(type.getType());
     }
 
     private void setBreed(String breed) {
