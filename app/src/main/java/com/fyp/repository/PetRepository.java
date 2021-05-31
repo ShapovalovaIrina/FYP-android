@@ -31,7 +31,6 @@ public class PetRepository {
         if (!SERVER_ENABLED) {
             return;
         }
-        Log.d(TAG, pet.toString());
         serverAPI.addPet(JWTToken, pet).enqueue(new Callback<Status>() {
             @Override
             public void onResponse(Call<Status> call, Response<Status> response) {
