@@ -18,6 +18,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static com.fyp.utils.RecyclerViewItemCountAssertion.withItemCount;
+import static com.fyp.utils.RecyclerViewMatcher.withRecyclerView;
 import static org.hamcrest.Matchers.not;
 
 public class SearchWithoutAccount {
@@ -27,10 +28,6 @@ public class SearchWithoutAccount {
     @After
     public void firebaseSignOut() {
         FirebaseAuth.getInstance().signOut();
-    }
-
-    public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
-        return new RecyclerViewMatcher(recyclerViewId);
     }
 
     @Test
