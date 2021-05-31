@@ -73,7 +73,7 @@ public class SignInFragment extends Fragment {
         return view -> {
             emailInputLayout.setError(null);
             passwordInputLayout.setError(null);
-            if (validateEmailInput() && validatePasswordInput()) {
+            if (validateEmailInput() & validatePasswordInput()) {
                 formLinearLayout.setVisibility(View.INVISIBLE);
                 circularProgressIndicator.setVisibility(View.VISIBLE);
                 signInWithPassword(emailInputEditText.getText().toString(), passwordInputEditText.getText().toString());

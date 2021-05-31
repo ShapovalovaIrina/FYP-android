@@ -30,7 +30,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="40sp"
+                android:paddingTop="40dp"
                 android:textAlignment="center"
                 style="@style/TextAppearance.MaterialComponents.Headline5"
                 android:text="Вход в аккаунт" />
@@ -39,7 +39,7 @@
                 android:id="@+id/sign_in_fragment_email_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40sp"
+                android:layout_marginTop="40dp"
                 android:hint="Почта"
                 app:helperTextEnabled="true"
                 app:helperText="Поле обязательно"
@@ -59,7 +59,7 @@
                 android:id="@+id/sign_in_fragment_password_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20sp"
+                android:layout_marginTop="20dp"
                 android:hint="Пароль"
                 app:helperTextEnabled="true"
                 app:helperText="Поле обязательно"
