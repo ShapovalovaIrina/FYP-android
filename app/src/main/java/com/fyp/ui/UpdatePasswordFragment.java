@@ -77,7 +77,7 @@ public class UpdatePasswordFragment extends Fragment {
             currentPasswordInput.setError(null);
             passwordInput.setError(null);
             passwordRepeatInput.setError(null);
-            if (validateCurrentPassword() && validateNewPasswordInput()) {
+            if (validateCurrentPassword() & validateNewPasswordInput()) {
                 reauthenticateFirebaseUser();
             }
         };

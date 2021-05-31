@@ -21,6 +21,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static com.fyp.utils.CustomMatcher.hasTextInputLayoutErrorText;
+import static com.fyp.utils.CustomMatcher.hasTextInputLayoutErrors;
 import static org.hamcrest.Matchers.not;
 
 public class RegistrationTest {
@@ -53,21 +54,21 @@ public class RegistrationTest {
         onView(withId(R.id.sign_up_fragment_email_input_edit_text)).perform(typeText(email));
         closeSoftKeyboard();
         onView(withId(R.id.sign_up_fragment_button)).perform(click());
-        onView(withId(R.id.sign_up_fragment_email_input_layout)).check(matches(not(hasTextInputLayoutErrorText(emailError))));
+        onView(withId(R.id.sign_up_fragment_email_input_layout)).check(matches(hasTextInputLayoutErrors(false)));
         onView(withId(R.id.sign_up_fragment_password_input_layout)).check(matches(hasTextInputLayoutErrorText(passwordError)));
 
         // Without password repeat
         onView(withId(R.id.sign_up_fragment_password_input_edit_text)).perform(typeText("123456"));
         closeSoftKeyboard();
         onView(withId(R.id.sign_up_fragment_button)).perform(click());
-        onView(withId(R.id.sign_up_fragment_email_input_layout)).check(matches(not(hasTextInputLayoutErrorText(emailError))));
+        onView(withId(R.id.sign_up_fragment_email_input_layout)).check(matches(hasTextInputLayoutErrors(false)));
         onView(withId(R.id.sign_up_fragment_password_input_layout)).check(matches(hasTextInputLayoutErrorText(passwordError)));
 
         // Incorrect repeat
         onView(withId(R.id.sign_up_fragment_repeat_password_input_edit_text)).perform(typeText("1234567"));
         closeSoftKeyboard();
         onView(withId(R.id.sign_up_fragment_button)).perform(click());
-        onView(withId(R.id.sign_up_fragment_email_input_layout)).check(matches(not(hasTextInputLayoutErrorText(emailError))));
+        onView(withId(R.id.sign_up_fragment_email_input_layout)).check(matches(hasTextInputLayoutErrors(false)));
         onView(withId(R.id.sign_up_fragment_password_input_layout)).check(matches(hasTextInputLayoutErrorText(passwordRepeatError)));
 
         // Correct

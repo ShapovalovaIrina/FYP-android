@@ -19,6 +19,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static com.fyp.utils.CustomMatcher.hasTextInputLayoutErrorText;
+import static com.fyp.utils.CustomMatcher.hasTextInputLayoutErrors;
 import static org.hamcrest.Matchers.not;
 
 public class SignInTest {
@@ -51,7 +52,7 @@ public class SignInTest {
         onView(withId(R.id.sign_in_fragment_email_input_edit_text)).perform(typeText(email));
         closeSoftKeyboard();
         onView(withId(R.id.sign_in_fragment_button)).perform(click());
-        onView(withId(R.id.sign_in_fragment_email_input_layout)).check(matches(not(hasTextInputLayoutErrorText(emailError))));
+        onView(withId(R.id.sign_in_fragment_email_input_layout)).check(matches(hasTextInputLayoutErrors(false)));
         onView(withId(R.id.sign_in_fragment_password_input_layout)).check(matches(hasTextInputLayoutErrorText(passwordError)));
 
         // Incorrect password
@@ -59,7 +60,7 @@ public class SignInTest {
         closeSoftKeyboard();
         onView(withId(R.id.sign_in_fragment_button)).perform(click());
         Thread.sleep(2000);
-        onView(withId(R.id.sign_in_fragment_email_input_layout)).check(matches(not(hasTextInputLayoutErrorText(emailError))));
+        onView(withId(R.id.sign_in_fragment_email_input_layout)).check(matches(hasTextInputLayoutErrors(false)));
         onView(withId(R.id.sign_in_fragment_password_input_layout)).check(matches(hasTextInputLayoutErrorText(incorrectPasswordError)));
 
         // Nonexistent email
@@ -68,7 +69,7 @@ public class SignInTest {
         onView(withId(R.id.sign_in_fragment_button)).perform(click());
         Thread.sleep(2000);
         onView(withId(R.id.sign_in_fragment_email_input_layout)).check(matches(hasTextInputLayoutErrorText(nonexistentEmailError)));
-        onView(withId(R.id.sign_in_fragment_password_input_layout)).check(matches(not(hasTextInputLayoutErrorText(incorrectPasswordError))));
+        onView(withId(R.id.sign_in_fragment_password_input_layout)).check(matches(hasTextInputLayoutErrors(false)));
 
         // Correct
         UIActions.signInWithEmail(email, password);
