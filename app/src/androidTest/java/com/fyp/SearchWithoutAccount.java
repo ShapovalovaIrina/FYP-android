@@ -4,6 +4,7 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.rule.ActivityTestRule;
 
 import com.fyp.ui.MainActivity;
+import com.fyp.utils.RecyclerViewMatcher;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.junit.After;
@@ -16,6 +17,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static com.fyp.utils.RecyclerViewItemCountAssertion.withItemCount;
 import static org.hamcrest.Matchers.not;
 
 public class SearchWithoutAccount {
@@ -43,6 +45,7 @@ public class SearchWithoutAccount {
         onView(withId(R.id.search_fragment_start_search)).perform(click());
         Thread.sleep(3000);
 
+        onView(withId(R.id.search_fragment_recycle_view)).check(withItemCount(5));
         onView(withRecyclerView(R.id.search_fragment_recycle_view).atPositionOnView(0, R.id.card_pet_favourite))
                 .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
 

@@ -17,7 +17,7 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static com.fyp.CustomMatcher.hasTextInputLayoutErrorText;
+import static com.fyp.utils.CustomMatcher.hasTextInputLayoutErrorText;
 import static org.hamcrest.Matchers.not;
 
 public class SignInTest {
