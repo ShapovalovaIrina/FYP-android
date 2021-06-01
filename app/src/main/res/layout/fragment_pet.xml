@@ -111,6 +111,29 @@
                     style="@style/TextAppearance.MaterialComponents.Body1"/>
             </LinearLayout>
 
+            <!--  Pet gender  -->
+            <LinearLayout
+                android:id="@+id/fragment_pet_information_gender_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/pet_gender"
+                    style="@style/TextAppearance.MaterialComponents.Headline5" />
+
+                <TextView
+                    android:id="@+id/fragment_pet_information_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pet_gender_girl"
+                    style="@style/TextAppearance.MaterialComponents.Body1" />
+            </LinearLayout>
+
             <!--  Pet age  -->
             <LinearLayout
                 android:id="@+id/fragment_pet_information_age_layout"
@@ -134,9 +157,9 @@
                     style="@style/TextAppearance.MaterialComponents.Body1" />
             </LinearLayout>
 
-            <!--  Pet gender  -->
+            <!--  Pet height  -->
             <LinearLayout
-                android:id="@+id/fragment_pet_information_gender_layout"
+                android:id="@+id/fragment_pet_information_height_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
@@ -146,14 +169,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/pet_gender"
+                    android:text="Высота в холке"
                     style="@style/TextAppearance.MaterialComponents.Headline5" />
 
                 <TextView
-                    android:id="@+id/fragment_pet_information_gender"
+                    android:id="@+id/fragment_pet_information_height"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/pet_gender_girl"
+                    android:text="50 см"
                     style="@style/TextAppearance.MaterialComponents.Body1" />
             </LinearLayout>
 

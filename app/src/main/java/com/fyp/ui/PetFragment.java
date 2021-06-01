@@ -199,6 +199,7 @@ public class PetFragment extends Fragment {
             setType(pet.getType());
             setBreed(pet.getBreed());
             setBirth(pet.getBirth());
+            setHeight(pet.getHeight());
             setGender(pet.getGender());
             setDescription(pet.getDescription());
             setSourceLink(pet.getSourceLink());
@@ -252,6 +253,16 @@ public class PetFragment extends Fragment {
         } else {
             TextView birthTextView = birthLayout.findViewById(R.id.fragment_pet_information_age);
             birthTextView.setText(birth);
+        }
+    }
+
+    private void setHeight(String height) {
+        LinearLayout heightLayout = rootView.findViewById(R.id.fragment_pet_information_height_layout);
+        if (height == null) {
+            heightLayout.setVisibility(View.GONE);
+        } else {
+            TextView birthTextView = heightLayout.findViewById(R.id.fragment_pet_information_height);
+            birthTextView.setText(height);
         }
     }
 
